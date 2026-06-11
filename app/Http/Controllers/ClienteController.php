@@ -7,12 +7,12 @@ use Illuminate\Http\Request;
 
 class ClienteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    
+    public function index() // Mostrar a lista de clientes
     {
-        //
+        $clientes = Cliente::all(); // Buscar todos os clientes
+
+        return view('clientes.index', compact('clientes')); // Abrir a página index e enviar os dados
     }
 
     /**
