@@ -12,3 +12,4 @@ Route::get('/', function () {
 // CRUD completo de clientes:
 // index, create, store, show, edit, update e destroy
 Route::resource('clientes', ClienteController::class);
+
