@@ -4,69 +4,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clientes</title>
+    <title>Olive Properties - Algarve</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .titulo-principal {
+            color: #2F4F4F;
+            font-weight: bold;
+        }
+
+        .subtitulo {
+            color: #6C757D;
+        }
+
+        .card-topo {
+            border-left: 5px solid #2F4F4F;
+            padding-left: 15px;
+            margin-bottom: 20px;
+        }
+    </style>
+
 </head>
 
 <body>
-    <h1>Lista de Clientes</h1>
 
-    <p>
-        <a href="{{ route('clientes.create') }}">
+    <div class="container mt-4">
+
+        <div class="card-topo">
+            <h1 class="titulo-principal">
+                Olive Properties - Algarve
+            </h1>
+
+            <p class="subtitulo">
+                Gestão de apartamentos turísticos no Algarve
+            </p>
+        </div>
+
+        <a href="{{ route('clientes.create') }}"
+            class="btn btn-outline-dark mb-3">
             Novo Cliente
         </a>
-    </p>
 
-    <table border="1">
+        <table class="table table-striped table-bordered align-middle">
 
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Email</th>
-                <th>Telefone</th>
-                <th>Morada</th>
-                <th>NIF</th>
-            </tr>
-        </thead>
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Telefone</th>
+                    <th>Morada</th>
+                    <th>NIF</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
 
-        <tbody>
+            <tbody>
 
-            @foreach($clientes as $cliente)
+                @foreach($clientes as $cliente)
 
-            <tr>
-                <td>{{ $cliente->id }}</td>
-                <td>{{ $cliente->nome }}</td>
-                <td>{{ $cliente->email }}</td>
-                <td>{{ $cliente->telefone }}</td>
-                <td>{{ $cliente->morada }}</td>
-                <td>{{ $cliente->nif }}</td>
-                <td>
-                    <a href="{{ route('clientes.show', $cliente->id) }}">
-                        Ver
-                    </a>
-                    <a href="{{ route('clientes.edit', $cliente->id) }}">
-                        Editar
-                    </a>
+                <tr>
 
-                    <form action="{{ route('clientes.destroy', $cliente->id) }}"
-                        method="POST" style="display:inline;">
+                    <td>{{ $cliente->id }}</td>
 
-                        @csrf
-                        @method('DELETE') //Apagar cliente
+                    <td>{{ $cliente->nome }}</td>
 
-                        <button type="submit"> Apagar </button>
-                    </form>
-                </td>
-            </tr>
+                    <td>{{ $cliente->email }}</td>
 
-            @endforeach
+                    <td>{{ $cliente->telefone }}</td>
 
+                    <td>{{ $cliente->morada }}</td>
 
+                    <td>{{ $cliente->nif }}</td>
 
+                    <td>
 
-        </tbody>
+                        <a href="{{ route('clientes.show', $cliente->id) }}"
+                            class="btn btn-outline-dark btn-sm">
+                            Ver
+                        </a>
 
-    </table>
+                        <a href="{{ route('clientes.edit', $cliente->id) }}"
+                            class="btn btn-outline-secondary btn-sm">
+                            Editar
+                        </a>
+
+                        <form action="{{ route('clientes.destroy', $cliente->id) }}"
+                            method="POST"
+                            style="display:inline;">
+
+                            @csrf
+                            @method('DELETE')
+
+                            <button type="submit"
+                                class="btn btn-outline-danger btn-sm"
+                                onclick="return confirm('Tem a certeza que pretende apagar este cliente?')">
+                                Apagar
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+                @endforeach
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 </body>
 
