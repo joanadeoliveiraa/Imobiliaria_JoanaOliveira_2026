@@ -15,122 +15,127 @@
 <body>
 
 
-<div class="container mt-4">
+    <div class="container mt-4">
 
-    <h1 class="text-primary">
-        Olive Properties - Algarve
-    </h1>
+        <h1 class="text-primary">
+            Olive Properties - Algarve
+        </h1>
 
-    <h3>
-        Editar Apartamento
-    </h3>
+        <h3>
+            Editar Apartamento
+        </h3>
 
-    <form action="{{ route('apartamentos.update', $apartamento->id) }}"
-        method="POST">
+        <form action="{{ route('apartamentos.update', $apartamento->id) }}"
+            method="POST"
+            enctype="multipart/form-data">
 
-        @csrf
-        @method('PUT')
+            @csrf
+            @method('PUT')
 
-        <div class="mb-3">
+            <div class="mb-3">
+                <label class="form-label">
+                    Referência
+                </label>
+                <input type="text"
+                    class="form-control"
+                    value="{{ $apartamento->referencia }}"
+                    readonly>
+            </div>
 
-            <label class="form-label">
-                Referência
-            </label>
+            <div class="mb-3">
+                <label class="form-label">
+                    Tipologia
+                </label>
+                <input type="text"
+                    name="tipologia"
+                    class="form-control"
+                    value="{{ $apartamento->tipologia }}">
+            </div>
 
-            <input type="text"
-                class="form-control"
-                value="{{ $apartamento->referencia }}"
-                readonly>
+            <div class="mb-3">
+                <label class="form-label">
+                    Morada
+                </label>
+                <input type="text"
+                    name="morada"
+                    class="form-control"
+                    value="{{ $apartamento->morada }}">
+            </div>
 
-        </div>
+            <div class="mb-3">
+                <label class="form-label">
+                    Área (m²)
+                </label>
+                <input type="number"
+                    name="area"
+                    class="form-control"
+                    value="{{ $apartamento->area }}">
+            </div>
 
-        <div class="mb-3">
+            <div class="mb-3">
 
-            <label class="form-label">
-                Tipologia
-            </label>
+                <label class="form-label">
+                    Preço por Semana (€)
+                </label>
 
-            <input type="text"
-                name="tipologia"
-                class="form-control"
-                value="{{ $apartamento->tipologia }}">
+                <input type="number"
+                    name="preco"
+                    class="form-control"
+                    value="{{ $apartamento->preco }}">
 
-        </div>
+            </div>
 
-        <div class="mb-3">
+            <div class="mb-3">
+                <label class="form-label">
+                    Estado
+                </label>
+                <select name="estado" class="form-select">
+                    <option value="Disponivel"
+                        {{ $apartamento->estado == 'Disponivel' ? 'selected' : '' }}>
+                        Disponível
+                    </option>
 
-            <label class="form-label">
-                Morada
-            </label>
+                    <option value="Nao Disponivel"
+                        {{ $apartamento->estado == 'Nao Disponivel' ? 'selected' : '' }}>
+                        Não Disponível
+                    </option>
+                </select>
+            </div>
 
-            <input type="text"
-                name="morada"
-                class="form-control"
-                value="{{ $apartamento->morada }}">
+            @if($apartamento->fotografia)
 
-        </div>
+            <div class="mb-3 text-center">
 
-        <div class="mb-3">
+                <img src="{{ asset('storage/' . $apartamento->fotografia) }}"
+                    class="img-fluid rounded shadow"
+                    style="max-height:250px;">
 
-            <label class="form-label">
-                Área (m²)
-            </label>
+            </div>
 
-            <input type="number"
-                name="area"
-                class="form-control"
-                value="{{ $apartamento->area }}">
+            @endif
 
-        </div>
+            <div class="mb-3">
+                <label class="form-label">
+                    Fotografia
+                </label>
+                <input type="file"
+                    name="fotografia"
+                    class="form-control">
+            </div>
 
-        <div class="mb-3">
+            <button type="submit"
+                class="btn btn-dark">
+                Atualizar
+            </button>
 
-            <label class="form-label">
-                Preço por Semana (€)
-            </label>
+            <a href="{{ route('apartamentos.index') }}"
+                class="btn btn-outline-secondary">
+                Cancelar
+            </a>
 
-            <input type="number"
-                name="preco"
-                class="form-control"
-                value="{{ $apartamento->preco }}">
+        </form>
 
-        </div>
-
-        <div class="mb-3">
-
-            <label class="form-label">
-                Estado
-            </label>
-
-            <select name="estado" class="form-select">
-
-                <option value="Disponivel"
-                    {{ $apartamento->estado == 'Disponivel' ? 'selected' : '' }}>
-                    Disponível
-                </option>
-
-                <option value="Nao Disponivel"
-                    {{ $apartamento->estado == 'Nao Disponivel' ? 'selected' : '' }}>
-                    Não Disponível
-                </option>
-
-            </select>
-
-        </div>
-
-        <button type="submit"
-            class="btn btn-dark">
-            Atualizar
-        </button>
-
-        <a href="{{ route('apartamentos.index') }}"
-            class="btn btn-outline-secondary">
-            Cancelar
-        </a>
-
-    </form>
-
-</div>
+    </div>
 
 
 </body>

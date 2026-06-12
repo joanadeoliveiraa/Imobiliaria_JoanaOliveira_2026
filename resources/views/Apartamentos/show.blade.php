@@ -48,6 +48,17 @@
 
         <div class="card">
 
+            @if($apartamento->fotografia)
+            <div class="text-center mb-4">
+                <img src="{{ asset('storage/' . $apartamento->fotografia) }}"
+                    class="img-fluid rounded shadow"
+                    style="max-height:400px;">
+            </div>
+
+            @endif
+
+
+
             <div class="card-header">
                 <h4>Detalhes do Apartamento</h4>
             </div>

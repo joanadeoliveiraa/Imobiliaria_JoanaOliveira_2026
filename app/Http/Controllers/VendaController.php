@@ -24,13 +24,15 @@ class VendaController extends Controller
     // }
 
 
-    public function create() // Mostrar formulário de reserva
+    public function create() 
     {
-        $apartamentos = Apartamento::all();
 
-        return view('vendas.create', compact('apartamentos'));
+        // Cria vrdas/reservas apenas para imóveis disponiveis
+        $apartamentos = Apartamento::where('estado','Disponivel')->get(); 
+
+        return view('vendas.create',compact('apartamentos')
+        );
     }
-
 
 
     public function store(Request $request) // Gravar venda
@@ -48,14 +50,17 @@ class VendaController extends Controller
             $request->apartamento
         )->first();
 
-        $apartamento->estado = 'Nao Disponivel';
 
-        $apartamento->save();
 
+        if ($apartamento) {
+            $apartamento->estado = 'Nao Disponivel';
+            $apartamento->save();
+        }
         return redirect()
             ->route('vendas.index')
             ->with('success', 'Reserva registada com sucesso.');
     }
+
 
     public function show($id) // Mostrar os detalhes da venda
     {

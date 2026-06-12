@@ -10,112 +10,173 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-        }
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-        body {
-            font-family: Arial, sans-serif;
-        }
+    body {
+        font-family: Arial, sans-serif;
+        overflow-x: hidden;
+    }
 
-        .hero {
-            min-height: 140vh;
-            padding-bottom: 80px;
-            background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e');
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
+    .hero {
+        min-height: 100vh;
+        padding-bottom: 120px;
+        background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        position: relative;
+    }
 
-        .overlay {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.45);
-        }
+    .overlay {
+        position: absolute;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.50);
+    }
 
-        .navbar-custom {
-            position: relative;
-            z-index: 2;
-        }
+    .navbar-custom {
+        position: relative;
+        z-index: 2;
+        padding-top: 15px;
+    }
 
-        .navbar-custom a {
-            color: white !important;
-            font-weight: 500;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
+    .navbar-custom a {
+        color: white !important;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        transition: 0.3s;
+    }
 
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            color: white;
-            text-align: center;
-            top: 120px;
-        }
+    .navbar-custom a:hover {
+        opacity: 0.8;
+    }
 
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        color: white;
+        text-align: center;
+        padding-top: 120px;
+    }
+
+    .hero-content h1 {
+        font-size: 5rem;
+        font-weight: 700;
+        letter-spacing: 4px;
+        margin-bottom: 15px;
+    }
+
+    .hero-content .lead {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+    .hero-content p {
+        font-size: 1.2rem;
+    }
+
+    .search-box {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .search-box .input-group {
+        overflow: hidden;
+        border-radius: 10px;
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        height: 100%;
+        transition: transform 0.3s;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card-img-top {
+        height: 250px;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        padding: 25px;
+    }
+
+    .card-title {
+        color: #2F4F4F;
+        font-weight: bold;
+    }
+
+    .card-text {
+        font-size: 17px;
+        flex-grow: 1;
+    }
+
+    .btn-dark {
+        background-color: #2F4F4F;
+        border: none;
+    }
+
+    .btn-dark:hover {
+        background-color: #3d6666;
+    }
+
+    .btn-dark,
+    .btn-outline-light {
+        border-radius: 8px;
+    }
+
+    footer {
+        position: relative;
+        z-index: 3;
+        background-color: #1f2933;
+    }
+
+    /* Tablets */
+    @media (max-width: 992px) {
         .hero-content h1 {
-            font-size: 5rem;
-            font-weight: 700;
-            letter-spacing: 3px;
+            font-size: 3.5rem;
         }
+        .hero-content .lead {
+            font-size: 1.2rem;
+        }
+    }
 
+    /* Telemóveis */
+    @media (max-width: 768px) {
+        .hero {
+            background-attachment: scroll;
+        }
+        .hero-content {
+            padding-top: 80px;
+        }
+        .hero-content h1 {
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+        }
         .hero-content p {
-            font-size: 1.4rem;
-            margin-bottom: 30px;
+            font-size: 1rem;
         }
-
         .search-box {
-            max-width: 700px;
-            margin: auto;
+            padding: 0 15px;
         }
-
-
-        .card {
-            border-radius: 15px;
-            height: 100%;
-        }
-
-        .card img {
-            height: 220px;
-            object-fit: cover;
-        }
-
         .card-img-top {
-            height: 250px;
-            object-fit: cover;
-            width: 100%;
+            height: 220px;
         }
-
-        .card-body {
-            display: flex;
-            flex-direction: column;
-        }
-
-        p.card-text {
-            font-size: 18px;
-        }
-
-        .card-body .btn {
-            margin-top: auto;
-        }
-
-        .btn-dark {
-            background-color: #2F4F4F;
-            border: none;
-        }
-
-        .btn-dark:hover {
-            background-color: #556B2F;
-        }
-
-        footer {
-            position: relative;
-            z-index: 3
-        }
-    </style>
+    }
+</style>
 
 
 </head>
@@ -159,7 +220,7 @@
 
         <div class="hero-content">
 
-        <br><br><br><br><br><br><br><br><br>
+            <br><br><br><br><br><br><br><br><br>
 
             <h1>OLIVE PROPERTIES</h1>
 
@@ -172,17 +233,25 @@
                 Descubra apartamentos turísticos exclusivos no Algarve
             </p>
 
+            <!-- Barra de pesquisa -->
             <div class="search-box">
-                <!-- Barra de pesquisa -->
-                <div class="input-group shadow-lg">
-                    <input type="text"
-                        class="form-control"
-                        placeholder="Pesquisar propriedade...">
+            <form action="{{ route('apartamentos.index') }}" method="GET">
 
-                    <button class="btn btn-dark">
+                <div class="input-group shadow-lg">
+
+                    <input type="text"
+                        name="pesquisa"
+                        class="form-control"
+                        placeholder="Pesquisar referência, tipologia ou localização">
+
+                    <button type="submit"
+                        class="btn btn-dark">
                         Procurar
                     </button>
+
                 </div>
+
+            </form>
             </div>
             <br><br><br>
 
@@ -297,10 +366,10 @@
         <h5><strong> Properties - Algarve</strong></h5>
         <p class="fst-italic">
             "Criamos ambientes onde nascem memórias inesquecíveis."
-        </p>        
+        </p>
 
         <p>
-            📍 Algarve, Portugal | 📞 +351 289 000 000 | ✉️ info@oliveproperties.pt   |    
+            📍 Algarve, Portugal | 📞 +351 289 000 000 | ✉️ info@oliveproperties.pt |
             © 2026 Olive Properties. Projeto desenvolvido em homenagem às raízes da família Oliveira.
         </p>
 

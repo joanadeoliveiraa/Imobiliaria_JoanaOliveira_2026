@@ -14,7 +14,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Olive Properties - Algarve</title>
 
-        ```
+       
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
         <style>
@@ -60,13 +60,10 @@
 
             <div class="card-body">
 
-                <form action="{{ route('apartamentos.store') }}" method="POST">
+                <form action="{{ route('apartamentos.store') }}" method="POST"enctype="multipart/form-data">
+                    <!-- multipart/form-data - permite o envio de imagens, PDFs, etc. para o Laravel. -->
 
                     @csrf
-
-                    <form action="{{ route('apartamentos.store') }}" method="POST">
-
-                        @csrf
 
                         <div class="mb-3">
                             <label class="form-label">Tipologia</label>
@@ -108,13 +105,19 @@
                             <label class="form-label">Estado</label>
 
                             <select name="estado" class="form-select">
-
                                 <option value="Disponível">Disponível</option>
-                                
                                 <option value="Não Disponível">Não Disponível</option>
-
                             </select>
 
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label class="form-label">Fotografia</label>
+
+                            <input type="file"
+                                name="foto"
+                                class="form-control">
                         </div>
 
                         <button type="submit"
