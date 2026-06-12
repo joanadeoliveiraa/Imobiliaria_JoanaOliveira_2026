@@ -7,8 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Olive Properties - Algarve</title>
 
-```
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
     .titulo-principal {
@@ -26,13 +25,13 @@
         margin-bottom: 20px;
     }
 </style>
-```
+
 
 </head>
 
 <body>
 
-```
+
 <div class="container mt-4">
 
     <div class="card-topo">
@@ -89,7 +88,7 @@
     </div>
 
 </div>
-```
+
 
 </body>
 

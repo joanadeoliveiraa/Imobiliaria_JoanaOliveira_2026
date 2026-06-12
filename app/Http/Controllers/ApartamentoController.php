@@ -50,25 +50,43 @@ class ApartamentoController extends Controller
     }
 
 
-
-    public function edit(Apartamento $apartamento)
+    public function edit($id) // Mostrar formulário de edição
     {
-        //
+        $apartamento = Apartamento::findOrFail($id);
+
+        return view('apartamentos.edit', compact('apartamento'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Apartamento $apartamento)
+
+
+    public function update(Request $request, $id) // Atualizar apartamento
     {
-        //
+        $apartamento = Apartamento::findOrFail($id);
+
+        $apartamento->update([
+            'tipologia' => $request->tipologia,
+            'morada' => $request->morada,
+            'area' => $request->area,
+            'preco' => $request->preco,
+            'estado' => $request->estado
+    ]);
+
+    return redirect()
+        ->route('apartamentos.index')
+        ->with('success', 'Apartamento atualizado com sucesso.');
+
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Apartamento $apartamento)
+
+    public function destroy($id) // Apagar apartamento
     {
-        //
+        $apartamento = Apartamento::findOrFail($id);
+
+        $apartamento->delete();
+
+        return redirect()
+            ->route('apartamentos.index');
     }
-}
+        
+    }

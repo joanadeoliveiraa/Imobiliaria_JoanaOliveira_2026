@@ -33,13 +33,11 @@
                 margin-bottom: 20px;
             }
         </style>
-        ```
 
     </head>
 
 <body>
 
-    ```
     <div class="container mt-4">
 
         <div class="card-topo">
@@ -111,13 +109,9 @@
 
                             <select name="estado" class="form-select">
 
-                                <option value="Disponivel">
-                                    Disponível
-                                </option>
-
-                                <option value="Nao Disponivel">
-                                    Reservado
-                                </option>
+                                <option value="Disponível">Disponível</option>
+                                
+                                <option value="Não Disponível">Não Disponível</option>
 
                             </select>
 

@@ -23,6 +23,26 @@
             padding-left: 15px;
             margin-bottom: 20px;
         }
+
+
+        .titulo-principal {
+            color: #2F4F4F;
+            font-weight: bold;
+        }
+
+        .subtitulo {
+            color: #6C757D;
+        }
+
+
+        .btn-dark {
+            background-color: #2F4F4F;
+            border: none;
+        }
+
+        .btn-dark:hover {
+            background-color: #556B2F;
+        }
     </style>
 
 </head>
@@ -37,13 +57,18 @@
             </h1>
 
             <p class="subtitulo">
-                Gestão de apartamentos turísticos no Algarve
+                Gestão de Clientes
             </p>
         </div>
 
         <a href="{{ route('clientes.create') }}"
-            class="btn btn-outline-dark mb-3">
+            class="btn btn-dark mb-3">
             Novo Cliente
+        </a>
+
+        <a href="{{ url('/') }}"
+            class="btn btn-dark mb-3">
+            ← Menu Principal
         </a>
 
         <table class="table table-striped table-bordered align-middle">

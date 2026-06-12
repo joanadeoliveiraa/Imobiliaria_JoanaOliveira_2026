@@ -21,7 +21,8 @@
         }
 
         .hero {
-            height: 100vh;
+            min-height: 140vh;
+            padding-bottom: 80px;
             background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e');
             background-size: cover;
             background-position: center;
@@ -52,7 +53,7 @@
             z-index: 2;
             color: white;
             text-align: center;
-            top: 35%;
+            top: 120px;
         }
 
         .hero-content h1 {
@@ -85,6 +86,7 @@
         .card-img-top {
             height: 250px;
             object-fit: cover;
+            width: 100%;
         }
 
         .card-body {
@@ -108,6 +110,11 @@
         .btn-dark:hover {
             background-color: #556B2F;
         }
+
+        footer {
+            position: relative;
+            z-index: 3
+        }
     </style>
 
 
@@ -123,7 +130,7 @@
         <nav class="navbar navbar-expand-lg navbar-custom">
             <div class="container">
 
-                git status<div class="ms-auto">
+                <div class="ms-auto">
 
                     <a class="me-4 text-decoration-none" href="{{ route('sobre') }}">
                         Sobre Nós
@@ -152,11 +159,14 @@
 
         <div class="hero-content">
 
+        <br><br><br><br><br><br><br><br><br>
+
             <h1>OLIVE PROPERTIES</h1>
 
             <p class="lead">
                 Luxury Holiday Apartments • Algarve • Portugal
             </p>
+            <br><br><br><br><br><br><br><br>
 
             <p>
                 Descubra apartamentos turísticos exclusivos no Algarve
@@ -212,7 +222,8 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4 mb-4">
+                    <!-- Responsivo -->
+                    <div class="col-lg-4 col-md-6 col-12 mb-4">
 
                         <div class="card shadow border-0">
                             <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267"
@@ -281,6 +292,19 @@
     </section>
 
 
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+
+        <h5><strong> Properties - Algarve</strong></h5>
+        <p class="fst-italic">
+            "Criamos ambientes onde nascem memórias inesquecíveis."
+        </p>        
+
+        <p>
+            📍 Algarve, Portugal | 📞 +351 289 000 000 | ✉️ info@oliveproperties.pt   |    
+            © 2026 Olive Properties. Projeto desenvolvido em homenagem às raízes da família Oliveira.
+        </p>
+
+    </footer>
 </body>
 
 </html>

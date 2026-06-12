@@ -22,6 +22,15 @@
             padding-left: 15px;
             margin-bottom: 20px;
         }
+             
+        .btn-dark {
+            background-color: #2F4F4F;
+            border: none;
+        }
+
+        .btn-dark:hover {
+            background-color: #556B2F;
+        }
     </style>
 
 </head>
@@ -35,20 +44,24 @@
             <p class="subtitulo"> Gestão de apartamentos turísticos no Algarve </p>
 
         </div>
+            @if(session('success'))
 
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
 
-        @if(session('success'))
-
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-
-        @endif
-
+            @endif
         
-
         <a href="{{ route('apartamentos.create') }}" class="btn btn-dark mb-3">
-            Novo Apartamento </a>
+            Novo Apartamento 
+        </a>
+
+        <a href="{{ url('/') }}"
+            class="btn btn-dark mb-3">
+            ← Menu Principal
+        </a>
+
+
 
         <table class="table table-striped table-bordered">
 
@@ -77,7 +90,7 @@
                     <td>
                         <a href="{{ route('apartamentos.show', $apartamento->id) }}" class="btn btn-outline-dark btn-sm"> Ver </a>
 
-                        <a href="#" class="btn btn-outline-secondary btn-sm"> Editar </a>
+                        <a href="{{ route('apartamentos.edit', $apartamento->id) }}" class="btn btn-outline-secondary btn-sm"> Editar </a>
                     </td>
                 </tr>
                 @endforeach

@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ApartamentoController;
-// use App\Http\Controllers\VendasController;
+use App\Http\Controllers\VendaController;
 
 
 Route::get('/', function () { 
@@ -23,7 +23,7 @@ Route::resource('apartamentos', ApartamentoController::class);
 
 
 // ROTAS DAS VENDAS
-// Route::resource('vendas', VendasController::class);
+Route::resource('vendas', VendaController::class);
 
 //Rota Sobre nós
 Route::get('/sobre', function () {

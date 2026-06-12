@@ -90,10 +90,10 @@
 
         <div class="text-center mt-5 mb-5">
 
-            <img src="{{ asset('image/familia-oliveira.jpg') }}"
+            <img src="{{ asset('images/familia-oliveira.jpg') }}"
                 alt="Família Oliveira"
                 class="img-fluid shadow imagem-historia">
-
+         
         </div>
 
         <div class="text-center mb-5">
