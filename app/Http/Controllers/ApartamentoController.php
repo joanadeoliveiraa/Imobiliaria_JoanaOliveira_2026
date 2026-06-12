@@ -19,22 +19,38 @@ class ApartamentoController extends Controller
     {
         return view('apartamentos.create'); // Abrir a página create
     }
-    public function store(Request $request)
+
+    public function store(Request $request) // Gravar apartamento
     {
-        //
+        // Gerar referência automática ALG001, ALG002, ...
+        $ultimoApartamento = Apartamento::latest()->first();
+        $numero = $ultimoApartamento ? $ultimoApartamento->id + 1 : 1;
+        $referencia = 'ALG' . str_pad($numero, 3, '0', STR_PAD_LEFT);
+
+        Apartamento::create([
+            'referencia' => $referencia,
+            'tipologia' => $request->tipologia,
+            'morada' => $request->morada,
+            'area' => $request->area,
+            'preco' => $request->preco,
+            'estado' => $request->estado
+        ]);
+
+        return redirect()
+            ->route('apartamentos.index')
+            ->with('success', 'Apartamento registado com sucesso.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Apartamento $apartamento)
+
+    public function show(int $id) // Mostrar os detalhes do apartamento
     {
-        //
+        $apartamento = Apartamento::findOrFail($id); // Procurar apartamento pelo ID
+
+        return view('apartamentos.show', compact('apartamento')); // Abrir a página show
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
+
     public function edit(Apartamento $apartamento)
     {
         //
