@@ -184,9 +184,23 @@
             <strong>Últimas Atividades</strong>
         </div>
         <div class="card-body">
+            @if($atividades->count())
+            <ul class="list-group list-group-flush">
+                @foreach($atividades as $atividade)
+                <li class="list-group-item">
+                    <small class="text-muted">
+                        {{ $atividade->created_at->format('d/m/Y H:i') }}
+                    </small>
+                    <br>
+                    {{ $atividade->descricao }}
+                </li>
+                @endforeach
+            </ul>
+            @else
             <p class="text-muted">
                 Ainda não existem atividades registadas.
             </p>
+            @endif
         </div>
     </div>
 

@@ -6,6 +6,7 @@ use App\Models\Venda;
 use Illuminate\Http\Request;
 use App\Models\Apartamento;
 use App\Models\Cliente;
+use App\Models\Atividade;
 
 class VendaController extends Controller
 {
@@ -84,6 +85,10 @@ class VendaController extends Controller
             'valor_total' => $request->valor_total
         ]);
 
+        Atividade::create([
+            'descricao' => 'Reserva criada: ' . $request->apartamento
+        ]);
+
         $apartamento = Apartamento::where('referencia', $request->apartamento)->first();
 
         if ($apartamento) {
@@ -101,6 +106,8 @@ class VendaController extends Controller
 
     //     return view('vendas.show', compact('venda'));
     // }
+
+
 
     public function show(int $id)
     {
@@ -138,9 +145,13 @@ class VendaController extends Controller
             'valor_total' => $request->valor_total
         ]);
 
+        Atividade::create([
+            'descricao' => 'Reserva editada: ' . $request->apartamento
+        ]);
+
         return redirect()
             ->route('vendas.index')
-            ->with('success', 'Venda atualizada com sucesso.');
+            ->with('success', 'Reserva atualizada com sucesso.');
     }
 
 
@@ -148,11 +159,15 @@ class VendaController extends Controller
     {
         $venda = Venda::findOrFail($id);
 
+        Atividade::create([
+            'descricao' => 'Reserva cancelada: ' . $venda->apartamento
+        ]);
+
         $venda->delete();
 
         return redirect()
             ->route('vendas.index')
-            ->with('success', 'Venda apagada com sucesso.');
+            ->with('success', 'Reserva cancelada com sucesso.');
     }
 
 
@@ -165,7 +180,8 @@ class VendaController extends Controller
         $ultimaReserva = $vendas->max('data_entrada');
 
         return view(
-            'vendas.historico', compact(
+            'vendas.historico',
+            compact(
                 'vendas',
                 'cliente',
                 'totalReservas',

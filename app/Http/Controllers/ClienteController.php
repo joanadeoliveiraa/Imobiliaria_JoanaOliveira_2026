@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cliente;
 use Illuminate\Http\Request;
+use App\Models\Atividade;
 
 class ClienteController extends Controller
 {
@@ -18,7 +19,7 @@ class ClienteController extends Controller
 
     public function create() // Mostrar o formulário de criação
     {
-        return view('clientes.create'); // Abrir a página create
+        return view('clientes.create');
     }
 
 
@@ -32,8 +33,11 @@ class ClienteController extends Controller
             'nif' => $request->nif
         ]);
 
-        if ($request->origem == 'reserva') {
+        Atividade::create([
+            'descricao' => 'Novo cliente criado: ' . $request->nome
+        ]);
 
+        if ($request->origem == 'reserva') {
             return redirect()
                 ->route('vendas.create')
                 ->with('success', 'Cliente criado com sucesso.');
@@ -61,7 +65,7 @@ class ClienteController extends Controller
     }
 
 
-    public function update(Request $request,int $id) // Atualizar cliente
+    public function update(Request $request, int $id) // Atualizar cliente
     {
         $cliente = Cliente::findOrFail($id); // Procurar cliente
 

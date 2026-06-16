@@ -6,6 +6,7 @@ use App\Models\Apartamento;
 use Illuminate\Http\Request;
 use App\Models\Cliente;
 use App\Models\Venda;
+use App\Models\Atividade;
 
 class ApartamentoController extends Controller
 {
@@ -158,8 +159,6 @@ class ApartamentoController extends Controller
 
 
 
-
-
     // Dashboard
     public function dashboard()
     {
@@ -190,6 +189,10 @@ class ApartamentoController extends Controller
         $proximaReserva = Venda::orderBy('data_entrada')
             ->first();
 
+        $atividades = Atividade::latest()
+            ->take(10)
+            ->get();
+
         return view(
             'Dashboard.dashboard',
             compact(
@@ -202,7 +205,8 @@ class ApartamentoController extends Controller
                 'apartamentoTop',
                 'proximaReserva',
                 'ultimoAcesso',
-                'receitaTotal'
+                'receitaTotal',
+                'atividades'
             )
         );
     }
