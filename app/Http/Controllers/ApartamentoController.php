@@ -9,11 +9,37 @@ use App\Models\Venda;
 
 class ApartamentoController extends Controller
 {
+    // public function index(Request $request)
+    // {
+
+    //     $pesquisa = $request->pesquisa;
+    //     $ordenar = $request->ordenar;
+
+    //     $apartamentos = Apartamento::query()
+
+    //         ->when($pesquisa, function ($query) use ($pesquisa) {
+
+    //             $query->where('referencia', 'like', "%{$pesquisa}%")
+    //                 ->orWhere('tipologia', 'like', "%{$pesquisa}%")
+    //                 ->orWhere('morada', 'like', "%{$pesquisa}%");
+    //         })
+
+    //         ->when($ordenar, function ($query) use ($ordenar) {
+
+    //             $query->orderBy($ordenar, 'asc');
+    //         })
+
+    //         ->paginate(10);
+
+    //     return view('apartamentos.index', compact('apartamentos'));
+    // }
+
+
     public function index(Request $request)
     {
-
         $pesquisa = $request->pesquisa;
         $ordenar = $request->ordenar;
+        $estado = $request->estado;
 
         $apartamentos = Apartamento::query()
 
@@ -22,6 +48,11 @@ class ApartamentoController extends Controller
                 $query->where('referencia', 'like', "%{$pesquisa}%")
                     ->orWhere('tipologia', 'like', "%{$pesquisa}%")
                     ->orWhere('morada', 'like', "%{$pesquisa}%");
+            })
+
+            ->when($estado, function ($query) use ($estado) {
+
+                $query->where('estado', $estado);
             })
 
             ->when($ordenar, function ($query) use ($ordenar) {
@@ -33,7 +64,6 @@ class ApartamentoController extends Controller
 
         return view('apartamentos.index', compact('apartamentos'));
     }
-
 
 
     public function create() // Mostrar o formulário de criação
@@ -133,6 +163,8 @@ class ApartamentoController extends Controller
     // Dashboard
     public function dashboard()
     {
+        $ultimoAcesso = now()->format('d/m/Y H:i');
+
         $disponiveis = Apartamento::where('estado', 'Disponivel')->count();
 
         $naoDisponiveis = Apartamento::where('estado', 'Nao Disponivel')->count();
@@ -168,7 +200,9 @@ class ApartamentoController extends Controller
                 'receitaTotal',
                 'clienteTop',
                 'apartamentoTop',
-                'proximaReserva'
+                'proximaReserva',
+                'ultimoAcesso',
+                'receitaTotal'
             )
         );
     }
