@@ -193,6 +193,26 @@ class ApartamentoController extends Controller
             ->take(10)
             ->get();
 
+
+        $topClientes = Venda::select('cliente')
+            ->selectRaw('COUNT(*) as total')
+            ->groupBy('cliente')
+            ->orderByDesc('total')
+            ->take(5)
+            ->get();
+
+        $reservasPorApartamento = Venda::select('apartamento')
+            ->selectRaw('COUNT(*) as total')
+            ->groupBy('apartamento')
+            ->orderByDesc('total')
+            ->get();
+
+        $receitaMensal = Venda::selectRaw(" DATE_FORMAT(data_entrada, '%Y-%m') as mes,
+        SUM(valor_total) as total")
+            ->groupBy('mes')
+            ->orderBy('mes')
+            ->get();
+
         return view(
             'Dashboard.dashboard',
             compact(
@@ -200,13 +220,15 @@ class ApartamentoController extends Controller
                 'naoDisponiveis',
                 'clientes',
                 'reservas',
-                'receitaTotal',
                 'clienteTop',
                 'apartamentoTop',
                 'proximaReserva',
                 'ultimoAcesso',
                 'receitaTotal',
-                'atividades'
+                'atividades',
+                'topClientes',
+                'reservasPorApartamento',
+                'receitaMensal'
             )
         );
     }

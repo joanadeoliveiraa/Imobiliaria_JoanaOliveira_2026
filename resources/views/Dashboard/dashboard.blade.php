@@ -204,6 +204,70 @@
         </div>
     </div>
 
+    <div class="card mt-4">
+        <div class="card-header">
+            <strong>Top Clientes</strong>
+        </div>
+        <div class="card-body">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Reservas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($topClientes as $cliente)
+                    <tr>
+                        <td>
+                            {{ $cliente->cliente }}
+                        </td>
+                        <td>
+                            {{ $cliente->total }}
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            <strong>Imóveis Mais Reservados</strong>
+        </div>
+        <div class="card-body">
+            @foreach($reservasPorApartamento as $apartamento)
+            <div class="d-flex justify-content-between mb-2">
+                <span>
+                    {{ $apartamento->apartamento }}
+                </span>
+                <span class="badge bg-primary">
+                    {{ $apartamento->total }} reservas
+                </span>
+            </div>
+            @endforeach
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            <strong>Receita Mensal</strong>
+        </div>
+        <div class="card-body">
+            @foreach($receitaMensal as $receita)
+            <div class="d-flex justify-content-between mb-2">
+                <span>
+                    {{ $receita->mes }}
+                </span>
+                <span class="badge bg-success">
+                    {{ number_format($receita->total, 2, ',', '.') }} €
+                </span>
+            </div>
+            @endforeach
+        </div>
+    </div>
+
     <div class="text-center mt-5">
         <a href="{{ url('/') }}" class="btn btn-olive">
             Voltar ao Menu Principal
