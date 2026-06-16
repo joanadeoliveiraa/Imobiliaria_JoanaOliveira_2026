@@ -46,7 +46,9 @@ Route::post('/contactos', function () {
 })->name('contactos.enviar');
 
 //Historico Cliente
-Route::get(
-    '/clientes/{cliente}/reservas',
-    [VendaController::class, 'historicoCliente']
+Route::get('/clientes/{cliente}/reservas', [VendaController::class, 'historicoCliente']
 )->name('clientes.reservas');
+
+// Dashboard
+Route::get('/dashboard',[ApartamentoController::class, 'dashboard']
+)->name('dashboard');

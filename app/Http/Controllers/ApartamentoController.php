@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Apartamento;
 use Illuminate\Http\Request;
+use App\Models\Cliente;
+use App\Models\Venda;
 
 class ApartamentoController extends Controller
 {
@@ -33,7 +35,7 @@ class ApartamentoController extends Controller
     }
 
 
-  
+
     public function create() // Mostrar o formulário de criação
     {
         return view('apartamentos.create'); // Abrir a página create
@@ -77,7 +79,7 @@ class ApartamentoController extends Controller
     }
 
 
-    public function edit($id) // Mostrar formulário de edição
+    public function edit(int $id) // Mostrar formulário de edição
     {
         $apartamento = Apartamento::findOrFail($id);
 
@@ -86,7 +88,7 @@ class ApartamentoController extends Controller
 
 
 
-    public function update(Request $request, $id) // Atualizar apartamento
+    public function update(Request $request, int $id) // Atualizar apartamento
     {
         $apartamento = Apartamento::findOrFail($id);
 
@@ -112,7 +114,7 @@ class ApartamentoController extends Controller
     }
 
 
-    public function destroy($id) // Apagar apartamento
+    public function destroy(int $id) // Apagar apartamento
     {
         $apartamento = Apartamento::findOrFail($id);
 
@@ -120,5 +122,54 @@ class ApartamentoController extends Controller
 
         return redirect()
             ->route('apartamentos.index');
+    }
+
+
+
+
+
+
+
+    // Dashboard
+    public function dashboard()
+    {
+        $disponiveis = Apartamento::where('estado', 'Disponivel')->count();
+
+        $naoDisponiveis = Apartamento::where('estado', 'Nao Disponivel')->count();
+
+        $clientes = Cliente::count();
+
+        $reservas = Venda::count();
+
+        $receitaTotal = Venda::sum('valor_total');
+
+        $clienteTop = Venda::select('cliente')
+            ->selectRaw('COUNT(*) as total')
+            ->groupBy('cliente')
+            ->orderByDesc('total')
+            ->first();
+
+        $apartamentoTop = Venda::select('apartamento')
+            ->selectRaw('COUNT(*) as total')
+            ->groupBy('apartamento')
+            ->orderByDesc('total')
+            ->first();
+
+        $proximaReserva = Venda::orderBy('data_entrada')
+            ->first();
+
+        return view(
+            'Dashboard.dashboard',
+            compact(
+                'disponiveis',
+                'naoDisponiveis',
+                'clientes',
+                'reservas',
+                'receitaTotal',
+                'clienteTop',
+                'apartamentoTop',
+                'proximaReserva'
+            )
+        );
     }
 }
