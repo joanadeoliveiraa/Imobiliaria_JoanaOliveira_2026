@@ -178,7 +178,6 @@
     }
 </style>
 
-
 </head>
 
 <body>
@@ -209,7 +208,7 @@
                         Vendas
                     </a>
 
-                    <a class="text-decoration-none" href="#">
+                    <a class="text-decoration-none" href="{{ route('contactos') }}">
                         Contactos
                     </a>
 

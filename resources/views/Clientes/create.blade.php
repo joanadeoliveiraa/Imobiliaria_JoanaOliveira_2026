@@ -53,6 +53,10 @@
 
                     @csrf
 
+                    <input type="hidden"
+                        name="origem"
+                        value="{{ request('origem') }}">
+
                     <div class="mb-3">
                         <label class="form-label">Nome</label>
                         <input type="text"

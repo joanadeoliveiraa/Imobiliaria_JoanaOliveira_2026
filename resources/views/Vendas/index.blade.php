@@ -59,7 +59,7 @@
         </a>
 
         <a href="{{ url('/') }}"
-            class="btn btn-dark mb-3">
+            class="btn btn-outline-dark mb-3">
             ← Menu Principal
         </a>
 
@@ -91,26 +91,29 @@
                     <td>{{ $venda->valor_total }} €</td>
                     <td>
 
-                        <a href="{{ route('vendas.show', $venda->id) }}">
-                            Ver
+                        <a href="{{ route('vendas.show', $venda->id) }}"
+                            class="btn btn-outline-dark btn-sm">
+                            Detalhes
                         </a>
 
-                        <a href="{{ route('vendas.edit', $venda->id) }}">
+                        <a href="{{ route('vendas.edit', $venda->id) }}"
+                            class="btn btn-outline-secondary btn-sm">
                             Editar
-                        </a> |
+                        </a>
+                    
 
-                        <form action="{{ route('vendas.destroy', $venda->id) }}"
-                            method="POST"
-                            style="display:inline;">
+                    <!-- <form action="{{ route('vendas.destroy', $venda->id) }}"
+                        method="POST"
+                        style="display:inline;">
 
-                            @csrf
-                            @method('DELETE')
+                        @csrf
+                        @method('DELETE')
 
-                            <button type="submit">
-                                Apagar
-                            </button>
+                        <button type="submit">
+                            Apagar
+                        </button>
 
-                        </form>
+                    </form> -->
 
                     </td>
 

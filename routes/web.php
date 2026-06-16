@@ -4,9 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ApartamentoController;
 use App\Http\Controllers\VendaController;
+use Illuminate\Http\Request;
 
 
-Route::get('/', function () { 
+Route::get('/', function () {
     return view('welcome');
 });
 
@@ -31,5 +32,21 @@ Route::get('/sobre', function () {
 })->name('sobre');
 
 
+// ROTAS Contactos:
+Route::get('/contactos', function () {
+    return view('Contactos.contactos');
+})->name('contactos');
 
 
+Route::post('/contactos', function () {
+    return back()->with(
+        'success',
+        'A sua mensagem foi enviada com sucesso. Entraremos em contacto brevemente.'
+    );
+})->name('contactos.enviar');
+
+//Historico Cliente
+Route::get(
+    '/clientes/{cliente}/reservas',
+    [VendaController::class, 'historicoCliente']
+)->name('clientes.reservas');

@@ -67,9 +67,10 @@
         </a>
 
         <a href="{{ url('/') }}"
-            class="btn btn-dark mb-3">
-            ← Menu Principal
-        </a>
+        class="btn btn-outline-dark mb-3">
+        ← Menu Principal
+         </a>
+
 
         <table class="table table-striped table-bordered align-middle">
 
@@ -136,11 +137,17 @@
 
                 @endforeach
 
+
+
             </tbody>
+
+
 
         </table>
 
     </div>
+
+    
 
 </body>
 

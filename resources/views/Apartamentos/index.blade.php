@@ -78,7 +78,7 @@
         </a>
 
         <a href="{{ url('/') }}"
-            class="btn btn-dark mb-3">
+            class="btn btn-outline-dark mb-3">
             ← Menu Principal
         </a>
 

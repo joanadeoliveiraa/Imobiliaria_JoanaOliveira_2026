@@ -32,11 +32,20 @@ class ClienteController extends Controller
             'nif' => $request->nif
         ]);
 
-        return redirect()->route('clientes.index');
+        if ($request->origem == 'reserva') {
+
+            return redirect()
+                ->route('vendas.create')
+                ->with('success', 'Cliente criado com sucesso.');
+        }
+
+        return redirect()
+            ->route('clientes.index')
+            ->with('success', 'Cliente registado com sucesso.');
     }
 
 
-    public function show($id) // Mostrar os detalhes de um cliente
+    public function show(int $id) // Mostrar os detalhes de um cliente
     {
         $cliente = Cliente::findOrFail($id); // Procurar o cliente pelo ID
 
@@ -44,7 +53,7 @@ class ClienteController extends Controller
     }
 
 
-    public function edit($id) // Mostrar o formulário de edição
+    public function edit(int $id) // Mostrar o formulário de edição
     {
         $cliente = Cliente::findOrFail($id); // Procurar cliente pelo ID
 
@@ -52,7 +61,7 @@ class ClienteController extends Controller
     }
 
 
-    public function update(Request $request, $id) // Atualizar cliente
+    public function update(Request $request,int $id) // Atualizar cliente
     {
         $cliente = Cliente::findOrFail($id); // Procurar cliente
 
@@ -67,7 +76,7 @@ class ClienteController extends Controller
         return redirect()->route('clientes.index'); // Voltar para a listagem
     }
 
-    public function destroy($id) // Apagar cliente
+    public function destroy(int $id) // Apagar cliente
     {
         $cliente = Cliente::findOrFail($id); // Procurar cliente
 
