@@ -200,6 +200,8 @@ class ApartamentoController extends Controller
             ->orderByDesc('total')
             ->take(5)
             ->get();
+        $labelsClientes = $topClientes->pluck('cliente');
+        $dadosClientes = $topClientes->pluck('total');    
 
         $reservasPorApartamento = Venda::select('apartamento')
             ->selectRaw('COUNT(*) as total')
@@ -207,11 +209,20 @@ class ApartamentoController extends Controller
             ->orderByDesc('total')
             ->get();
 
+        $labelsApartamentos = $reservasPorApartamento->pluck('apartamento');
+        $dadosApartamentos = $reservasPorApartamento->pluck('total');
+
         $receitaMensal = Venda::selectRaw(" DATE_FORMAT(data_entrada, '%Y-%m') as mes,
         SUM(valor_total) as total")
             ->groupBy('mes')
             ->orderBy('mes')
             ->get();
+
+        $labelsReceita = $receitaMensal->pluck('mes');
+
+        $dadosReceita = $receitaMensal->pluck('total');
+
+
 
         return view(
             'Dashboard.dashboard',
@@ -228,7 +239,13 @@ class ApartamentoController extends Controller
                 'atividades',
                 'topClientes',
                 'reservasPorApartamento',
-                'receitaMensal'
+                'receitaMensal', 
+                'labelsReceita',
+                'dadosReceita',
+                'labelsClientes',
+                'dadosClientes',
+                'labelsApartamentos',
+                'dadosApartamentos'
             )
         );
     }

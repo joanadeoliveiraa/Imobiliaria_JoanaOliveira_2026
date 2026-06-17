@@ -67,9 +67,52 @@
         </a>
 
         <a href="{{ url('/') }}"
-        class="btn btn-outline-dark mb-3">
-        ← Menu Principal
-         </a>
+            class="btn btn-outline-dark mb-3">
+            ← Menu Principal
+        </a>
+
+
+        <!-- Pesquisa avançada de clientes -->
+        <form method="GET" action="{{ route('clientes.index') }}">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <input type="text"
+                        name="pesquisa"
+                        class="form-control"
+                        placeholder="Pesquisar por nome, email, contacto ou NIF"
+                        value="{{ request('pesquisa') }}">
+                </div>
+
+                <div class="col-md-3">                
+                <select name="ordenar"
+                        class="form-select"
+                        onchange="this.form.submit()">
+                        <option value="">
+                            Ordenar por...
+                        </option>
+                        <option value="nome">
+                            Nome
+                        </option>
+                        <option value="telefone">
+                            Contacto
+                        </option>
+                        <option value="email">
+                            Email
+                        </option>
+                        <option value="nif">
+                            NIF
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-dark w-100">
+                        Procurar
+                    </button>
+
+                </div>
+            </div>
+        </form>
 
 
         <table class="table table-striped table-bordered align-middle">
@@ -147,7 +190,7 @@
 
     </div>
 
-    
+
 
 </body>
 

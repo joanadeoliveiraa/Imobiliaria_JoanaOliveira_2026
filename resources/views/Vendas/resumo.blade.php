@@ -29,6 +29,12 @@
             background-color: #2F4F4F;
             color: white;
         }
+
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
     </style>
 
 
@@ -47,7 +53,24 @@
                     Olive Properties - Algarve
                 </h4>
 
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="subtitulo mb-0">
+                        Resumo da Reserva
+                    </h5>
+
+                    <div class="no-print">
+                        <button
+                            onclick="window.print()"
+                            class="btn btn-outline-secondary">
+                            🖨 Imprimir / PDF
+                        </button>
+                    </div>
+
+                </div>
+
                 <hr>
+
+
                 <p>
                     <strong>Cliente:</strong>
                     {{ $venda->cliente }}

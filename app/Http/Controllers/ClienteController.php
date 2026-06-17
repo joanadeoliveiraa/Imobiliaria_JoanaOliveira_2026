@@ -6,14 +6,35 @@ use App\Models\Cliente;
 use Illuminate\Http\Request;
 use App\Models\Atividade;
 
+
 class ClienteController extends Controller
 {
 
-    public function index() // Mostrar a lista de clientes
+    public function index(Request $request) // Mostrar a lista de clientes
     {
-        $clientes = Cliente::all(); // Buscar todos os clientes
+        $pesquisa = $request->pesquisa;
+        $ordenar = $request->ordenar;
 
-        return view('clientes.index', compact('clientes')); // Abrir a página index e enviar os dados
+        $clientes = Cliente::query()
+
+            ->when($pesquisa, function ($query) use ($pesquisa) {
+                $query->where('nome', 'like', "%{$pesquisa}%")
+                    ->orWhere('email', 'like', "%{$pesquisa}%")
+                    ->orWhere('telefone', 'like', "%{$pesquisa}%")
+                    ->orWhere('nif', 'like', "%{$pesquisa}%");
+            })
+
+            ->when($ordenar, function ($query) use ($ordenar) {
+
+                $query->orderBy($ordenar, 'asc');
+            })
+
+            ->paginate(10);
+
+        return view(
+            'clientes.index',
+            compact('clientes')
+        );
     }
 
 
