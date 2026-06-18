@@ -26,6 +26,7 @@ Route::resource('apartamentos', ApartamentoController::class);
 // ROTAS DAS VENDAS
 Route::resource('vendas', VendaController::class);
 
+
 //Rota Sobre nós
 Route::get('/sobre', function () {
     return view('sobre');

@@ -9,6 +9,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
+        /* ==========================
+       Identidade Visual
+    ========================== */
+
         .titulo-principal {
             color: #2F4F4F;
             font-weight: bold;
@@ -24,17 +28,6 @@
             margin-bottom: 20px;
         }
 
-
-        .titulo-principal {
-            color: #2F4F4F;
-            font-weight: bold;
-        }
-
-        .subtitulo {
-            color: #6C757D;
-        }
-
-
         .btn-dark {
             background-color: #2F4F4F;
             border: none;
@@ -43,90 +36,322 @@
         .btn-dark:hover {
             background-color: #556B2F;
         }
+
+        /* ==========================
+       Cabeçalho do Site
+    ========================== */
+
+        .cabecalho-site {
+            background-color: #2F4F4F;
+            padding: 30px 40px;
+            border-radius: 12px;
+            color: white;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .cabecalho-site h2,
+        .cabecalho-site p {
+            color: white;
+            margin: 0;
+        }
+
+        /* ==========================
+       Relatórios
+    ========================== */
+
+        .cabecalho-relatorio,
+        .apenas-impressao {
+            display: none;
+        }
+
+        .cabecalho-relatorio h2 {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .cabecalho-relatorio p {
+            margin-bottom: 0;
+        }
+
+        .table-olive th {
+            background-color: #2F4F4F;
+            color: white;
+        }
+
+        /* ==========================
+   Impressão
+========================== */
+
+        @media print {
+            @page {
+                margin: 1.5cm;
+            }
+            /* Manter cores na impressão */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            body {
+                zoom: 85%;
+                margin: 0;
+                padding: 0;
+            }
+            /* Esconder elementos do site */
+            .no-print,
+            .no-print * {
+                display: none !important;
+            }
+            form {
+                display: none !important;
+            }
+            /* Mostrar apenas elementos de impressão */
+            .apenas-impressao {
+                display: block !important;
+            }
+            .cabecalho-relatorio {
+                display: block !important;
+                background-color: #2F4F4F !important;
+                color: white !important;
+                padding: 25px !important;
+                border-radius: 12px !important;
+                margin-bottom: 25px !important;
+            }
+            .cabecalho-relatorio h2,
+            .cabecalho-relatorio p,
+            .cabecalho-relatorio small {
+                color: white !important;
+            }
+            /* Remover coluna Ações */
+            th:last-child,
+            td:last-child {
+                display: none !important;
+            }
+            /* Tabela */
+            .table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            .table th {
+                background-color: #2F4F4F !important;
+                color: white !important;
+            }
+            .table th,
+            .table td {
+                padding: 8px !important;
+                vertical-align: middle;
+            }
+            .table-striped tbody tr:nth-child(odd) {
+                background-color: #f8f9fa !important;
+            }
+            /* Rodapé */
+            .apenas-impressao hr {
+                margin: 30px 0 15px;
+            }
+        }
     </style>
 
 </head>
 
 <body>
 
-    <div class="container mt-4">
+    <div class="container py-4" style="max-width:1200px;">
 
-        <div class="card-topo">
-            <h1 class="titulo-principal">
-                Olive Properties - Algarve
-            </h1>
+        <!-- Cabeçalho Site -->
+        <div class="cabecalho-site no-print mb-5">
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <img src="{{ asset('images/folhas_brancas.png') }}" alt="Olive Properties" width="185">
+                </div>
 
-            <p class="subtitulo">
-                Gestão de Clientes
-            </p>
+                <div class="col-md-9">
+                    <h2 class="mb-1">
+                        Olive Properties - Algarve
+                    </h2>
+                    <p class="mb-0">
+                        Luxury Holiday Apartments • Algarve • Portugal
+                    </p>
+                    <small class="text-white-50">
+                        Gestão de Clientes
+                    </small>
+                </div>
+            </div>
         </div>
 
-        <a href="{{ route('clientes.create') }}"
-            class="btn btn-dark mb-3">
-            Novo Cliente
-        </a>
+        <!-- Cabeçalho Impressão -->
+        <div class="cabecalho-relatorio apenas-impressao mb-4">
 
-        <a href="{{ url('/') }}"
-            class="btn btn-outline-dark mb-3">
-            ← Menu Principal
-        </a>
+            <div class="d-flex align-items-center">
 
+                <img src="{{ asset('images/folhas_brancas.png') }}"
+                    alt="Olive Properties"
+                    width="170"
+                    class="me-4">
 
-        <!-- Pesquisa avançada de clientes -->
-        <form method="GET" action="{{ route('clientes.index') }}">
-            <div class="row mb-3">
+                <div>
+
+                    <h2 class="mb-1">
+                        Olive Properties - Algarve
+                    </h2>
+
+                    <p class="mb-1">
+                        Luxury Holiday Apartments • Algarve • Portugal
+                    </p>
+
+                    <small>
+                        Relatório de Clientes |
+                        {{ date('d/m/Y H:i') }}
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Botões -->
+        <div class="d-flex justify-content-between mb-3 no-print">
+
+            <div>
+
+                <a href="{{ route('clientes.create') }}"
+                    class="btn btn-dark">
+
+                    Novo Cliente
+
+                </a>
+
+            </div>
+
+            <div>
+
+                <button
+                    onclick="window.print()"
+                    class="btn btn-outline-secondary">
+
+                    Relatório PDF
+
+                </button>
+
+                <a href="{{ url('/') }}"
+                    class="btn btn-outline-dark">
+
+                    ← Menu Principal
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- Pesquisa -->
+        <form method="GET"
+            action="{{ route('clientes.index') }}"
+            class="no-print">
+
+            <div class="row mb-3 align-items-center">
+
                 <div class="col-md-6">
+
                     <input type="text"
                         name="pesquisa"
                         class="form-control"
                         placeholder="Pesquisar por nome, email, contacto ou NIF"
                         value="{{ request('pesquisa') }}">
-                </div>
 
-                <div class="col-md-3">                
-                <select name="ordenar"
-                        class="form-select"
-                        onchange="this.form.submit()">
-                        <option value="">
-                            Ordenar por...
-                        </option>
-                        <option value="nome">
-                            Nome
-                        </option>
-                        <option value="telefone">
-                            Contacto
-                        </option>
-                        <option value="email">
-                            Email
-                        </option>
-                        <option value="nif">
-                            NIF
-                        </option>
-                    </select>
                 </div>
 
                 <div class="col-md-3">
-                    <button type="submit" class="btn btn-dark w-100">
-                        Procurar
-                    </button>
+
+                    <select name="ordenar"
+                        class="form-select"
+                        onchange="this.form.submit()">
+
+                        <option value="">Ordenar por...</option>
+
+                        <option value="nome"
+                            {{ request('ordenar') == 'nome' ? 'selected' : '' }}>
+                            Nome
+                        </option>
+
+                        <option value="telefone"
+                            {{ request('ordenar') == 'telefone' ? 'selected' : '' }}>
+                            Contacto
+                        </option>
+
+                        <option value="email"
+                            {{ request('ordenar') == 'email' ? 'selected' : '' }}>
+                            Email
+                        </option>
+
+                        <option value="nif"
+                            {{ request('ordenar') == 'nif' ? 'selected' : '' }}>
+                            NIF
+                        </option>
+
+                    </select>
 
                 </div>
+
+                <div class="col-md-3">
+
+                    <div class="d-flex gap-3">
+
+                        <button type="submit"
+                            class="btn btn-dark flex-fill">
+
+                            Procurar
+
+                        </button>
+
+                        <a href="{{ route('clientes.index') }}"
+                            class="btn btn-outline-dark flex-fill">
+
+                            Limpar
+
+                        </a>
+
+                    </div>
+
+                </div>
+
             </div>
+
         </form>
 
+        <!-- Título Relatório (apenas impressão) -->
+        <div class="apenas-impressao mb-4">
 
+            <h3 class="titulo-principal">
+                Relatório de Clientes
+            </h3>
+
+            <small class="text-muted">
+                Documento emitido em {{ date('d/m/Y H:i') }}
+            </small>
+
+        </div>
+
+        <!-- Tabela -->
         <table class="table table-striped table-bordered align-middle">
 
             <thead class="table-dark">
+
                 <tr>
+
                     <th>ID</th>
                     <th>Nome</th>
                     <th>Email</th>
                     <th>Telefone</th>
                     <th>Morada</th>
                     <th>NIF</th>
-                    <th>Ações</th>
+
+                    <th class="no-print">
+                        Ações
+                    </th>
+
                 </tr>
+
             </thead>
 
             <tbody>
@@ -136,18 +361,13 @@
                 <tr>
 
                     <td>{{ $cliente->id }}</td>
-
                     <td>{{ $cliente->nome }}</td>
-
                     <td>{{ $cliente->email }}</td>
-
                     <td>{{ $cliente->telefone }}</td>
-
                     <td>{{ $cliente->morada }}</td>
-
                     <td>{{ $cliente->nif }}</td>
 
-                    <td>
+                    <td class="no-print">
 
                         <a href="{{ route('clientes.show', $cliente->id) }}"
                             class="btn btn-outline-dark btn-sm">
@@ -169,7 +389,9 @@
                             <button type="submit"
                                 class="btn btn-outline-danger btn-sm"
                                 onclick="return confirm('Tem a certeza que pretende apagar este cliente?')">
+
                                 Apagar
+
                             </button>
 
                         </form>
@@ -180,17 +402,26 @@
 
                 @endforeach
 
-
-
             </tbody>
-
-
 
         </table>
 
+        <!-- Rodapé Impressão -->
+        <div class="apenas-impressao text-center text-muted mt-5">
+
+            <hr>
+
+            <p class="mb-1">
+                Obrigado por escolher a Olive Properties.
+            </p>
+
+            <small>
+                Documento gerado automaticamente pelo sistema.
+            </small>
+
+        </div>
+
     </div>
-
-
 
 </body>
 
