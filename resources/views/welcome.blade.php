@@ -9,11 +9,13 @@
 
     <link rel="icon" type="image/png" href="{{ asset('images/logo_folhaVerde.png') }}">
 
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-
         /* =====================================
    RESET
 ===================================== */
@@ -264,12 +266,19 @@
                         Vendas
                     </a>
 
-                    <a class="me-4 text-decoration-none" href="{{ route('dashboard') }}">
+                    @auth
+                    @if(auth()->user()->tipo == 'administrador')
+                    <a class="me-4 text-decoration-none"
+                        href="{{ route('dashboard') }}">
                         Dashboard
                     </a>
+                    @endif
+                    @endauth
+
                     <a class="text-decoration-none" href="{{ route('contactos') }}">
                         Contactos
                     </a>
+
                 </div>
 
             </div>

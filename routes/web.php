@@ -65,8 +65,11 @@ Route::get(
     [VendaController::class, 'historicoCliente']
 )->name('clientes.reservas');
 
+
 // Dashboard
-Route::get(
-    '/dashboard',
-    [ApartamentoController::class, 'dashboard']
-)->name('dashboard');
+Route::get('/dashboard',[ApartamentoController::class, 'dashboard']
+)->middleware('auth')
+ ->name('dashboard');
+
+
+require __DIR__.'/auth.php';
