@@ -37,16 +37,22 @@ class VendaController extends Controller
     //     );
     // }
 
-    public function create()
+    public function create(Request $request)
     {
-        $apartamentos = Apartamento::where('estado', 'Disponivel')->get();
+        $apartamentos = Apartamento::where(
+            'estado',
+            'Disponivel'
+        )->get();
 
         $clientes = Cliente::all();
 
-        return view(
-            'vendas.create',
-            compact('apartamentos', 'clientes')
-        );
+        $clienteSelecionado = $request->cliente;
+
+        return view('vendas.create',
+            compact(
+                'apartamentos',
+                'clientes',
+                'clienteSelecionado'));
     }
 
     // public function store(Request $request) // Gravar venda
@@ -95,6 +101,8 @@ class VendaController extends Controller
             $apartamento->estado = 'Nao Disponivel';
             $apartamento->save();
         }
+
+
 
         return view('vendas.resumo', compact('venda', 'apartamento'));
     }

@@ -58,11 +58,26 @@ class ClienteController extends Controller
             'descricao' => 'Novo cliente criado: ' . $request->nome
         ]);
 
+        $cliente = Cliente::create([
+            'nome' => $request->nome,
+            'email' => $request->email,
+            'telefone' => $request->telefone,
+            'morada' => $request->morada,
+            'nif' => $request->nif
+        ]);
+
+        Atividade::create([
+            'descricao' => 'Novo cliente criado: ' . $request->nome
+        ]);
+
         if ($request->origem == 'reserva') {
             return redirect()
-                ->route('vendas.create')
+                ->route('vendas.create', [
+                    'cliente' => $cliente->nome])
                 ->with('success', 'Cliente criado com sucesso.');
         }
+
+
 
         return redirect()
             ->route('clientes.index')

@@ -37,6 +37,20 @@
             background-color: #3f6666;
             color: white;
         }
+
+        .cabecalho-site {
+            background-color: #2F4F4F;
+            padding: 30px 40px;
+            border-radius: 12px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .cabecalho-site h2,
+        .cabecalho-site p,
+        .cabecalho-site small {
+            color: white !important;
+        }
     </style>
 
 </head>
@@ -53,14 +67,33 @@
         </div>
         @endif
 
-        <div class="card-topo">
-            <h1 class="titulo-principal">
-                Olive Properties - Algarve
-            </h1>
-            <p class="subtitulo">
-                Gestão de Reservas
-            </p>
+        <div class="cabecalho-site mb-4">
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <img src="{{ asset('images/folhas_brancas.png') }}" alt="Olive Properties" width="185">
+                </div>
+                <div class="col-md-9">
+                    <h2 class="mb-1">
+                        Olive Properties - Algarve
+                    </h2>
+                    <p class="mb-1">
+                        Luxury Holiday Apartments • Algarve • Portugal
+                    </p>
+                </div>
+            </div>
         </div>
+
+        <div class="mb-4">
+            <h3 class="titulo-principal mb-1">
+                Nova Reserva
+            </h3>
+            <small class="text-muted">
+                Registo de uma nova reserva
+            </small>
+
+        </div>
+
+
 
         <div class="card shadow-sm border-0">
             <div class="card-body p-4">
@@ -95,24 +128,22 @@
                         <label class="form-label">
                             Cliente
                         </label>
-
-                        <select name="cliente"
-                            class="form-select"
-                            required>
-
+                        <select name="cliente" class="form-select" required>
                             <option value="">
                                 Selecione um cliente
                             </option>
 
                             @foreach($clientes as $cliente)
-                            <option value="{{ $cliente->nome }}">
+
+                            <option value="{{ $cliente->nome }}"
+                                {{ isset($clienteSelecionado) && $clienteSelecionado == $cliente->nome ? 'selected' : '' }}>
                                 {{ $cliente->nome }}
                             </option>
+
                             @endforeach
+
                         </select>
-
                         <div class="d-flex justify-content-end mt-2">
-
                             <a href="{{ route('clientes.create', ['origem' => 'reserva']) }}" class="btn">
                                 + Novo Cliente
                             </a>

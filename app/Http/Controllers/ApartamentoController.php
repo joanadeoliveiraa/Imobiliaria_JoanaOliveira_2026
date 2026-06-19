@@ -145,16 +145,16 @@ class ApartamentoController extends Controller
     }
 
 
-    public function destroy(int $id) // Apagar apartamento
+    public function destroy(int $id)
     {
         $apartamento = Apartamento::findOrFail($id);
 
         $apartamento->delete();
 
         return redirect()
-            ->route('apartamentos.index');
+            ->route('apartamentos.index')
+            ->with('success', 'Apartamento eliminado com sucesso.');
     }
-
 
 
 
@@ -201,7 +201,7 @@ class ApartamentoController extends Controller
             ->take(5)
             ->get();
         $labelsClientes = $topClientes->pluck('cliente');
-        $dadosClientes = $topClientes->pluck('total');    
+        $dadosClientes = $topClientes->pluck('total');
 
         $reservasPorApartamento = Venda::select('apartamento')
             ->selectRaw('COUNT(*) as total')
@@ -239,7 +239,7 @@ class ApartamentoController extends Controller
                 'atividades',
                 'topClientes',
                 'reservasPorApartamento',
-                'receitaMensal', 
+                'receitaMensal',
                 'labelsReceita',
                 'dadosReceita',
                 'labelsClientes',

@@ -44,14 +44,10 @@
 <body>
 
     <div class="container mt-4">
-
-
         <div class="card-topo">
-
             <h1 class="titulo-principal">
                 Olive Properties - Algarve
             </h1>
-
             <p class="subtitulo">
                 Editar Reserva
             </p>
@@ -61,93 +57,71 @@
         <div class="card shadow-sm">
 
             <div class="card-body">
-
-                <form action="{{ route('vendas.update', $venda->id) }}"
-                    method="POST">
+                <form action="{{ route('vendas.update', $venda->id) }}" method="POST">
 
                     @csrf
                     @method('PUT')
 
                     <div class="mb-3">
-
                         <label class="form-label">
                             Cliente
                         </label>
-
                         <input type="text"
                             name="cliente"
                             class="form-control"
                             value="{{ $venda->cliente }}"
                             required>
-
                     </div>
 
                     <div class="mb-3">
-
                         <label class="form-label">
                             Apartamento
                         </label>
-
                         <input type="text"
                             class="form-control"
                             value="{{ $venda->apartamento }}"
                             readonly>
-
                     </div>
 
                     <div class="mb-3">
-
                         <label class="form-label">
                             Data de Entrada
                         </label>
-
                         <input type="date"
                             name="data_entrada"
                             class="form-control"
                             value="{{ $venda->data_entrada }}"
                             required>
-
                     </div>
 
                     <div class="mb-3">
-
                         <label class="form-label">
                             Data de Saída
                         </label>
-
                         <input type="date"
                             name="data_saida"
                             class="form-control"
                             value="{{ $venda->data_saida }}"
                             required>
-
                     </div>
 
                     <div class="mb-3">
-
                         <label class="form-label">
                             Valor Total (€)
                         </label>
-
                         <input type="number"
                             name="valor_total"
                             class="form-control"
                             value="{{ $venda->valor_total }}"
                             required>
-
                     </div>
 
                     <div class="d-flex justify-content-between mt-4">
-
                         <div>
-
-                            <button type="submit"
-                                class="btn btn-olive">
+                            <button type="submit" class="btn btn-olive">
                                 Guardar Alterações
                             </button>
-
-                            <a href="{{ route('vendas.index') }}"
-                                class="btn btn-outline-secondary">
+                            <a href="{{ route('vendas.index') }}" class="btn btn-outline-secondary">
                                 Voltar
                             </a>
 
@@ -160,25 +134,13 @@
                             @method('DELETE')
 
                             <!-- Botão alerta cancelar reserva -->
-                            <button type="submit"
-                                class="btn btn-outline-danger"
-                                onclick="return confirm('Tem a certeza que pretende cancelar a reserva?')">
-
+                            <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Tem a certeza que pretende cancelar a reserva?')">
                                 Cancelar Reserva
-
                             </button>
-
                         </form>
-
                     </div>
-
             </div>
-
         </div>
-
-
     </div>
-
 </body>
-
 </html>
