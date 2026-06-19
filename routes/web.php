@@ -5,10 +5,23 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ApartamentoController;
 use App\Http\Controllers\VendaController;
 use Illuminate\Http\Request;
+use App\Models\Apartamento;
 
 
 Route::get('/', function () {
-    return view('welcome');
+
+    $alg011 = Apartamento::where('referencia', 'ALG011')->first();
+
+    $alg012 = Apartamento::where('referencia', 'ALG012')->first();
+
+    $alg013 = Apartamento::where('referencia', 'ALG013')->first();
+
+    return view('welcome', compact(
+        'alg011',
+        'alg012',
+        'alg013'
+    ));
+
 });
 
 

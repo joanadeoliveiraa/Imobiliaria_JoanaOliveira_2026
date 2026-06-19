@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Novo Apartamento</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo_folhaVerde.png') }}">
 
     <!DOCTYPE html>
 

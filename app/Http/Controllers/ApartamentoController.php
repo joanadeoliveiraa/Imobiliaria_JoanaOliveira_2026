@@ -222,7 +222,9 @@ class ApartamentoController extends Controller
 
         $dadosReceita = $receitaMensal->pluck('total');
 
-
+        $ocupacao = Apartamento::leftJoin('vendas', 'apartamentos.referencia', '=', 'vendas.apartamento')->select('apartamentos.referencia','apartamentos.estado',          'vendas.data_saida')
+            ->orderBy('apartamentos.referencia')
+            ->get();
 
         return view(
             'Dashboard.dashboard',
@@ -245,7 +247,8 @@ class ApartamentoController extends Controller
                 'labelsClientes',
                 'dadosClientes',
                 'labelsApartamentos',
-                'dadosApartamentos'
+                'dadosApartamentos',
+                'ocupacao'
             )
         );
     }

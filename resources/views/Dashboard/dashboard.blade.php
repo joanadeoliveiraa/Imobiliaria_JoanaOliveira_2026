@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
 
+    <link rel="icon" type="image/png" href="{{ asset('images/logo_folhaVerde.png') }}">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
@@ -110,352 +112,365 @@
 </head>
 
 <body>
-<div class="container py-4" style="max-width:1200px;">
-    <!-- Cabeçalho -->
+    <div class="container py-4" style="max-width:1200px;">
+        <!-- Cabeçalho -->
+        <div class="cabecalho-site mb-4">
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <img src="{{ asset('images/folhas_brancas.png') }}" alt="Olive Properties" width="185">
+                </div>
+
+                <div class="col-md-9">
+                    <h2 class="mb-1">
+                        Olive Properties - Algarve
+                    </h2>
+                    <p class="mb-1">
+                        Luxury Holiday Apartments • Algarve • Portugal
+                    </p>
+                    <small>
+                        Painel de Gestão Empresarial
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Informação -->
+        <div class="mb-3">
+            <small class="text-muted">
+                Último acesso: {{ $ultimoAcesso }}
+            </small>
+        </div>
+
+        <!-- Botões -->
+        <div class="d-flex justify-content-end mb-4 no-print">
+            <button onclick="window.print()" class="btn btn-outline-secondary me-2">
+                Relatório PDF
+            </button>
+            <a href="{{ url('/') }}" class="btn btn-outline-dark">
+                ← Menu Principal
+            </a>
+        </div>
 
 
-    <div class="cabecalho-site mb-4">
+        <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-body text-center">
+                <h6 class="text-muted">
+                    Receita Total da Empresa
+                </h6>
+                <h1 class="titulo-principal">
+                    {{ number_format($receitaTotal, 2, ',', '.') }} €
+                </h1>
+            </div>
+        </div>
 
-
-        <div class="row align-items-center">
+        <div class="row g-4">
+            <div class="col-md-3">
+                <a href="{{ route('apartamentos.index', ['estado' => 'Disponivel']) }}" class="text-decoration-none">
+                    <div class="card card-dashboard">
+                        <div class="card-body text-center">
+                            <div class="titulo-card">
+                                Apartamentos Disponíveis
+                            </div>
+                            <div class="numero">
+                                {{ $disponiveis }}
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
 
             <div class="col-md-3">
-
-                <img src="{{ asset('images/folhas_brancas.png') }}"
-                    alt="Olive Properties"
-                    width="185">
-
+                <a href="{{ route('apartamentos.index', ['estado' => 'Nao Disponivel']) }}" class="text-decoration-none">
+                    <div class="card card-dashboard">
+                        <div class="card-body text-center">
+                            <div class="titulo-card">
+                                Apartamentos Ocupados
+                            </div>
+                            <div class="numero">
+                                {{ $naoDisponiveis }}
+                            </div>
+                        </div>
+                    </div>
+                </a>
             </div>
 
-            <div class="col-md-9">
-
-                <h2 class="mb-1">
-                    Olive Properties - Algarve
-                </h2>
-
-                <p class="mb-1">
-                    Luxury Holiday Apartments • Algarve • Portugal
-                </p>
-
-                <small>
-                    Painel de Gestão Empresarial
-                </small>
-
-            </div>
-
-        </div>
-
-
-    </div>
-
-    <!-- Informação -->
-
-    <div class="mb-3">
-
-
-        <small class="text-muted">
-            Último acesso: {{ $ultimoAcesso }}
-        </small>
-
-
-    </div>
-
-    <!-- Botões -->
-
-    <div class="d-flex justify-content-end mb-4 no-print">
-
-        <button onclick="window.print()"
-            class="btn btn-outline-secondary me-2">
-
-            Relatório PDF
-
-        </button>
-
-        <a href="{{ url('/') }}"
-            class="btn btn-outline-dark">
-
-            ← Menu Principal
-
-        </a>
-
-
-    </div>
-
-
-
-    <div class="card mb-4 border-0 shadow-sm">
-        <div class="card-body text-center">
-            <h6 class="text-muted">
-                Receita Total da Empresa
-            </h6>
-            <h1 class="titulo-principal">
-                {{ number_format($receitaTotal, 2, ',', '.') }} €
-            </h1>
-        </div>
-    </div>
-
-    <div class="row g-4">
-        <div class="col-md-3">
-            <a href="{{ route('apartamentos.index', ['estado' => 'Disponivel']) }}" class="text-decoration-none">
+            <div class="col-md-3">
                 <div class="card card-dashboard">
                     <div class="card-body text-center">
                         <div class="titulo-card">
-                            Apartamentos Disponíveis
+                            Clientes Registados
                         </div>
                         <div class="numero">
-                            {{ $disponiveis }}
+                            {{ $clientes }}
                         </div>
                     </div>
                 </div>
-            </a>
-        </div>
+            </div>
 
-        <div class="col-md-3">
-            <a href="{{ route('apartamentos.index', ['estado' => 'Nao Disponivel']) }}" class="text-decoration-none">
+            <div class="col-md-3">
                 <div class="card card-dashboard">
                     <div class="card-body text-center">
                         <div class="titulo-card">
-                            Apartamentos Ocupados
+                            Reservas Totais
                         </div>
                         <div class="numero">
-                            {{ $naoDisponiveis }}
+                            {{ $reservas }}
                         </div>
                     </div>
                 </div>
-            </a>
+            </div>
         </div>
 
-        <div class="col-md-3">
-            <div class="card card-dashboard">
-                <div class="card-body text-center">
-                    <div class="titulo-card">
-                        Clientes Registados
-                    </div>
-                    <div class="numero">
-                        {{ $clientes }}
+        <div class="row g-4 mt-3">
+            <div class="col-md-4">
+                <div class="card card-dashboard">
+                    <div class="card-body text-center">
+                        <div class="titulo-card">
+                            Cliente Mais Frequente
+                        </div>
+                        <div class="numero" style="font-size:1.2rem;">
+                            {{ $clienteTop->cliente ?? '-' }}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-3">
-            <div class="card card-dashboard">
-                <div class="card-body text-center">
-                    <div class="titulo-card">
-                        Reservas Totais
-                    </div>
-                    <div class="numero">
-                        {{ $reservas }}
+            <div class="col-md-4">
+                <div class="card card-dashboard">
+                    <div class="card-body text-center">
+                        <div class="titulo-card">
+                            Apartamento Mais Reservado
+                        </div>
+                        <div class="numero" style="font-size:1.2rem;">
+                            {{ $apartamentoTop->apartamento ?? '-' }}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="row g-4 mt-3">
-        <div class="col-md-4">
-            <div class="card card-dashboard">
-                <div class="card-body text-center">
-                    <div class="titulo-card">
-                        Cliente Mais Frequente
-                    </div>
-                    <div class="numero" style="font-size:1.2rem;">
-                        {{ $clienteTop->cliente ?? '-' }}
+            <div class="col-md-4">
+                <div class="card card-dashboard">
+                    <div class="card-body text-center">
+                        <div class="titulo-card">
+                            Próxima Reserva
+                        </div>
+                        <div class="numero" style="font-size:1.2rem;">
+                            @if($proximaReserva)
+                            {{ date('d/m/Y', strtotime($proximaReserva->data_entrada)) }}
+                            @else
+                            -
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-4">
-            <div class="card card-dashboard">
-                <div class="card-body text-center">
-                    <div class="titulo-card">
-                        Apartamento Mais Reservado
-                    </div>
-                    <div class="numero" style="font-size:1.2rem;">
-                        {{ $apartamentoTop->apartamento ?? '-' }}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card card-dashboard">
-                <div class="card-body text-center">
-                    <div class="titulo-card">
-                        Próxima Reserva
-                    </div>
-                    <div class="numero" style="font-size:1.2rem;">
-                        @if($proximaReserva)
-                        {{ date('d/m/Y', strtotime($proximaReserva->data_entrada)) }}
-                        @else
-                        -
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card mt-4">
-        <div class="card-header">
-            <strong>Receita Mensal</strong>
-        </div>
-        <div class="card-body">
-            @foreach($receitaMensal as $receita)
-            <div class="d-flex justify-content-between mb-2">
-                <span>
-                    {{ $receita->mes }}
-                </span>
-                <span class="badge bg-success">
-                    {{ number_format($receita->total, 2, ',', '.') }} €
-                </span>
-            </div>
-            @endforeach
-        </div>
-    </div>
-
-    <div class="row mt-4">
-        <div class="col-lg-4">
-            <div class="card card-dashboard h-100">
-                <div class="card-header">
-                    Top Clientes
+            <!-- Ocupação dos alojamentos -->
+            <div class="card shadow-sm mt-4">
+                <div class="card-header text-white" style="background-color:#2F4F4F;">
+                   <strong> Ocupação dos Apartamentos </strong>
                 </div>
                 <div class="card-body">
-                    <canvas id="graficoClientes"></canvas>
+                    <table class="table table-striped table-bordered mb-0">
+                        <thead>
+                            <tr>
+                                <th>Referência</th>
+                                <th>Estado</th>
+                                <th>Ocupado até</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($ocupacao as $apartamento)
+                            <tr>
+                                <td>
+                                    {{ $apartamento->referencia }}
+                                </td>
+                                <td>
+                                    @if($apartamento->estado == 'Disponivel')
+                                    <span class="badge bg-success">
+                                        Disponível
+                                    </span>
+                                    @else
+                                    <span class="badge bg-danger">
+                                        Ocupado
+                                    </span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($apartamento->estado == 'Nao Disponivel' && $apartamento->data_saida)
+                                    {{ date('d/m/Y', strtotime($apartamento->data_saida)) }}
+                                    @else
+                                    —
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-4">
-            <div class="card card-dashboard h-100">
-                <div class="card-header">
-                    Receita Mensal
-                </div>
-                <div class="card-body">
-                    <canvas id="graficoReceita"></canvas>
-                </div>
+<!-- Receita mensal  -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <strong>Receita Mensal</strong>
             </div>
-        </div>
-
-        <div class="col-lg-4">
-            <div class="card card-dashboard h-100">
-                <div class="card-header">
-                    Reservas por Apartamento
+            <div class="card-body">
+                @foreach($receitaMensal as $receita)
+                <div class="d-flex justify-content-between mb-2">
+                    <span>
+                        {{ $receita->mes }}
+                    </span>
+                    <span class="badge bg-success">
+                        {{ number_format($receita->total, 2, ',', '.') }} €
+                    </span>
                 </div>
-                <div class="card-body">
-                    <canvas id="graficoApartamentos"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card mt-4">
-        <div class="card-header">
-            <strong>Últimas Atividades</strong>
-        </div>
-        <div class="card-body">
-            @if($atividades->count())
-            <ul class="list-group list-group-flush">
-                @foreach($atividades as $atividade)
-                <li class="list-group-item">
-                    <small class="text-muted">
-                        {{ $atividade->created_at->format('d/m/Y H:i') }}
-                    </small>
-                    <br>
-                    {{ $atividade->descricao }}
-                </li>
                 @endforeach
-            </ul>
-            @else
-            <p class="text-muted">
-                Ainda não existem atividades registadas.
-            </p>
-            @endif
+            </div>
         </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <div class="row mt-4">
+            <div class="col-lg-4">
+                <div class="card card-dashboard h-100">
+                    <div class="card-header">
+                        Top Clientes
+                    </div>
+                    <div class="card-body">
+                        <canvas id="graficoClientes"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card card-dashboard h-100">
+                    <div class="card-header">
+                        Receita Mensal
+                    </div>
+                    <div class="card-body">
+                        <canvas id="graficoReceita"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card card-dashboard h-100">
+                    <div class="card-header">
+                        Reservas por Apartamento
+                    </div>
+                    <div class="card-body">
+                        <canvas id="graficoApartamentos"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <strong>Últimas Atividades</strong>
+            </div>
+            <div class="card-body">
+                @if($atividades->count())
+                <ul class="list-group list-group-flush">
+                    @foreach($atividades as $atividade)
+                    <li class="list-group-item">
+                        <small class="text-muted">
+                            {{ $atividade->created_at->format('d/m/Y H:i') }}
+                        </small>
+                        <br>
+                        {{ $atividade->descricao }}
+                    </li>
+                    @endforeach
+                </ul>
+                @else
+                <p class="text-muted">
+                    Ainda não existem atividades registadas.
+                </p>
+                @endif
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
 
-    <script>
-        // Gráfico de Receita
-        const ctx = document.getElementById('graficoReceita');
+        <script>
+            // Gráfico de Receita
+            const ctx = document.getElementById('graficoReceita');
 
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: @json($labelsReceita),
-                datasets: [{
-                    label: 'Receita (€)',
-                    data: @json($dadosReceita),
-                    borderColor: '#2F4F4F',
-                    backgroundColor: '#2F4F4F',
-                    borderWidth: 3,
-                    tension: 0.3
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: @json($labelsReceita),
+                    datasets: [{
+                        label: 'Receita (€)',
+                        data: @json($dadosReceita),
+                        borderColor: '#2F4F4F',
+                        backgroundColor: '#2F4F4F',
+                        borderWidth: 3,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
 
 
-        // Gráfico de Clientes
-        const ctxClientes = document.getElementById('graficoClientes');
+            // Gráfico de Clientes
+            const ctxClientes = document.getElementById('graficoClientes');
 
-        new Chart(ctxClientes, {
-            type: 'bar',
-            data: {
-                labels: @json($labelsClientes),
-                datasets: [{
-                    label: 'Reservas',
-                    data: @json($dadosClientes),
-                    backgroundColor: '#2F4F4F',
-                    borderColor: '#2F4F4F',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
+            new Chart(ctxClientes, {
+                type: 'bar',
+                data: {
+                    labels: @json($labelsClientes),
+                    datasets: [{
+                        label: 'Reservas',
+                        data: @json($dadosClientes),
+                        backgroundColor: '#2F4F4F',
+                        borderColor: '#2F4F4F',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
                     }
                 }
-            }
-        });
+            });
 
 
-        // Gráfico de Reservas por Apartamento
-        const ctxApartamentos = document.getElementById('graficoApartamentos');
+            // Gráfico de Reservas por Apartamento
+            const ctxApartamentos = document.getElementById('graficoApartamentos');
 
-        new Chart(ctxApartamentos, {
-            type: 'bar',
-            data: {
-                labels: @json($labelsApartamentos),
-                datasets: [{
-                    label: 'Reservas',
-                    data: @json($dadosApartamentos),
-                    backgroundColor: '#2F4F4F',
-                    borderColor: '#2F4F4F',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
+            new Chart(ctxApartamentos, {
+                type: 'bar',
+                data: {
+                    labels: @json($labelsApartamentos),
+                    datasets: [{
+                        label: 'Reservas',
+                        data: @json($dadosApartamentos),
+                        backgroundColor: '#2F4F4F',
+                        borderColor: '#2F4F4F',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
                     }
                 }
-            }
-        });
-    </script>
+            });
+        </script>
 </body>
 
 </html>
