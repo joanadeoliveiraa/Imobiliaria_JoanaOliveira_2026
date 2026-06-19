@@ -21,12 +21,6 @@
             color: #6C757D;
         }
 
-        .card-topo {
-            border-left: 5px solid #2F4F4F;
-            padding-left: 15px;
-            margin-bottom: 30px;
-        }
-
         .btn-dark {
             background-color: #2F4F4F;
             border: none;
@@ -36,9 +30,52 @@
             background-color: #556B2F;
         }
 
+        /* Cabeçalho Olive */
+        .cabecalho-site {
+            background-color: #2F4F4F;
+            padding: 30px 40px;
+            border-radius: 12px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            margin-bottom: 30px;
+        }
+
+        .cabecalho-site h2,
+        .cabecalho-site p,
+        .cabecalho-site small {
+            color: white !important;
+        }
+
+        /* Cards */
         .card-contacto {
             border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            height: 100%;
+        }
+
+        .card-contacto h4 {
+            color: #2F4F4F;
+            font-weight: 600;
+        }
+
+        /* Formulário */
+        .form-control:focus {
+            border-color: #2F4F4F;
+            box-shadow: 0 0 0 0.15rem rgba(47, 79, 79, 0.20);
+        }
+
+
+        .btn-outline-secondary:hover {
+            background-color: #2F4F4F;
+            border-color: #2F4F4F;
+        }
+
+        /* Rodapé */
+        .footer-contactos {
+            margin-top: 50px;
+            text-align: center;
+            color: #6C757D;
         }
     </style>
 
@@ -56,20 +93,36 @@
         </div>
         @endif
 
-        <div class="card-topo">
-            <h1 class="titulo-principal">
-                Olive Properties - Algarve
-            </h1>
+        <!-- Cabeçalho Olive -->
+        <div class="cabecalho-site">
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <img src="{{ asset('images/folhas_brancas.png') }}" alt="Olive Properties" width="185">
+                </div>
 
-            <p class="subtitulo">
-                Entre em contacto connosco
-            </p>
+                <div class="col-md-9">
+                    <h2 class="mb-1">
+                        Olive Properties - Algarve
+                    </h2>
+                    <p class="mb-1">
+                        Luxury Holiday Apartments • Algarve • Portugal
+                    </p>
+                    <small>
+                        Entre em contacto connosco
+                    </small>
+                </div>
+            </div>
+
         </div>
-
         <div class="row">
             <div class="col-md-5">
                 <div class="card card-contacto p-4">
-                    <h4>Informações de Contacto</h4>
+                    <h4>
+                        Informações de Contacto
+                    </h4>
+                    <p class="text-muted">
+                        Estamos disponíveis para esclarecer qualquer questão relacionada com os nossos alojamentos turísticos.
+                    </p>
                     <hr>
                     <p>
                         Rua das Oliveiras, 25<br>
@@ -95,7 +148,12 @@
 
             <div class="col-md-7">
                 <div class="card card-contacto p-4">
-                    <h4>Formulário de Contacto</h4>
+                    <h4>
+                        Envie-nos uma Mensagem
+                    </h4>
+                    <p class="text-muted">
+                        Responderemos com a maior brevidade possível.
+                    </p>
                     <hr>
                     <form action="{{ route('contactos.enviar') }}"
                         method="POST">
@@ -172,8 +230,18 @@
 
         </div>
 
+        <div class="footer-contactos">
+            <hr>
+            <p class="mb-1">
+                Olive Properties - Algarve
+            </p>
+            <small>
+                Luxury Holiday Apartments • Algarve • Portugal
+            </small>
+        </div>
 
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

@@ -44,20 +44,8 @@ class ClienteController extends Controller
     }
 
 
-    public function store(Request $request) // Gravar cliente
+    public function store(Request $request)
     {
-        Cliente::create([
-            'nome' => $request->nome,
-            'email' => $request->email,
-            'telefone' => $request->telefone,
-            'morada' => $request->morada,
-            'nif' => $request->nif
-        ]);
-
-        Atividade::create([
-            'descricao' => 'Novo cliente criado: ' . $request->nome
-        ]);
-
         $cliente = Cliente::create([
             'nome' => $request->nome,
             'email' => $request->email,
@@ -71,13 +59,13 @@ class ClienteController extends Controller
         ]);
 
         if ($request->origem == 'reserva') {
+
             return redirect()
                 ->route('vendas.create', [
-                    'cliente' => $cliente->nome])
+                    'cliente' => $cliente->nome
+                ])
                 ->with('success', 'Cliente criado com sucesso.');
         }
-
-
 
         return redirect()
             ->route('clientes.index')

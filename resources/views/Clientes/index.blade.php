@@ -24,12 +24,6 @@
             color: #6C757D;
         }
 
-        .card-topo {
-            border-left: 5px solid #2F4F4F;
-            padding-left: 15px;
-            margin-bottom: 20px;
-        }
-
         .btn-dark {
             background-color: #2F4F4F;
             border: none;
@@ -40,7 +34,7 @@
         }
 
         /* ==========================
-       Cabeçalho do Site
+       Cabeçalho
     ========================== */
 
         .cabecalho-site {
@@ -76,41 +70,68 @@
             margin-bottom: 0;
         }
 
-        .table-olive th {
+        /* ==========================
+       Paginação
+    ========================== */
+
+        .pagination .page-link {
+            color: #2F4F4F;
+            border-color: #2F4F4F;
+            border-radius: 6px;
+        }
+
+        .pagination .page-link:hover {
             background-color: #2F4F4F;
             color: white;
         }
 
+        .pagination .page-item.active .page-link {
+            background-color: #2F4F4F;
+            border-color: #2F4F4F;
+            color: white;
+        }
+
+        .pagination .page-item {
+            margin: 0 2px;
+        }
+
         /* ==========================
-   Impressão
-========================== */
+       Impressão
+    ========================== */
 
         @media print {
+
             @page {
                 margin: 1.5cm;
             }
-            /* Manter cores na impressão */
+
             * {
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
+
             body {
                 zoom: 85%;
                 margin: 0;
                 padding: 0;
             }
-            /* Esconder elementos do site */
+
+
+
             .no-print,
             .no-print * {
                 display: none !important;
             }
+
             form {
                 display: none !important;
             }
-            /* Mostrar apenas elementos de impressão */
+
+            /* Mostrar elementos de impressão */
             .apenas-impressao {
                 display: block !important;
             }
+
             .cabecalho-relatorio {
                 display: block !important;
                 background-color: #2F4F4F !important;
@@ -119,38 +140,77 @@
                 border-radius: 12px !important;
                 margin-bottom: 25px !important;
             }
+
             .cabecalho-relatorio h2,
             .cabecalho-relatorio p,
             .cabecalho-relatorio small {
                 color: white !important;
             }
+
             /* Remover coluna Ações */
             th:last-child,
             td:last-child {
                 display: none !important;
             }
+
             /* Tabela */
             .table {
                 width: 100%;
                 border-collapse: collapse;
             }
+
             .table th {
                 background-color: #2F4F4F !important;
                 color: white !important;
             }
+
             .table th,
             .table td {
                 padding: 8px !important;
                 vertical-align: middle;
             }
+
             .table-striped tbody tr:nth-child(odd) {
                 background-color: #f8f9fa !important;
             }
+
             /* Rodapé */
             .apenas-impressao hr {
                 margin: 30px 0 15px;
             }
+
+            /* Paginação Olive */
+
+            .pagination {
+                gap: 5px;
+            }
+
+            .pagination .page-link {
+                color: #2F4F4F;
+                border: 1px solid #2F4F4F;
+                border-radius: 6px;
+                padding: 8px 14px;
+                font-weight: 500;
+            }
+
+            .pagination .page-link:hover {
+                background-color: #2F4F4F;
+                color: white;
+                border-color: #2F4F4F;
+            }
+
+            .pagination .page-item.active .page-link {
+                background-color: #2F4F4F;
+                border-color: #2F4F4F;
+                color: white;
+            }
+
+            .pagination .page-item.disabled .page-link {
+                color: #6c757d;
+                background-color: #f8f9fa;
+            }
         }
+    </style>
     </style>
 
 </head>
@@ -182,31 +242,19 @@
 
         <!-- Cabeçalho Impressão -->
         <div class="cabecalho-relatorio apenas-impressao mb-4">
-
             <div class="d-flex align-items-center">
-
                 <img src="{{ asset('images/folhas_brancas.png') }}"
                     alt="Olive Properties"
                     width="170"
                     class="me-4">
-
                 <div>
-
                     <h2 class="mb-1">
                         Olive Properties - Algarve
                     </h2>
-
                     <p class="mb-1">
                         Luxury Holiday Apartments • Algarve • Portugal
                     </p>
-
-                    <small>
-                        Relatório de Clientes |
-                        {{ date('d/m/Y H:i') }}
-                    </small>
-
                 </div>
-
             </div>
 
         </div>
@@ -324,7 +372,6 @@
                         <a href="{{ route('clientes.edit', $cliente->id) }}" class="btn btn-outline-secondary btn-sm">
                             Editar
                         </a>
-
                         <form action="{{ route('clientes.destroy', $cliente->id) }}"
                             method="POST"
                             style="display:inline;">
@@ -332,9 +379,14 @@
                             @csrf
                             @method('DELETE')
 
-                            <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Tem a certeza que pretende apagar este cliente?')">
+                            <button type="submit"
+                                class="btn btn-outline-danger btn-sm"
+                                onclick="return confirm('Tem a certeza que pretende apagar este cliente?')">
                                 Apagar
-                            </button>
+                            </button>                         
+                    </div>
+
+
                         </form>
                     </td>
                 </tr>
@@ -342,6 +394,11 @@
             </tbody>
 
         </table>
+
+        <!-- Paginação -->
+        <div class="d-flex justify-content-center mt-4 no-print">
+            {{ $clientes->appends(request()->query())->links() }}
+        </div>
 
         <!-- Rodapé Impressão -->
         <div class="apenas-impressao text-center text-muted mt-5">
@@ -355,5 +412,55 @@
         </div>
     </div>
 
+    <!-- Modal Confirmação -->
+
+    <div id="modalConfirmacao"
+        style="display:none;
+               position:fixed;
+               top:0;
+               left:0;
+               width:100%;
+               height:100%;
+               background:rgba(0,0,0,.5);
+               z-index:9999;">
+
+        <div style="background:white;
+                    width:400px;
+                    max-width:90%;
+                    margin:15% auto;
+                    padding:25px;
+                    border-radius:12px;
+                    text-align:center;">
+
+            <h5 class="mb-3">
+                Confirmar Cancelamento
+            </h5>
+            <p>
+                Tem a certeza que pretende cancelar esta reserva?
+            </p>
+            <form id="formApagar" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger">
+                    Sim, Cancelar
+                </button>
+                <button type="button" onclick="fecharModal()" class="btn btn-secondary">
+                    Voltar
+                </button>
+            </form>
+        </div>
+    </div>
+
+        <script>
+        function abrirModal(url) {
+            document.getElementById('formApagar').action = url;
+            document.getElementById('modalConfirmacao').style.display = 'block';
+        }
+        function fecharModal() {
+            document.getElementById('modalConfirmacao').style.display = 'none';
+        }
+    </script>
+
 </body>
+
 </html>
