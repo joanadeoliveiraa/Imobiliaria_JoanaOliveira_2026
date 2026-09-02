@@ -1,131 +1,44 @@
-<!DOCTYPE html>
+@extends('layouts.public')
 
-<html lang="pt">
+@section('title', $apartamento->referencia.' — '.$apartamento->morada.' | Olive Properties')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Olive Properties - Algarve</title>
-
-    <link rel="icon" type="image/png" href="{{ asset('images/logo_folhaVerde.png') }}">
-
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-        .titulo-principal {
-            color: #2F4F4F;
-            font-weight: bold;
-        }
-
-        .subtitulo {
-            color: #6C757D;
-        }
-
-        .card-topo {
-            border-left: 5px solid #2F4F4F;
-            padding-left: 15px;
-            margin-bottom: 20px;
-        }
-    </style>
-
-</head>
-
-<body>
-
-
-    <div class="container mt-4">
-
-        <div class="card-topo">
-
-            <h1 class="titulo-principal">
-                Olive Properties - Algarve
-            </h1>
-
-            <p class="subtitulo">
-                Gestão de apartamentos turísticos no Algarve
-            </p>
-
+@section('content')
+    <article class="property-detail">
+        <div class="site-container property-detail__breadcrumb">
+            <a href="{{ route('apartamentos.index') }}">Propriedades</a><span aria-hidden="true">/</span><span>{{ $apartamento->referencia }}</span>
         </div>
 
-        <div class="card">
-
-            @if($apartamento->fotografia)
-            <div class="text-center mb-4">
-                <img src="{{ asset('storage/' . $apartamento->fotografia) }}"
-                    class="img-fluid rounded shadow"
-                    style="max-height:400px;">
-            </div>
-
-            @endif
-
-
-
-            <div class="card-header">
-                <h4>Detalhes do Apartamento</h4>
-            </div>
-
-            <div class="card-body">
-
-                <p>
-                    <strong>Referência:</strong>
-                    {{ $apartamento->referencia }}
-                </p>
-
-                <p>
-                    <strong>Tipologia:</strong>
-                    {{ $apartamento->tipologia }}
-                </p>
-
-                <p>
-                    <strong>Morada:</strong>
-                    {{ $apartamento->morada }}
-                </p>
-
-                <p>
-                    <strong>Área:</strong>
-                    {{ $apartamento->area }} m²
-                </p>
-
-                <p>
-                    <strong>Preço por Semana:</strong>
-                    {{ $apartamento->preco }} €
-                </p>
-
-                <p>
-                    <strong>Estado:</strong>
-                    {{ $apartamento->estado }}
-                </p>
-
-
-                @if($apartamento->estado == 'Disponivel')
-
-                <a href="{{ route('vendas.create') }}"
-                    class="btn btn-dark">
-                    Reservar Imóvel
-                </a>
-
-
+        <div class="site-container property-detail__layout">
+            <div class="property-detail__media">
+                @if($apartamento->fotografia)
+                    <img src="{{ asset('storage/'.$apartamento->fotografia) }}" alt="{{ $apartamento->tipologia }} em {{ $apartamento->morada }}">
                 @else
-
-                <div class="alert alert-danger">
-                    Este imóvel não se encontra disponível para reserva.
-                </div>
-
+                    <div class="property-detail__placeholder">Imagem brevemente disponível</div>
                 @endif
-
-                <a href="{{ route('apartamentos.index') }}"
-                    class="btn btn-outline-secondary">
-                    Voltar
-                </a>
-
             </div>
-
+            <div class="property-detail__content">
+                <div class="property-detail__heading">
+                    <p class="eyebrow">{{ $apartamento->referencia }} · {{ $apartamento->tipologia }}</p>
+                    <h1>{{ $apartamento->morada }}</h1>
+                    <span class="badge {{ $apartamento->estado === 'Disponivel' ? 'badge--success' : 'badge--neutral' }}">{{ $apartamento->estado === 'Disponivel' ? 'Disponível' : 'Indisponível' }}</span>
+                </div>
+                <dl class="property-facts">
+                    <div><dt>Tipologia</dt><dd>{{ $apartamento->tipologia }}</dd></div>
+                    <div><dt>Área</dt><dd>{{ number_format((float) $apartamento->area, 0, ',', '.') }} m²</dd></div>
+                    <div><dt>Valor semanal</dt><dd>{{ number_format((float) $apartamento->preco, 2, ',', '.') }} €</dd></div>
+                </dl>
+                <div class="property-detail__copy">
+                    <h2>Sobre esta propriedade</h2>
+                    <p>Uma propriedade Olive Properties cuidadosamente selecionada pela localização, conforto e qualidade. Contacte a nossa equipa para receber informação detalhada e esclarecer todas as suas questões.</p>
+                </div>
+                <div class="property-detail__actions">
+                    <a href="{{ route('contactos', ['referencia' => $apartamento->referencia]) }}" class="button button--primary">Pedir informações</a>
+                    <a href="{{ route('apartamentos.index') }}" class="button button--outline">Voltar ao catálogo</a>
+                    @auth
+                        @if(auth()->user()->tipo === 'administrador')<a href="{{ route('apartamentos.edit', $apartamento) }}" class="button button--ghost">Editar propriedade</a>@endif
+                    @endauth
+                </div>
+            </div>
         </div>
-
-    </div>
-
-
-</body>
-
-</html>
+    </article>
+@endsection

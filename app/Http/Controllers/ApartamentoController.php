@@ -46,15 +46,18 @@ class ApartamentoController extends Controller
         $ordenar = in_array($request->ordenar, ['referencia', 'tipologia', 'morada', 'area', 'preco', 'estado'], true)
             ? $request->ordenar
             : null;
-        $estado = $request->estado;
+        $estado = in_array($request->estado, [Apartamento::ESTADO_DISPONIVEL, Apartamento::ESTADO_INDISPONIVEL], true)
+            ? $request->estado
+            : null;
 
         $apartamentos = Apartamento::query()
 
             ->when($pesquisa, function ($query) use ($pesquisa) {
-
-                $query->where('referencia', 'like', "%{$pesquisa}%")
-                    ->orWhere('tipologia', 'like', "%{$pesquisa}%")
-                    ->orWhere('morada', 'like', "%{$pesquisa}%");
+                $query->where(function ($query) use ($pesquisa) {
+                    $query->where('referencia', 'like', "%{$pesquisa}%")
+                        ->orWhere('tipologia', 'like', "%{$pesquisa}%")
+                        ->orWhere('morada', 'like', "%{$pesquisa}%");
+                });
             })
 
             ->when($estado, function ($query) use ($estado) {
@@ -63,13 +66,37 @@ class ApartamentoController extends Controller
             })
 
             ->when($ordenar, function ($query) use ($ordenar) {
-
                 $query->orderBy($ordenar, 'asc');
             })
+            ->when(! $ordenar, fn ($query) => $query->latest())
 
-            ->paginate(10);
+            ->paginate(9)
+            ->withQueryString();
 
         return view('apartamentos.index', compact('apartamentos'));
+    }
+
+    public function manage(Request $request)
+    {
+        $pesquisa = $request->string('pesquisa')->trim()->toString();
+        $estado = in_array($request->estado, [Apartamento::ESTADO_DISPONIVEL, Apartamento::ESTADO_INDISPONIVEL], true)
+            ? $request->estado
+            : null;
+
+        $apartamentos = Apartamento::query()
+            ->when($pesquisa, function ($query) use ($pesquisa) {
+                $query->where(function ($query) use ($pesquisa) {
+                    $query->where('referencia', 'like', "%{$pesquisa}%")
+                        ->orWhere('tipologia', 'like', "%{$pesquisa}%")
+                        ->orWhere('morada', 'like', "%{$pesquisa}%");
+                });
+            })
+            ->when($estado, fn ($query) => $query->where('estado', $estado))
+            ->latest()
+            ->paginate(15)
+            ->withQueryString();
+
+        return view('apartamentos.manage', compact('apartamentos'));
     }
 
     public function create() // Mostrar o formulário de criação
@@ -91,7 +118,7 @@ class ApartamentoController extends Controller
         });
 
         return redirect()
-            ->route('apartamentos.index')
+            ->route('admin.apartamentos.index')
             ->with('success', 'Apartamento registado com sucesso.');
     }
 
@@ -128,7 +155,7 @@ class ApartamentoController extends Controller
         }
 
         return redirect()
-            ->route('apartamentos.index')
+            ->route('admin.apartamentos.index')
             ->with('success', 'Apartamento atualizado com sucesso.');
     }
 
@@ -149,7 +176,7 @@ class ApartamentoController extends Controller
         $apartamento->delete();
 
         return redirect()
-            ->route('apartamentos.index')
+            ->route('admin.apartamentos.index')
             ->with('success', 'Apartamento eliminado com sucesso.');
     }
 

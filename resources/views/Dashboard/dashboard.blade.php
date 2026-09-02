@@ -165,7 +165,7 @@
 
         <div class="row g-4">
             <div class="col-md-3">
-                <a href="{{ route('apartamentos.index', ['estado' => 'Disponivel']) }}" class="text-decoration-none">
+                <a href="{{ route('admin.apartamentos.index', ['estado' => 'Disponivel']) }}" class="text-decoration-none">
                     <div class="card card-dashboard">
                         <div class="card-body text-center">
                             <div class="titulo-card">
@@ -180,7 +180,7 @@
             </div>
 
             <div class="col-md-3">
-                <a href="{{ route('apartamentos.index', ['estado' => 'Nao Disponivel']) }}" class="text-decoration-none">
+                <a href="{{ route('admin.apartamentos.index', ['estado' => 'Nao Disponivel']) }}" class="text-decoration-none">
                     <div class="card card-dashboard">
                         <div class="card-body text-center">
                             <div class="titulo-card">

@@ -27,10 +27,12 @@ Route::get('/', function () {
     return view('welcome', compact('propriedadesDestaque'));
 })->name('home');
 
-Route::resource('apartamentos', ApartamentoController::class)
-    ->only(['index', 'show']);
+Route::get('/apartamentos', [ApartamentoController::class, 'index'])
+    ->name('apartamentos.index');
 
 Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/backoffice/propriedades', [ApartamentoController::class, 'manage'])
+        ->name('admin.apartamentos.index');
     Route::resource('clientes', ClienteController::class);
     Route::resource('apartamentos', ApartamentoController::class)
         ->except(['index', 'show']);
@@ -42,6 +44,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', [ApartamentoController::class, 'dashboard'])
         ->name('dashboard');
 });
+
+Route::get('/apartamentos/{apartamento}', [ApartamentoController::class, 'show'])
+    ->name('apartamentos.show');
 
 // Rota Sobre nós
 Route::get('/sobre', function () {
