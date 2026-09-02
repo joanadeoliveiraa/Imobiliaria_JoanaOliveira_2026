@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreVendaRequest;
+use App\Http\Requests\UpdateVendaRequest;
+use App\Models\Apartamento;
+use App\Models\Atividade;
+use App\Models\Cliente;
 use App\Models\Venda;
 use Illuminate\Http\Request;
-use App\Models\Apartamento;
-use App\Models\Cliente;
-use App\Models\Atividade;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class VendaController extends Controller
 {
     public function index() // Mostrar a lista de vendas
     {
-        $vendas = Venda::all(); // Buscar todas as vendas
+        $vendas = Venda::latest('data_entrada')->paginate(15);
 
         return view('vendas.index', compact('vendas')); // Abrir a página index e enviar os dados
     }
@@ -23,7 +27,6 @@ class VendaController extends Controller
 
     //     return view('vendas.create', compact('apartamento'));
     // }
-
 
     // public function create()
     // {
@@ -70,7 +73,6 @@ class VendaController extends Controller
     //         $request->apartamento
     //     )->first();
 
-
     //     if ($apartamento) {
     //         $apartamento->estado = 'Nao Disponivel';
     //         $apartamento->save();
@@ -80,33 +82,31 @@ class VendaController extends Controller
     //         ->with('success', 'Reserva registada com sucesso.');
     // }
 
-
-    public function store(Request $request) // Gravar reserva
+    public function store(StoreVendaRequest $request) // Gravar reserva
     {
-        $venda = Venda::create([
-            'cliente' => $request->cliente,
-            'apartamento' => $request->apartamento,
-            'data_entrada' => $request->data_entrada,
-            'data_saida' => $request->data_saida,
-            'valor_total' => $request->valor_total
-        ]);
+        [$venda, $apartamento] = DB::transaction(function () use ($request): array {
+            $apartamento = Apartamento::where('referencia', $request->apartamento)
+                ->lockForUpdate()
+                ->firstOrFail();
 
-        Atividade::create([
-            'descricao' => 'Reserva criada: ' . $request->apartamento
-        ]);
+            if ($apartamento->estado !== 'Disponivel') {
+                throw ValidationException::withMessages([
+                    'apartamento' => 'A propriedade selecionada já não está disponível.',
+                ]);
+            }
 
-        $apartamento = Apartamento::where('referencia', $request->apartamento)->first();
+            $dados = $request->validated();
+            $dados['valor_total'] = $apartamento->preco;
+            $venda = Venda::create($dados);
 
-        if ($apartamento) {
-            $apartamento->estado = 'Nao Disponivel';
-            $apartamento->save();
-        }
+            Atividade::create(['descricao' => 'Reserva criada: '.$apartamento->referencia]);
+            $apartamento->update(['estado' => 'Nao Disponivel']);
 
-
+            return [$venda, $apartamento];
+        });
 
         return view('vendas.resumo', compact('venda', 'apartamento'));
     }
-
 
     // public function show(int $id) // Mostrar os detalhes da venda
     // {
@@ -114,8 +114,6 @@ class VendaController extends Controller
 
     //     return view('vendas.show', compact('venda'));
     // }
-
-
 
     public function show(int $id)
     {
@@ -132,7 +130,6 @@ class VendaController extends Controller
         );
     }
 
-
     public function edit(int $id) // Mostrar formulário de edição
     {
         $venda = Venda::findOrFail($id);
@@ -140,44 +137,46 @@ class VendaController extends Controller
         return view('vendas.edit', compact('venda'));
     }
 
-
-    public function update(Request $request, int $id) // Atualizar venda
+    public function update(UpdateVendaRequest $request, int $id) // Atualizar venda
     {
         $venda = Venda::findOrFail($id);
 
-        $venda->update([
-            'cliente' => $request->cliente,
-            'apartamento' => $request->apartamento,
-            'data_entrada' => $request->data_entrada,
-            'data_saida' => $request->data_saida,
-            'valor_total' => $request->valor_total
-        ]);
+        DB::transaction(function () use ($venda, $request): void {
+            $apartamento = Apartamento::where('referencia', $venda->apartamento)
+                ->lockForUpdate()
+                ->firstOrFail();
+            $dados = $request->validated();
+            $dados['apartamento'] = $venda->apartamento;
+            $dados['valor_total'] = $apartamento->preco;
+            $venda->update($dados);
 
-        Atividade::create([
-            'descricao' => 'Reserva editada: ' . $request->apartamento
-        ]);
+            Atividade::create(['descricao' => 'Reserva editada: '.$venda->apartamento]);
+        });
 
         return redirect()
             ->route('vendas.index')
             ->with('success', 'Reserva atualizada com sucesso.');
     }
 
-
     public function destroy(int $id) // Apagar venda
     {
         $venda = Venda::findOrFail($id);
 
-        Atividade::create([
-            'descricao' => 'Reserva cancelada: ' . $venda->apartamento
-        ]);
+        DB::transaction(function () use ($venda): void {
+            Atividade::create(['descricao' => 'Reserva cancelada: '.$venda->apartamento]);
+            $referencia = $venda->apartamento;
+            $venda->delete();
 
-        $venda->delete();
+            if (! Venda::where('apartamento', $referencia)->exists()) {
+                Apartamento::where('referencia', $referencia)
+                    ->update(['estado' => 'Disponivel']);
+            }
+        });
 
         return redirect()
             ->route('vendas.index')
             ->with('success', 'Reserva cancelada com sucesso.');
     }
-
 
     // Histórico Cliente
     public function historicoCliente(string $cliente)

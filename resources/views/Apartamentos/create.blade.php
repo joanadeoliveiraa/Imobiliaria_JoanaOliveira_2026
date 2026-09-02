@@ -115,7 +115,7 @@
 
                         <div class="mb-3">
                             <label class="form-label">Fotografia</label>
-                            <input type="file" name="foto" class="form-control">
+                            <input type="file" name="fotografia" accept="image/jpeg,image/png,image/webp" class="form-control">
                         </div>
                         <button type="submit"
                             class="btn btn-dark">

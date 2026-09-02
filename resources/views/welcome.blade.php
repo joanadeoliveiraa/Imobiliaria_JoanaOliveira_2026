@@ -318,6 +318,7 @@
                     Alojamentos em Destaque
                 </h2>
                 <div class="row">
+                    @if($alg011)
                     <div class="col-md-4 mb-4">
                         <div class="card shadow border-0">
                             <img src="{{ asset('storage/' . $alg011->fotografia) }}" class="card-img-top" alt="{{ $alg011->referencia }}">
@@ -335,14 +336,16 @@
                                 <p>
                                     <strong>1.200€/semana</strong>
                                 </p>
-                                <a href="{{ route('apartamentos.show', 11) }}" class="btn btn-dark">
+                                <a href="{{ route('apartamentos.show', $alg011) }}" class="btn btn-dark">
                                     Ver mais informações
                                 </a>
                             </div>
                         </div>
                     </div>
+                    @endif
 
                     <!-- Responsivo -->
+                    @if($alg013)
                     <div class="col-lg-4 col-md-6 col-12 mb-4">
                         <div class="card shadow border-0">
                             <img src="{{ asset('storage/' . $alg013->fotografia) }}" class="card-img-top" alt="{{ $alg013->referencia }}">
@@ -358,13 +361,15 @@
                                 <p>
                                     <strong>1.050€/semana</strong>
                                 </p>
-                                <a href="{{ route('apartamentos.show', 13) }}" class="btn btn-dark">
+                                <a href="{{ route('apartamentos.show', $alg013) }}" class="btn btn-dark">
                                     Ver mais informações
                                 </a>
                             </div>
                         </div>
                     </div>
+                    @endif
 
+                    @if($alg012)
                     <div class="col-md-4 mb-4">
                         <div class="card shadow border-0">
                             <img src="{{ asset('storage/' . $alg012->fotografia) }}" class="card-img-top" alt="{{ $alg012->referencia }}">
@@ -380,7 +385,7 @@
                                 <p>
                                     <strong>1.200€/semana</strong>
                                 </p>
-                                <a href="{{ route('apartamentos.show', 12) }}" class="btn btn-dark">
+                                <a href="{{ route('apartamentos.show', $alg012) }}" class="btn btn-dark">
                                     Ver mais informações
                                 </a>
 
@@ -388,6 +393,16 @@
                         </div>
 
                     </div>
+                    @endif
+
+                    @if(! $alg011 && ! $alg012 && ! $alg013)
+                        <div class="col-12 text-center text-white py-4">
+                            <p class="mb-3">Ainda não existem propriedades em destaque.</p>
+                            <a href="{{ route('apartamentos.index') }}" class="btn btn-light">
+                                Consultar propriedades
+                            </a>
+                        </div>
+                    @endif
 
                 </div>
 

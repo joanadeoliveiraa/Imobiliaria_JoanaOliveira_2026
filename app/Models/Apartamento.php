@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Apartamento extends Model
 {
+    public const ESTADO_DISPONIVEL = 'Disponivel';
+
+    public const ESTADO_INDISPONIVEL = 'Nao Disponivel';
+
     protected $fillable = [
         'referencia',
         'tipologia',
@@ -13,6 +17,14 @@ class Apartamento extends Model
         'area',
         'preco',
         'fotografia',
-        'estado'
+        'estado',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'area' => 'decimal:2',
+            'preco' => 'decimal:2',
+        ];
+    }
 }
