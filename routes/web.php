@@ -8,19 +8,23 @@ use App\Models\Apartamento;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
+    $referenciasDestaque = ['ALG011', 'ALG012', 'ALG013'];
+    $propriedadesDestaque = Apartamento::whereIn('referencia', $referenciasDestaque)
+        ->get()
+        ->sortBy(fn (Apartamento $apartamento) => array_search($apartamento->referencia, $referenciasDestaque, true))
+        ->values();
 
-    $alg011 = Apartamento::where('referencia', 'ALG011')->first();
+    if ($propriedadesDestaque->count() < 3) {
+        $complementares = Apartamento::where('estado', Apartamento::ESTADO_DISPONIVEL)
+            ->whereNotIn('id', $propriedadesDestaque->pluck('id'))
+            ->latest()
+            ->limit(3 - $propriedadesDestaque->count())
+            ->get();
 
-    $alg012 = Apartamento::where('referencia', 'ALG012')->first();
+        $propriedadesDestaque = $propriedadesDestaque->concat($complementares);
+    }
 
-    $alg013 = Apartamento::where('referencia', 'ALG013')->first();
-
-    return view('welcome', compact(
-        'alg011',
-        'alg012',
-        'alg013'
-    ));
-
+    return view('welcome', compact('propriedadesDestaque'));
 })->name('home');
 
 Route::resource('apartamentos', ApartamentoController::class)
