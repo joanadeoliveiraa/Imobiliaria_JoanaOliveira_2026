@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreVendaRequest;
 use App\Http\Requests\UpdateVendaRequest;
 use App\Models\Apartamento;
 use App\Models\Atividade;
 use App\Models\Cliente;
 use App\Models\Venda;
+use App\Support\ReservationPricing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
 
 class VendaController extends Controller
 {
@@ -20,25 +19,6 @@ class VendaController extends Controller
 
         return view('vendas.index', compact('vendas')); // Abrir a página index e enviar os dados
     }
-
-    // public function create(Request $request) // Mostrar o formulário de criação
-    // {
-    //     $apartamento = Apartamento::find($request->apartamento);
-
-    //     return view('vendas.create', compact('apartamento'));
-    // }
-
-    // public function create()
-    // {
-
-    //     // Cria vrdas/reservas apenas para imóveis disponiveis
-    //     $apartamentos = Apartamento::where('estado', 'Disponivel')->get();
-
-    //     return view(
-    //         'vendas.create',
-    //         compact('apartamentos')
-    //     );
-    // }
 
     public function create(Request $request)
     {
@@ -50,70 +30,18 @@ class VendaController extends Controller
         $clientes = Cliente::all();
 
         $clienteSelecionado = $request->cliente;
+        $draft = $request->session()->get('reservation_drafts.'.$request->query('rascunho'), []);
+        if (($draft['user_id'] ?? null) !== $request->user()->id || ($draft['expires_at'] ?? 0) <= now()->timestamp) {
+            $draft = [];
+        }
+        $apartamentoSelecionado = $request->query('apartamento');
 
         return view('vendas.create',
             compact(
                 'apartamentos',
                 'clientes',
-                'clienteSelecionado'));
+                'clienteSelecionado', 'apartamentoSelecionado', 'draft'));
     }
-
-    // public function store(Request $request) // Gravar venda
-    // {
-    //     Venda::create([
-    //         'cliente' => $request->cliente,
-    //         'apartamento' => $request->apartamento,
-    //         'data_entrada' => $request->data_entrada,
-    //         'data_saida' => $request->data_saida,
-    //         'valor_total' => $request->valor_total
-    //     ]);
-
-    //     $apartamento = Apartamento::where(
-    //         'referencia',
-    //         $request->apartamento
-    //     )->first();
-
-    //     if ($apartamento) {
-    //         $apartamento->estado = 'Nao Disponivel';
-    //         $apartamento->save();
-    //     }
-    //     return redirect()
-    //         ->route('vendas.index')
-    //         ->with('success', 'Reserva registada com sucesso.');
-    // }
-
-    public function store(StoreVendaRequest $request) // Gravar reserva
-    {
-        [$venda, $apartamento] = DB::transaction(function () use ($request): array {
-            $apartamento = Apartamento::where('referencia', $request->apartamento)
-                ->lockForUpdate()
-                ->firstOrFail();
-
-            if ($apartamento->estado !== 'Disponivel') {
-                throw ValidationException::withMessages([
-                    'apartamento' => 'A propriedade selecionada já não está disponível.',
-                ]);
-            }
-
-            $dados = $request->validated();
-            $dados['valor_total'] = $apartamento->preco;
-            $venda = Venda::create($dados);
-
-            Atividade::create(['descricao' => 'Reserva criada: '.$apartamento->referencia]);
-            $apartamento->update(['estado' => 'Nao Disponivel']);
-
-            return [$venda, $apartamento];
-        });
-
-        return view('vendas.resumo', compact('venda', 'apartamento'));
-    }
-
-    // public function show(int $id) // Mostrar os detalhes da venda
-    // {
-    //     $venda = Venda::findOrFail($id);
-
-    //     return view('vendas.show', compact('venda'));
-    // }
 
     public function show(int $id)
     {
@@ -147,7 +75,9 @@ class VendaController extends Controller
                 ->firstOrFail();
             $dados = $request->validated();
             $dados['apartamento'] = $venda->apartamento;
-            $dados['valor_total'] = $apartamento->preco;
+            $dados['valor_total'] = $venda->pagamentoSimulado
+                ? ReservationPricing::quote($apartamento->preco, $dados['data_entrada'], $dados['data_saida'])['total']
+                : $apartamento->preco;
             $venda->update($dados);
 
             Atividade::create(['descricao' => 'Reserva editada: '.$venda->apartamento]);

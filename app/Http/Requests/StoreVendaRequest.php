@@ -14,11 +14,24 @@ class StoreVendaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cliente' => ['required', 'string', 'max:255', 'exists:clientes,nome'],
-            'apartamento' => ['required', 'string', 'max:255', 'exists:apartamentos,referencia'],
-            'data_entrada' => ['required', 'date'],
-            'data_saida' => ['required', 'date', 'after:data_entrada'],
-            'valor_total' => ['required', 'numeric', 'min:0', 'max:99999999.99'],
+            'cliente_id' => ['required', 'integer', 'exists:clientes,id'],
+            'apartamento_id' => ['required', 'integer', 'exists:apartamentos,id'],
+            'data_entrada' => ['required', 'date_format:Y-m-d', 'after_or_equal:today'],
+            'data_saida' => ['required', 'date_format:Y-m-d', 'after:data_entrada'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'cliente_id.required' => 'Selecione um cliente.',
+            'cliente_id.exists' => 'O cliente selecionado já não existe.',
+            'apartamento_id.required' => 'Selecione uma propriedade.',
+            'apartamento_id.exists' => 'A propriedade selecionada já não existe.',
+            'data_entrada.required' => 'Indique a data de entrada.',
+            'data_entrada.after_or_equal' => 'A entrada não pode ser anterior a hoje.',
+            'data_saida.required' => 'Indique a data de saída.',
+            'data_saida.after' => 'A saída deve ser posterior à entrada.',
         ];
     }
 }

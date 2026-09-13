@@ -16,6 +16,7 @@
         <li>Conta de utilizador: nome, email, palavra-passe guardada sob a forma de hash e dados técnicos de autenticação.</li>
         <li>Registos de clientes introduzidos na área de gestão: nome, email, telefone, morada e NIF.</li>
         <li>Reservas: cliente associado, referência da propriedade, datas de entrada e saída e valor total.</li>
+        <li>Confirmações de pagamento simulado: método de demonstração, data, administrador responsável e cópia dos dados do cliente (nome, email e telefone), propriedade, estadia e preço no momento da confirmação. Não são recolhidos números de cartão nem credenciais bancárias.</li>
         <li>Formulário de contacto: nome, email, telefone opcional, assunto e mensagem transmitidos ao servidor. Na versão atual, o formulário não tem envio de email nem gravação da mensagem implementados.</li>
         <li>Dados técnicos de sessão, incluindo identificador de sessão e, conforme o armazenamento configurado, endereço IP e identificação do navegador.</li>
     </ul>

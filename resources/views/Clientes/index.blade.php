@@ -2,28 +2,11 @@
 @section('title', 'Clientes — Olive Properties')
 @section('admin_content')
 <div class="management-page">
+    <x-document-header title="Relatório de clientes" :scope="'Registos '.($clientes->firstItem() ?? 0).'–'.($clientes->lastItem() ?? 0).' de '.$clientes->total().' · Página '.$clientes->currentPage().' de '.$clientes->lastPage().(request('pesquisa') ? ' · Pesquisa: '.request('pesquisa') : '')" />
     <header class="admin-page-heading"><div><p class="eyebrow">Área reservada</p><h1>Clientes</h1></div></header>
     @include('layouts.management-feedback')
 
     <div class="container py-4" >
-
-        <div class="cabecalho-relatorio apenas-impressao mb-4">
-            <div class="d-flex align-items-center">
-                <img src="{{ asset('images/folhas_brancas.png') }}"
-                    alt="Olive Properties"
-                    width="170"
-                    class="me-4">
-                <div>
-                    <h2 class="mb-1">
-                        Olive Properties - Algarve
-                    </h2>
-                    <p class="mb-1">
-                        Luxury Holiday Apartments • Algarve • Portugal
-                    </p>
-                </div>
-            </div>
-
-        </div>
 
         <div class="d-flex justify-content-between mb-3 no-print">
             <div>
@@ -89,17 +72,6 @@
             </div>
 
         </form>
-
-        <div class="apenas-impressao mb-4">
-            <h3 class="titulo-principal">
-                Relatório de Clientes
-            </h3>
-
-            <small class="text-muted">
-                Documento emitido em {{ date('d/m/Y H:i') }}
-            </small>
-
-        </div>
 
         <div class="data-table-wrap"><table class="table table-striped table-bordered align-middle">
             <thead class="table-dark">

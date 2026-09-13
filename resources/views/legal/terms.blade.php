@@ -20,7 +20,7 @@
 </section>
 <section>
     <h2>4. Reservas e pagamentos</h2>
-    <p>Os registos de reservas são geridos na área de administração. A aplicação não disponibiliza um processo público de pagamento ou de confirmação automática de reservas.</p>
+    <p>Os registos de reservas são geridos na área de administração. O processo de nova reserva inclui um pagamento exclusivamente simulado: permite escolher um método de demonstração, testar aprovação ou recusa e gerar uma confirmação imprimível. Não são cobrados valores nem recolhidos dados bancários reais; o documento gerado não tem valor fiscal. A aplicação não disponibiliza pagamentos reais ou um processo público de contratação.</p>
     <p class="legal-pending">[A PREENCHER: condições de contratação efetivamente aplicáveis, confirmação, preços e encargos, pagamentos, cancelamentos, reembolsos e regras de estadia, antes de disponibilizar esses serviços.]</p>
 </section>
 <section>

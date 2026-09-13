@@ -384,8 +384,22 @@
         justify-content: center;
         margin-top: 2.5rem;
     }
+    .site-pagination {
+        display: grid;
+        gap: .75rem;
+        justify-items: center;
+        max-width: 100%;
+    }
+    .site-pagination__summary {
+        margin: 0;
+        color: var(--text-secondary);
+        font-size: .85rem;
+        text-align: center;
+    }
     .pagination {
         display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
         gap: .3rem;
         padding: 0;
         list-style: none;

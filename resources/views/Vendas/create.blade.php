@@ -1,151 +1,52 @@
 @extends('layouts.admin')
 @section('title', 'Nova reserva — Olive Properties')
 @section('admin_content')
-<div class="management-page">
-    <header class="admin-page-heading"><div><p class="eyebrow">Área reservada</p><h1>Nova reserva</h1></div></header>
-    @include('layouts.management-feedback')
-
-    <div class="container mt-4">
-
-        <div class="mb-4">
-            <h3 class="titulo-principal mb-1">
-                Nova Reserva
-            </h3>
-            <small class="text-muted">
-                Registo de uma nova reserva
-            </small>
-
+<header class="admin-page-heading"><div><p class="eyebrow">Área reservada</p><h1>Nova reserva</h1><p>Escolha o cliente, a propriedade e as datas da estadia.</p></div></header>
+@include('Vendas._steps', ['step' => 1])
+<div class="simulation-notice"><strong>Reserva com pagamento simulado.</strong> No passo seguinte poderá testar um pagamento, sem cobrança real. A reserva só será criada após uma simulação aprovada.</div>
+@include('layouts.management-feedback')
+@if($apartamentos->isEmpty())
+    <div class="alert alert--danger">Não existem propriedades disponíveis para reservar. <a href="{{ route('admin.apartamentos.index') }}">Consultar propriedades</a></div>
+@endif
+<form class="checkout-panel booking-form" method="POST" action="{{ route('vendas.store') }}" data-reservation-form>
+    @csrf
+    <div class="form-grid">
+        <div class="field form-grid__full">
+            <label for="cliente_pesquisa">Pesquisar cliente</label>
+            <input id="cliente_pesquisa" type="search" placeholder="Nome, contacto ou NIF" autocomplete="off" aria-controls="cliente_id" aria-describedby="cliente_resultados">
+            <p id="cliente_resultados" class="field-help" role="status" aria-live="polite">Pesquise e selecione o cliente na lista abaixo.</p>
+            <label for="cliente_id">Reservar em nome de *</label>
+            <select id="cliente_id" name="cliente_id" required>
+                <option value="">Selecione um cliente</option>
+                @foreach($clientes as $cliente)
+                    <option value="{{ $cliente->id }}" data-name="{{ $cliente->nome }}" data-phone="{{ $cliente->telefone }}" data-nif="{{ $cliente->nif }}" @selected((string) old('cliente_id', $draft['cliente_id'] ?? ($clienteSelecionado === $cliente->nome ? $cliente->id : '')) === (string) $cliente->id)>{{ $cliente->nome }} · {{ $cliente->telefone }} · NIF {{ $cliente->nif }} · {{ $cliente->email }}</option>
+                @endforeach
+            </select>
+            <a class="booking-add-client" href="{{ route('clientes.create', ['origem' => 'reserva']) }}">+ Criar novo cliente</a>
         </div>
-
-        <div class="card shadow-sm border-0">
-            <div class="card-body p-4">
-                <form action="{{ route('vendas.store') }}" method="POST">
-
-                    @csrf
-
-                    <div class="mb-3">
-                        <label class="form-label" for="apartamento">
-                            Apartamento
-                        </label>
-<select name="apartamento"
-                            id="apartamento"
-                            class="form-select">
-
-                            @foreach($apartamentos as $apartamento)
-
-                            <option value="{{ $apartamento->referencia }}"
-                                data-preco="{{ $apartamento->preco }}" @selected(old('apartamento') == $apartamento->referencia)>
-
-                                {{ $apartamento->referencia }} -
-                                {{ $apartamento->tipologia }}
-
-                            </option>
-                            @endforeach
-
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label" for="cliente">
-                            Cliente
-                        </label>
-<select name="cliente" class="form-select" required id="cliente">
-                            <option value="">
-                                Selecione um cliente
-                            </option>
-
-                            @foreach($clientes as $cliente)
-
-                            <option value="{{ $cliente->nome }}"
-                                @selected(old('cliente', $clienteSelecionado) == $cliente->nome)>
-                                {{ $cliente->nome }}
-                            </option>
-
-                            @endforeach
-
-                        </select>
-                        <div class="d-flex justify-content-end mt-2">
-                            <a href="{{ route('clientes.create', ['origem' => 'reserva']) }}" class="btn">
-                                + Novo Cliente
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label" for="data_entrada">
-                            Data de Entrada
-                        </label>
-<input type="date"
-                            id="data_entrada"
-                            name="data_entrada"
-                            class="form-control"
-                            required value="{{ old('data_entrada') }}">
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label" for="data_saida">
-                            Data de Saída
-                        </label>
-<input type="date"
-                            id="data_saida"
-                            name="data_saida"
-                            class="form-control"
-                            readonly value="{{ old('data_saida') }}">
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label" for="valor_total">
-                            Valor Total (€)
-                        </label>
-<input type="number" step="0.01" min="0"
-                            id="valor_total"
-                            name="valor_total"
-                            class="form-control"
-                            readonly value="{{ old('valor_total') }}">
-                    </div>
-
-                    <div class="d-flex gap-2 mt-4">
-                        <button type="submit" class="btn">
-                            Confirmar Reserva
-                        </button>
-
-                        <a href="{{ route('vendas.index') }}" class="btn btn-outline-dark">
-                            Cancelar
-                        </a>
-                    </div>
-                </form>
-            </div>
+        <div class="field form-grid__full">
+            <label for="apartamento_id">Propriedade *</label>
+            <select id="apartamento_id" name="apartamento_id" required>
+                <option value="">Selecione uma propriedade disponível</option>
+                @foreach($apartamentos as $apartamento)
+                    <option value="{{ $apartamento->id }}" data-preco="{{ $apartamento->preco }}" @selected((string) old('apartamento_id', $draft['apartamento_id'] ?? $apartamentoSelecionado) === (string) $apartamento->id)>{{ $apartamento->referencia }} · {{ $apartamento->morada }} · {{ number_format((float) $apartamento->preco, 2, ',', '.') }} €/semana</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="field">
+            <label for="data_entrada">Data de entrada *</label>
+            <input id="data_entrada" type="date" name="data_entrada" min="{{ now()->toDateString() }}" value="{{ old('data_entrada', $draft['data_entrada'] ?? '') }}" required>
+        </div>
+        <div class="field">
+            <label for="data_saida">Data de saída *</label>
+            <input id="data_saida" type="date" name="data_saida" value="{{ old('data_saida', $draft['data_saida'] ?? '') }}" required>
         </div>
     </div>
-
-</div>
+    <div class="booking-estimate" aria-live="polite"><span id="reservation-nights">Escolha a propriedade e as datas para ver a estimativa.</span><strong id="reservation-estimate">—</strong></div>
+    <p class="field-help">Preço proporcional: preço semanal × número de noites ÷ 7. O total será confirmado no próximo passo. * Campos obrigatórios.</p>
+    <div class="form-actions">
+        <button type="submit" class="button button--primary" @disabled($apartamentos->isEmpty() || $clientes->isEmpty())>Continuar para pagamento</button>
+        <a class="button button--outline" href="{{ route('vendas.index') }}">Cancelar</a>
+    </div>
+</form>
 @endsection
-
-@push('scripts')
-<script>
-        function atualizarPreco() {
-            let apartamento = document.getElementById('apartamento');
-
-            let preco = apartamento.selectedOptions[0]?.dataset.preco ?? '';
-
-            document.getElementById('valor_total').value = preco;
-        }
-
-        document.getElementById('data_entrada').addEventListener('change', function() {
-            if (!this.value) {
-                document.getElementById('data_saida').value = '';
-                return;
-            }
-            let entrada = new Date(this.value);
-            entrada.setDate(entrada.getDate() + 7);
-
-            let saida = entrada.toISOString().split('T')[0];
-
-            document.getElementById('data_saida').value = saida;
-        });
-
-        document.getElementById('apartamento').addEventListener('change', atualizarPreco);
-
-        atualizarPreco();
-    </script>
-@endpush

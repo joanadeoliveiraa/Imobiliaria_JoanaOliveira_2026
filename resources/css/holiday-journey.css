@@ -1,0 +1,30 @@
+@layer components {
+    .holiday-journey { background: #f3f5f1; }
+    .holiday-journey__heading { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: 2.75rem; }
+    .holiday-journey__heading .section-title { max-width: 38rem; }
+    .holiday-journey__heading > p { max-width: 24rem; color: var(--text-secondary); line-height: 1.8; }
+    .holiday-journey__card { display: grid; grid-template-columns: 1fr 1fr; background: white; border: 1px solid var(--border); }
+    .holiday-journey__image { position: relative; min-height: 35rem; overflow: hidden; }
+    .holiday-journey__image img { width: 100%; height: 100%; position: absolute; object-fit: cover; }
+    .holiday-journey__image::after { content: ''; position: absolute; inset: 50% 0 0; background: linear-gradient(transparent, #15291dc9); }
+    .holiday-journey__image > span { position: absolute; bottom: 2.5rem; left: 2.5rem; right: 2rem; z-index: 1; font-family: var(--font-display); font-size: 2rem; color: white; }
+    .holiday-journey__body { min-width: 0; padding: clamp(1.25rem, 3.5vw, 3rem); display: flex; flex-direction: column; }
+    .holiday-journey__tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .6rem; margin-bottom: 2.5rem; }
+    .holiday-journey__tabs button { text-align: left; padding-bottom: .9rem; border-bottom: 2px solid var(--border); font-size: .7rem; color: var(--text-secondary); min-height: 44px; }
+    .holiday-journey__tabs button span { display: block; margin-bottom: .5rem; font-size: 1rem; font-family: var(--font-display); }
+    .holiday-journey__tabs button.is-active { color: var(--olive-900); border-color: var(--olive-800); }
+    .holiday-journey__viewport { overflow: hidden; flex: 1; }
+    .holiday-journey__track { display: flex; transition: transform .45s ease; }
+    .holiday-journey__slide { flex: 0 0 100%; min-width: 0; padding: .25rem; }
+    .holiday-journey__slide h3 { font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1.15; margin: 1rem 0 1.25rem; color: var(--olive-900); }
+    .holiday-journey__slide > p:not(.eyebrow) { color: var(--text-secondary); line-height: 1.85; font-size: .95rem; }
+    .holiday-journey__link { display: inline-flex; align-items: center; gap: 1.5rem; min-height: 44px; margin-top: 1.5rem; color: var(--olive-900); border-bottom: 1px solid var(--olive-800); font-size: .85rem; }
+    .holiday-journey__controls { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; gap: 1rem; }
+    .holiday-journey__controls > span { font-size: .75rem; color: var(--text-secondary); }
+    .holiday-journey__controls > div { display: flex; gap: .6rem; }
+    .holiday-journey__controls button { width: 44px; height: 44px; border: 1px solid var(--border); border-radius: 50%; color: var(--olive-900); }
+    .holiday-journey button:disabled { opacity: .35; cursor: default; }
+    .holiday-journey button:focus-visible, .holiday-journey a:focus-visible { outline: 2px solid var(--olive-700); outline-offset: 2px; }
+    @media (max-width: 800px) { .holiday-journey__heading { display: block; } .holiday-journey__heading > p { margin-top: 1rem; } .holiday-journey__card { grid-template-columns: 1fr; } .holiday-journey__image { min-height: 18rem; } }
+    @media (prefers-reduced-motion: reduce) { .holiday-journey__track { transition: none; } }
+}

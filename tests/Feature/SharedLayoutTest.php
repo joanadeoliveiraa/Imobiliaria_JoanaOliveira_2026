@@ -36,6 +36,8 @@ it('keeps the reservation summary inside the shared layout', function () {
     $this->actingAs(User::factory()->create(['tipo' => 'administrador']));
     $cliente = Cliente::create(['nome' => 'Cliente Resumo', 'email' => 'resumo@example.test', 'telefone' => '912345678', 'morada' => 'Faro', 'nif' => '123456789']);
     $apartamento = Apartamento::create(['referencia' => 'QA002', 'tipologia' => 'T1', 'morada' => 'Faro', 'area' => 60, 'preco' => 800, 'estado' => 'Disponivel']);
-    $this->post('/vendas', ['cliente' => $cliente->nome, 'apartamento' => $apartamento->referencia, 'data_entrada' => '2026-10-01', 'data_saida' => '2026-10-08', 'valor_total' => 800])->assertOk()
-        ->assertSee('class="public-header"', false)->assertSee('class="public-footer"', false)->assertSee('Reserva Confirmada');
+    $checkout = $this->post('/vendas', ['cliente_id' => $cliente->id, 'apartamento_id' => $apartamento->id, 'data_entrada' => now()->addDays(7)->toDateString(), 'data_saida' => now()->addDays(14)->toDateString()])->assertRedirect();
+    $payment = $this->post($checkout->headers->get('Location'), ['metodo' => 'cartao', 'resultado' => 'aprovado'])->assertRedirect();
+    $this->get($payment->headers->get('Location'))->assertOk()
+        ->assertSee('class="public-header"', false)->assertSee('class="public-footer"', false)->assertSee('Reserva confirmada');
 });

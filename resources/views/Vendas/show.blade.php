@@ -59,6 +59,9 @@
             <hr>
 
             <div class="d-flex gap-2">
+                @if($venda->pagamentoSimulado)
+                    <a class="btn btn-outline-dark" href="{{ route('vendas.confirmacao', $venda) }}">Confirmação / Imprimir</a>
+                @endif
                 <a href="{{ route('vendas.edit', $venda->id) }}"
                     class="btn btn-olive">
                     Editar Reserva

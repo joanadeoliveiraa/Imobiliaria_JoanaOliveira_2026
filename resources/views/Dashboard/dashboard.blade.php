@@ -2,6 +2,7 @@
 @section('title', 'Dashboard — Olive Properties')
 @section('admin_content')
 <div class="management-page">
+    <x-document-header title="Resumo de atividade" scope="Indicadores globais e atividades recentes apresentados no dashboard." />
     <header class="admin-page-heading"><div><p class="eyebrow">Área reservada</p><h1>Dashboard</h1></div></header>
     @include('layouts.management-feedback')
 
@@ -207,6 +208,7 @@
                     <div class="card-body chart-panel">
                         <canvas id="graficoClientes"></canvas>
                     </div>
+                    <x-document-chart-table :labels="$labelsClientes" :values="$dadosClientes" />
                 </div>
             </div>
 
@@ -218,6 +220,7 @@
                     <div class="card-body chart-panel">
                         <canvas id="graficoReceita"></canvas>
                     </div>
+                    <x-document-chart-table :labels="$labelsReceita" :values="$dadosReceita" :money="true" />
                 </div>
             </div>
 
@@ -229,6 +232,7 @@
                     <div class="card-body chart-panel">
                         <canvas id="graficoApartamentos"></canvas>
                     </div>
+                    <x-document-chart-table :labels="$labelsApartamentos" :values="$dadosApartamentos" />
                 </div>
             </div>
         </div>

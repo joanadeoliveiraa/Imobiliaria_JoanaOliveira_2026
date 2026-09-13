@@ -2,6 +2,7 @@
 @section('title', 'Reservas — Olive Properties')
 @section('admin_content')
 <div class="management-page">
+    <x-document-header title="Relatório de reservas" :scope="'Registos '.($vendas->firstItem() ?? 0).'–'.($vendas->lastItem() ?? 0).' de '.$vendas->total().' · Página '.$vendas->currentPage().' de '.$vendas->lastPage()" />
     <header class="admin-page-heading"><div><p class="eyebrow">Área reservada</p><h1>Reservas</h1></div></header>
     @include('layouts.management-feedback')
 
@@ -23,14 +24,6 @@
             </div>
         </div>
 
-        <div class="apenas-impressao mb-4">
-            <h3 class="titulo-principal">
-                Relatório de Reservas
-            </h3>
-            <small class="text-muted">
-                Documento emitido em {{ date('d/m/Y H:i') }}
-            </small>
-        </div>
 
         <div class="data-table-wrap"><table class="table table-striped table-bordered">
             <thead class="table-dark">

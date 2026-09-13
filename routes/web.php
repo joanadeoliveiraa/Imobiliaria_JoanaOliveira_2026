@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApartamentoController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReservaCheckoutController;
 use App\Http\Controllers\VendaController;
 use App\Models\Apartamento;
 use Illuminate\Support\Facades\Route;
@@ -40,7 +41,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('clientes', ClienteController::class);
     Route::resource('apartamentos', ApartamentoController::class)
         ->except(['index', 'show']);
-    Route::resource('vendas', VendaController::class);
+    Route::post('/vendas', [ReservaCheckoutController::class, 'start'])->name('vendas.store');
+    Route::get('/reservas/pagamento/{token}', [ReservaCheckoutController::class, 'show'])->whereUuid('token')->name('vendas.pagamento');
+    Route::post('/reservas/pagamento/{token}', [ReservaCheckoutController::class, 'pay'])->whereUuid('token')->name('vendas.pagar');
+    Route::get('/vendas/{venda}/confirmacao', [ReservaCheckoutController::class, 'confirmation'])->name('vendas.confirmacao');
+    Route::resource('vendas', VendaController::class)->except('store');
 
     Route::get('/clientes/{cliente}/reservas', [VendaController::class, 'historicoCliente'])
         ->name('clientes.reservas');

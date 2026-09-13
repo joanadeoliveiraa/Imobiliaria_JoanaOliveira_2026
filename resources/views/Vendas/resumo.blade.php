@@ -2,38 +2,17 @@
 @section('title', 'Resumo da reserva — Olive Properties')
 @section('admin_content')
 <div class="management-page">
+    <x-document-header title="Resumo da reserva" :reference="'Reserva #'.$venda->id" />
     <header class="admin-page-heading"><div><p class="eyebrow">Área reservada</p><h1>Resumo da reserva</h1></div></header>
     @include('layouts.management-feedback')
 
     <div class="container py-5" >
-        <div class="cabecalho-relatorio apenas-impressao mb-5">
-            <div class="row align-items-center">
-                <div class="col-md-3">
-                    <img src="{{ asset('images/folhas_brancas.png') }}"
-                        alt="Olive Properties"
-                        width="185">
-                </div>
-
-                <div class="col-md-9">
-                    <h2 class="mb-1">
-                        Olive Properties - Algarve
-                    </h2>
-                    <p class="mb-0">
-                        Luxury Holiday Apartments • Algarve • Portugal
-                    </p>
-                </div>
-            </div>
-
-        </div>
-
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h3 class="titulo-principal mb-0">
                     Reserva Confirmada
                 </h3>
-                <small class="text-muted">
-                    Documento emitido em {{ date('d/m/Y H:i') }}
-                </small>
+
             </div>
             <div class="no-print">
                 <button onclick="window.print()" class="btn btn-outline-secondary">

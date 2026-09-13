@@ -27,14 +27,14 @@ it('does not allow a reservation for an unavailable property', function () {
     ]);
 
     $response = $this->actingAs($admin)->post(route('vendas.store'), [
-        'cliente' => $cliente->nome,
-        'apartamento' => $apartamento->referencia,
-        'data_entrada' => '2026-09-10',
-        'data_saida' => '2026-09-17',
+        'cliente_id' => $cliente->id,
+        'apartamento_id' => $apartamento->id,
+        'data_entrada' => now()->addDays(7)->toDateString(),
+        'data_saida' => now()->addDays(14)->toDateString(),
         'valor_total' => 1,
     ]);
 
-    $response->assertSessionHasErrors('apartamento');
+    $response->assertSessionHasErrors('apartamento_id');
     expect(Venda::count())->toBe(0);
 });
 
@@ -56,13 +56,14 @@ it('uses the property price instead of a manipulated submitted value', function 
         'estado' => 'Disponivel',
     ]);
 
-    $this->actingAs($admin)->post(route('vendas.store'), [
-        'cliente' => $cliente->nome,
-        'apartamento' => $apartamento->referencia,
-        'data_entrada' => '2026-09-10',
-        'data_saida' => '2026-09-17',
+    $response = $this->actingAs($admin)->post(route('vendas.store'), [
+        'cliente_id' => $cliente->id,
+        'apartamento_id' => $apartamento->id,
+        'data_entrada' => now()->addDays(7)->toDateString(),
+        'data_saida' => now()->addDays(14)->toDateString(),
         'valor_total' => 1,
-    ])->assertOk();
+    ])->assertRedirect();
+    $this->post($response->headers->get('Location'), ['metodo' => 'cartao', 'resultado' => 'aprovado'])->assertRedirect();
 
     expect(Venda::first()->valor_total)->toBe('850.00')
         ->and($apartamento->fresh()->estado)->toBe('Nao Disponivel');
