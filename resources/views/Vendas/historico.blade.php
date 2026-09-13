@@ -1,57 +1,11 @@
-<!DOCTYPE html>
-
-<html lang="pt">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Histórico de Reservas</title>
-
-    <link rel="icon" type="image/png" href="{{ asset('images/logo_folhaVerde.png') }}">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-        .titulo-principal {
-            color: #2F4F4F;
-            font-weight: bold;
-        }
-
-        .subtitulo {
-            color: #6C757D;
-        }
-
-        .card-topo {
-            border-left: 5px solid #2F4F4F;
-            padding-left: 15px;
-            margin-bottom: 20px;
-        }
-
-        .btn-dark {
-            background-color: #2F4F4F;
-            border: none;
-        }
-
-        .btn-dark:hover {
-            background-color: #556B2F;
-        }
-    </style>
-
-</head>
-
-<body>
+@extends('layouts.admin')
+@section('title', 'Histórico de reservas — Olive Properties')
+@section('admin_content')
+<div class="management-page">
+    <header class="admin-page-heading"><div><p class="eyebrow">Área reservada</p><h1>Histórico de reservas</h1></div></header>
+    @include('layouts.management-feedback')
 
     <div class="container mt-4">
-        <div class="card-topo">
-            <h1 class="titulo-principal">
-                Olive Properties - Algarve
-            </h1>
-
-            <p class="subtitulo">
-                Histórico de Reservas do Cliente
-            </p>
-
-        </div>
 
         <div class="">
             <strong>Cliente:</strong>
@@ -59,7 +13,6 @@
 
         </div>
 
-        <!-- Histórico resevras -->
         <div class="row mb-3">
             <div class="col-md-4">
                 <div class="alert alert-success py-2">
@@ -88,7 +41,7 @@
             </div>
         </div>
 
-        <table class="table table-striped table-bordered">
+        <div class="data-table-wrap"><table class="table table-striped table-bordered">
             <thead class="table-dark">
                 <tr>
                     <th>Apartamento</th>
@@ -120,7 +73,7 @@
 
             </tbody>
 
-        </table>
+        </table></div>
 
         <div class="mt-4">
 
@@ -141,5 +94,6 @@
 
         </div>
     </div>
-</body>
-</html>
+
+</div>
+@endsection

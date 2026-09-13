@@ -1,0 +1,93 @@
+@layer components {
+    .account-navigation { border-bottom: 1px solid var(--border); background: var(--surface); }
+    .account-navigation__inner, .account-navigation nav, .account-navigation__user { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1.5rem; }
+    .account-navigation__inner { justify-content: space-between; padding-block: .8rem; }
+    .account-navigation nav a, .account-navigation button { display: inline-flex; min-height: 2.75rem; align-items: center; font-size: .82rem; font-weight: 600; }
+    .account-navigation nav a { border-bottom: 2px solid transparent; color: var(--text-secondary); }
+    .account-navigation nav a:hover, .account-navigation nav a.is-active { color: var(--olive-900); border-color: var(--olive-700); }
+    .account-navigation__user { font-size: .8rem; color: var(--text-secondary); }
+    .account-navigation button { color: var(--olive-800); }
+    .management-area { background: var(--ivory); }
+    .management-main { padding-block: clamp(2rem, 5vw, 3.5rem); min-height: 55vh; }
+    .management-page { min-width: 0; }
+    .management-main .data-table-wrap { position: relative; max-width: 100%; }
+    .management-page > .container { width: 100%; max-width: none; padding: 0; margin: 0; }
+    .management-page h1 { font-size: clamp(2rem, 4vw, 2.75rem); }
+    .management-page h2, .management-page h3 { font-size: 1.6rem; }
+    .management-page h4, .management-page h5 { font-size: 1.15rem; font-weight: 600; color: var(--olive-900); }
+    .management-page p { margin-block: .6rem; }
+    .management-page .text-muted, .management-page .subtitulo { color: var(--text-secondary); }
+    .management-page .row { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 1.25rem; }
+    .management-page .row > * { grid-column: span 12; min-width: 0; }
+    .management-page .row > .col-md-3 { grid-column: span 3; }
+    .management-page .row > .col-md-4 { grid-column: span 4; }
+    .management-page .row > .col-md-6 { grid-column: span 6; }
+    .management-page .row > .col-md-8 { grid-column: span 8; }
+    .management-page .row > .col-md-9 { grid-column: span 9; }
+    .management-page .d-flex { display: flex; flex-wrap: wrap; gap: .6rem; }
+    .management-page .justify-content-between { justify-content: space-between; }
+    .management-page .justify-content-center { justify-content: center; }
+    .management-page .justify-content-end { justify-content: flex-end; }
+    .management-page .align-items-center { align-items: center; }
+    .management-page .flex-fill { flex: 1; }
+    .management-page .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .management-page .card-header { padding: 1rem 1.4rem; border-bottom: 1px solid var(--border); background: #f8faf7; color: var(--olive-900); }
+    .management-page .card-body { padding: clamp(1rem, 3vw, 1.5rem); }
+    .management-page .card-dashboard { height: 100%; }
+    .management-page .titulo-card { color: var(--text-secondary); font-size: .8rem; }
+    .management-page .numero { margin-top: .75rem; font-family: var(--font-display); font-size: 2.25rem; color: var(--olive-900); overflow-wrap: anywhere; }
+    .management-page .numero--text { font-size: 1.25rem; }
+    .management-page .chart-panel { height: 19rem; }
+    .management-page .chart-panel canvas { max-height: 100%; }
+    .management-page .btn { @apply button button--primary; margin-block: .15rem; }
+    .management-page .btn-outline-dark, .management-page .btn-outline-secondary, .management-page .btn-outline-primary, .management-page .btn-secondary { @apply button--outline; }
+    .management-page .btn-danger, .management-page .btn-outline-danger { @apply button--danger; }
+    .management-page .btn-sm { @apply button--small; }
+    .management-page .inline-form { display: inline; }
+    .management-page .form-label { display: block; margin-bottom: .4rem; font-size: .8rem; font-weight: 600; color: var(--olive-800); }
+    .management-page .form-control, .management-page .form-select { width: 100%; min-height: 2.85rem; padding: .65rem .8rem; border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); background: var(--surface); }
+    .management-page .form-control:focus, .management-page .form-select:focus { outline: 2px solid var(--olive-200); outline-offset: 1px; border-color: var(--olive-500); }
+    .management-page input[readonly] { background: var(--ivory); color: var(--text-secondary); }
+    .management-page .table { width: 100%; border-collapse: collapse; background: var(--surface); font-size: .85rem; }
+    .management-page .table th { padding: .9rem 1rem; color: var(--text-secondary); background: #f8faf7; font-size: .7rem; text-transform: uppercase; letter-spacing: .04em; text-align: left; }
+    .management-page .table td { padding: .9rem 1rem; vertical-align: middle; border-top: 1px solid var(--border); }
+    .management-page .table td:last-child { min-width: 10rem; }
+    .management-page .table tbody tr:hover { background: #f8faf7; }
+    .management-page .data-table-wrap { border: 1px solid var(--border); border-radius: var(--radius-sm); }
+    .management-page .badge.bg-success, .management-page .alert-success { color: #17442f; background: #e2f0e7; }
+    .management-page .badge.bg-danger { color: #762d2d; background: #faeded; }
+    .management-page .alert-info, .management-page .alert-secondary { background: var(--olive-100); color: var(--olive-900); }
+    .management-page .list-group-item { padding-block: .85rem; border-bottom: 1px solid var(--border); }
+    .apenas-impressao { display: none; }
+    .account-page__heading h2 { font-size: 2.25rem; font-weight: 500; color: var(--olive-900); }
+    .account-page .py-12 { padding-block: 2rem; }
+    .account-page .bg-white { border: 1px solid var(--border); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .confirmation-dialog { width: min(100% - 2rem, 30rem); padding: 2rem; border: 1px solid var(--border); border-radius: var(--radius-md); color: var(--text-primary); }
+    .confirmation-dialog::backdrop { background: rgb(24 37 31 / .55); }
+    .confirmation-dialog h2 { margin-bottom: 1rem; font-size: 1.6rem; }
+    @media (max-width: 900px) {
+        .account-navigation__inner { align-items: flex-start; flex-direction: column; }
+        .management-page .row > .col-md-3 { grid-column: span 6; }
+    }
+    @media (max-width: 600px) {
+        .management-page .row > [class*='col-md-'] { grid-column: span 12; }
+        .account-navigation nav { gap: .25rem 1rem; }
+        .management-page .d-flex > div { display: flex; flex-wrap: wrap; gap: .5rem; }
+        .form-actions { flex-wrap: wrap; }
+    }
+    @media print {
+        @page { margin: 15mm; }
+        .public-header, .public-footer, .account-navigation, .cookie-notice, .no-print, .confirmation-dialog, .skip-link { display: none !important; }
+        .management-page .btn, .form-actions, .admin-filters, .table-actions, .pagination-wrap { display: none !important; }
+        .apenas-impressao { display: block !important; }
+        .management-area, .management-page .card { background: white; box-shadow: none; }
+        .management-main { width: 100%; padding: 0; }
+        .management-page .data-table-wrap { overflow: visible; border: 0; }
+        .management-page .table { font-size: 9pt; }
+        .management-page .table th, .management-page .table td { padding: 6pt; }
+        .management-page tr, .management-page .card { break-inside: avoid; }
+        .management-page thead { display: table-header-group; }
+        .management-page .chart-panel { display: none; }
+        .cabecalho-relatorio img { width: 4rem; filter: brightness(0); }
+    }
+}

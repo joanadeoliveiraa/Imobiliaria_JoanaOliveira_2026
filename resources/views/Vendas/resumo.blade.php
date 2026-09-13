@@ -1,116 +1,12 @@
-<!DOCTYPE html>
+@extends('layouts.admin')
+@section('title', 'Resumo da reserva — Olive Properties')
+@section('admin_content')
+<div class="management-page">
+    <header class="admin-page-heading"><div><p class="eyebrow">Área reservada</p><h1>Resumo da reserva</h1></div></header>
+    @include('layouts.management-feedback')
 
-<html lang="pt">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resumo da Reserva</title>
-
-    <link rel="icon" type="image/png" href="{{ asset('images/logo_folhaVerde.png') }}">
-
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-        .titulo-principal {
-            color: #2F4F4F;
-            font-weight: bold;
-        }
-
-        .cabecalho-relatorio {
-            background-color: #2F4F4F;
-            padding: 30px 40px;
-            border-radius: 12px;
-            color: white;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .cabecalho-relatorio h2 {
-            font-weight: bold;
-            margin: 0;
-        }
-
-        .cabecalho-relatorio p {
-            opacity: 0.9;
-            margin: 0;
-        }
-
-        .btn-dark {
-            background-color: #2F4F4F;
-            border: none;
-        }
-
-        .btn-dark:hover {
-            background-color: #556B2F;
-        }
-
-        /* Cabeçalho */
-
-        .card-header-custom {
-            background-color: #2F4F4F;
-            color: white;
-        }
-
-        /* Impressão */
-
-        .apenas-impressao {
-            display: none;
-        }
-
-        @media print {
-
-            /* Esconder elementos do site */
-            .no-print,
-            .no-print * {
-                display: none !important;
-                visibility: hidden !important;
-            }
-
-            /* Mostrar apenas na impressão */
-            .apenas-impressao {
-                display: block !important;
-            }
-
-            /* Evitar cortes de conteúdo */
-            .card,
-            .row,
-            .cabecalho-relatorio {
-                break-inside: auto;
-                page-break-inside: auto;
-            }
-
-            .cabecalho-relatorio {
-                padding: 20px !important;
-            }
-
-            /* Manter cores */
-            * {
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-
-            /* Margens da página */
-            @page {
-                margin: 1.5cm;
-            }
-
-            body {
-                zoom: 75%;
-                margin: 0;
-                padding: 0;
-            }
-        }
-    </style>
-
-
-</head>
-
-<body>
-
-<!-- Cabeçalho -->
-    <div class="container py-5" style="max-width:1200px;">
-        <div class="cabecalho-relatorio mb-5">
+    <div class="container py-5" >
+        <div class="cabecalho-relatorio apenas-impressao mb-5">
             <div class="row align-items-center">
                 <div class="col-md-3">
                     <img src="{{ asset('images/folhas_brancas.png') }}"
@@ -130,7 +26,6 @@
 
         </div>
 
-        <!-- Título e Impressão -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h3 class="titulo-principal mb-0">
@@ -147,7 +42,6 @@
             </div>
         </div>
 
-        <!-- Cliente + Reserva -->
         <div class="row mb-4">
 
             <div class="col-md-6">
@@ -195,7 +89,6 @@
             </div>
         </div>
 
-        <!-- Apartamento -->
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-header bg-light">
                 <strong>Informação do Apartamento</strong>
@@ -222,7 +115,6 @@
             </div>
         </div>
 
-        <!-- Rodapé -->
         <div class="text-center text-muted mt-5 apenas-impressao">
             <hr>
             <p class="mb-1">
@@ -233,7 +125,6 @@
             </small>
         </div>
 
-        <!-- Botões -->
         <div class="text-center mt-4 no-print">
             <a href="{{ route('vendas.create') }}" class="btn btn-dark">
                 Nova Reserva
@@ -248,8 +139,6 @@
             </a>
         </div>
     </div>
-    </div>
 
-</body>
-
-</html>
+</div>
+@endsection

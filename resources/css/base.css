@@ -1,0 +1,53 @@
+@layer base {
+    :root {
+        --font-body: Figtree, ui-sans-serif, system-ui, sans-serif;
+        --font-display: Georgia, 'Times New Roman', serif;
+        --olive-950: #18251f;
+        --olive-900: #22352c;
+        --olive-800: #30493b;
+        --olive-700: #46624f;
+        --olive-500: #718a72;
+        --olive-200: #cfd9cc;
+        --olive-100: #e8eee5;
+        --ivory: #f5f7f5;
+        --surface: #ffffff;
+        --border: #dddcd5;
+        --text-primary: #202622;
+        --text-secondary: #697069;
+        --success: #2f6b4f;
+        --warning: #936e24;
+        --danger: #a33f3f;
+        --radius-sm: .375rem;
+        --radius-md: .75rem;
+        --radius-lg: 1.25rem;
+        --shadow-sm: 0 1px 2px rgb(24 37 31 / .05), 0 8px 24px rgb(24 37 31 / .05);
+        --space-section: clamp(4rem, 8vw, 7.5rem);
+    }
+    html {
+        scroll-behavior: smooth;
+    }
+    body {
+        margin: 0;
+        color: var(--text-primary);
+        background: #fff;
+        font-family: var(--font-body);
+        line-height: 1.6;
+    }
+    h1, h2, h3 {
+        color: var(--olive-950);
+        font-family: var(--font-display);
+        font-weight: 500;
+        line-height: 1.08;
+    }
+    a {
+        color: inherit;
+    }
+    img {
+        display: block;
+        max-width: 100%;
+    }
+    :focus-visible {
+        outline: 3px solid rgb(113 138 114 / .45);
+        outline-offset: 3px;
+    }
+}

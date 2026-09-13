@@ -7,6 +7,10 @@ use App\Http\Controllers\VendaController;
 use App\Models\Apartamento;
 use Illuminate\Support\Facades\Route;
 
+Route::view('/politica-de-privacidade', 'legal.privacy')->name('legal.privacy');
+Route::view('/politica-de-cookies', 'legal.cookies')->name('legal.cookies');
+Route::view('/termos-e-condicoes', 'legal.terms')->name('legal.terms');
+
 Route::get('/', function () {
     $referenciasDestaque = ['ALG011', 'ALG012', 'ALG013'];
     $propriedadesDestaque = Apartamento::whereIn('referencia', $referenciasDestaque)

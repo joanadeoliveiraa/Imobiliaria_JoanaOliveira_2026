@@ -1,147 +1,18 @@
-<!DOCTYPE html>
-<html lang="pt">
+@extends('layouts.admin')
+@section('title', 'Dashboard — Olive Properties')
+@section('admin_content')
+<div class="management-page">
+    <header class="admin-page-heading"><div><p class="eyebrow">Área reservada</p><h1>Dashboard</h1></div></header>
+    @include('layouts.management-feedback')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <div class="container py-4" >
 
-    <link rel="icon" type="image/png" href="{{ asset('images/logo_folhaVerde.png') }}">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-        .titulo-principal {
-            color: #2F4F4F;
-            font-weight: bold;
-        }
-
-        .subtitulo {
-            color: #6C757D;
-        }
-
-        .card-body canvas {
-            height: 280px !important;
-        }
-
-        .card-topo {
-            border-left: 5px solid #2F4F4F;
-            padding-left: 15px;
-            margin-bottom: 25px;
-        }
-
-        .card-dashboard {
-            transition: 0.3s;
-        }
-
-        .card-header {
-            background-color: #2F4F4F !important;
-            color: white !important;
-        }
-
-        .card-dashboard:hover {
-            transform: translateY(-4px);
-        }
-
-        .numero {
-            font-size: 2.3rem;
-            font-weight: bold;
-            color: #2F4F4F;
-        }
-
-        .titulo-card {
-            color: #6C757D;
-            font-size: 0.95rem;
-        }
-
-        .btn-olive {
-            background-color: #2F4F4F;
-            color: white;
-            border: none;
-        }
-
-        .btn-olive:hover {
-            background-color: #556B2F;
-            color: white;
-        }
-
-        .cabecalho-site {
-            background-color: #2F4F4F;
-            padding: 30px 40px;
-            border-radius: 12px;
-            color: white;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .cabecalho-site h2,
-        .cabecalho-site p,
-        .cabecalho-site small {
-            color: white !important;
-        }
-
-        @media print {
-
-            @page {
-                margin: 1.5cm;
-            }
-
-            .no-print,
-            .no-print * {
-                display: none !important;
-            }
-
-            body {
-                zoom: 80%;
-            }
-
-            * {
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-
-            .card-header {
-                background-color: #2F4F4F !important;
-                color: white !important;
-            }
-
-            canvas {
-                max-height: 300px !important;
-            }
-        }
-    </style>
-</head>
-
-<body>
-    <div class="container py-4" style="max-width:1200px;">
-        <!-- Cabeçalho -->
-        <div class="cabecalho-site mb-4">
-            <div class="row align-items-center">
-                <div class="col-md-3">
-                    <img src="{{ asset('images/folhas_brancas.png') }}" alt="Olive Properties" width="185">
-                </div>
-
-                <div class="col-md-9">
-                    <h2 class="mb-1">
-                        Olive Properties - Algarve
-                    </h2>
-                    <p class="mb-1">
-                        Luxury Holiday Apartments • Algarve • Portugal
-                    </p>
-                    <small>
-                        Painel de Gestão Empresarial
-                    </small>
-                </div>
-            </div>
-        </div>
-
-        <!-- Informação -->
         <div class="mb-3">
             <small class="text-muted">
                 Último acesso: {{ $ultimoAcesso }}
             </small>
         </div>
 
-        <!-- Botões -->
         <div class="d-flex justify-content-end mb-4 no-print">
             <button onclick="window.print()" class="btn btn-outline-secondary me-2">
                 Relatório PDF
@@ -150,7 +21,6 @@
                 ← Menu Principal
             </a>
         </div>
-
 
         <div class="card mb-4 border-0 shadow-sm">
             <div class="card-body text-center">
@@ -228,7 +98,7 @@
                         <div class="titulo-card">
                             Cliente Mais Frequente
                         </div>
-                        <div class="numero" style="font-size:1.2rem;">
+                        <div class="numero numero--text">
                             {{ $clienteTop->cliente ?? '-' }}
                         </div>
                     </div>
@@ -241,7 +111,7 @@
                         <div class="titulo-card">
                             Apartamento Mais Reservado
                         </div>
-                        <div class="numero" style="font-size:1.2rem;">
+                        <div class="numero numero--text">
                             {{ $apartamentoTop->apartamento ?? '-' }}
                         </div>
                     </div>
@@ -254,7 +124,7 @@
                         <div class="titulo-card">
                             Próxima Reserva
                         </div>
-                        <div class="numero" style="font-size:1.2rem;">
+                        <div class="numero numero--text">
                             @if($proximaReserva)
                             {{ date('d/m/Y', strtotime($proximaReserva->data_entrada)) }}
                             @else
@@ -265,13 +135,12 @@
                 </div>
             </div>
 
-            <!-- Ocupação dos alojamentos -->
             <div class="card shadow-sm mt-4">
-                <div class="card-header text-white" style="background-color:#2F4F4F;">
+                <div class="card-header">
                    <strong> Ocupação dos Apartamentos </strong>
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped table-bordered mb-0">
+                    <div class="data-table-wrap"><table class="table table-striped table-bordered mb-0">
                         <thead>
                             <tr>
                                 <th>Referência</th>
@@ -306,12 +175,11 @@
                             </tr>
                             @endforeach
                         </tbody>
-                    </table>
+                    </table></div>
                 </div>
             </div>
         </div>
 
-<!-- Receita mensal  -->
         <div class="card mt-4">
             <div class="card-header">
                 <strong>Receita Mensal</strong>
@@ -336,7 +204,7 @@
                     <div class="card-header">
                         Top Clientes
                     </div>
-                    <div class="card-body">
+                    <div class="card-body chart-panel">
                         <canvas id="graficoClientes"></canvas>
                     </div>
                 </div>
@@ -347,7 +215,7 @@
                     <div class="card-header">
                         Receita Mensal
                     </div>
-                    <div class="card-body">
+                    <div class="card-body chart-panel">
                         <canvas id="graficoReceita"></canvas>
                     </div>
                 </div>
@@ -358,7 +226,7 @@
                     <div class="card-header">
                         Reservas por Apartamento
                     </div>
-                    <div class="card-body">
+                    <div class="card-body chart-panel">
                         <canvas id="graficoApartamentos"></canvas>
                     </div>
                 </div>
@@ -389,11 +257,15 @@
                 @endif
             </div>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+</div>
 
+</div>
+@endsection
 
-        <script>
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
             // Gráfico de Receita
             const ctx = document.getElementById('graficoReceita');
 
@@ -415,7 +287,6 @@
                     maintainAspectRatio: false
                 }
             });
-
 
             // Gráfico de Clientes
             const ctxClientes = document.getElementById('graficoClientes');
@@ -442,7 +313,6 @@
                     }
                 }
             });
-
 
             // Gráfico de Reservas por Apartamento
             const ctxApartamentos = document.getElementById('graficoApartamentos');
@@ -471,6 +341,4 @@
                 }
             });
         </script>
-</body>
-
-</html>
+@endpush

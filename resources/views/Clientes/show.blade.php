@@ -1,52 +1,11 @@
-<!DOCTYPE html>
-
-<html lang="pt">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Olive Properties - Algarve</title>
-
-    <link rel="icon" type="image/png" href="{{ asset('images/logo_folhaVerde.png') }}">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-        .titulo-principal {
-            color: #2F4F4F;
-            font-weight: bold;
-        }
-
-        .subtitulo {
-            color: #6C757D;
-        }
-
-        .card-topo {
-            border-left: 5px solid #2F4F4F;
-            padding-left: 15px;
-            margin-bottom: 20px;
-        }
-    </style>
-
-
-</head>
-
-<body>
-
+@extends('layouts.admin')
+@section('title', 'Detalhes do cliente — Olive Properties')
+@section('admin_content')
+<div class="management-page">
+    <header class="admin-page-heading"><div><p class="eyebrow">Área reservada</p><h1>Detalhes do cliente</h1></div></header>
+    @include('layouts.management-feedback')
 
     <div class="container mt-4">
-
-        <div class="card-topo">
-
-            <h1 class="titulo-principal">
-                Olive Properties - Algarve
-            </h1>
-
-            <p class="subtitulo">
-                Gestão de apartamentos turísticos no Algarve
-            </p>
-
-        </div>
 
         <div class="card">
 
@@ -90,7 +49,7 @@
 
         </div>
 
+</div>
 
-</body>
-
-</html>
+</div>
+@endsection

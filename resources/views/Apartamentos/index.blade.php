@@ -21,7 +21,7 @@
                 </div>
                 <div class="field">
                     <label for="estado">Disponibilidade</label>
-                    <select id="estado" name="estado">
+                    <select id="estado" name="estado" onchange="this.form.requestSubmit()">
                         <option value="">Todas</option>
                         <option value="Disponivel" @selected(request('estado') === 'Disponivel')>Disponíveis</option>
                         <option value="Nao Disponivel" @selected(request('estado') === 'Nao Disponivel')>Indisponíveis</option>

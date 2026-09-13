@@ -232,8 +232,7 @@ class ApartamentoController extends Controller
         $labelsApartamentos = $reservasPorApartamento->pluck('apartamento');
         $dadosApartamentos = $reservasPorApartamento->pluck('total');
 
-        $receitaMensal = Venda::selectRaw(" DATE_FORMAT(data_entrada, '%Y-%m') as mes,
-        SUM(valor_total) as total")
+        $receitaMensal = Venda::selectRaw('SUBSTR(data_entrada, 1, 7) as mes, SUM(valor_total) as total')
             ->groupBy('mes')
             ->orderBy('mes')
             ->get();

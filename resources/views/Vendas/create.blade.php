@@ -1,89 +1,11 @@
-<!DOCTYPE html>
-<html lang="pt">
-
-<head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Gestão de Reservas</title>
-
-    <link rel="icon" type="image/png" href="{{ asset('images/logo_folhaVerde.png') }}">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-        rel="stylesheet">
-
-    <style>
-        .titulo-principal {
-            color: #2F4F4F;
-            font-weight: bold;
-        }
-
-        .subtitulo {
-            color: #6C757D;
-        }
-
-        .card-topo {
-            border-left: 5px solid #2F4F4F;
-            padding-left: 15px;
-            margin-bottom: 20px;
-        }
-
-        .btn {
-            background-color: #2F4F4F;
-            color: white;
-            border: none;
-        }
-
-        .btn:hover {
-            background-color: #3f6666;
-            color: white;
-        }
-
-        .cabecalho-site {
-            background-color: #2F4F4F;
-            padding: 30px 40px;
-            border-radius: 12px;
-            color: white;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .cabecalho-site h2,
-        .cabecalho-site p,
-        .cabecalho-site small {
-            color: white !important;
-        }
-    </style>
-
-</head>
-
-<body>
+@extends('layouts.admin')
+@section('title', 'Nova reserva — Olive Properties')
+@section('admin_content')
+<div class="management-page">
+    <header class="admin-page-heading"><div><p class="eyebrow">Área reservada</p><h1>Nova reserva</h1></div></header>
+    @include('layouts.management-feedback')
 
     <div class="container mt-4">
-        @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show">
-            {{ session('success') }}
-
-            <button type="button" class="btn-close" data-bs-dismiss="alert">
-            </button>
-        </div>
-        @endif
-
-        <div class="cabecalho-site mb-4">
-            <div class="row align-items-center">
-                <div class="col-md-3">
-                    <img src="{{ asset('images/folhas_brancas.png') }}" alt="Olive Properties" width="185">
-                </div>
-                <div class="col-md-9">
-                    <h2 class="mb-1">
-                        Olive Properties - Algarve
-                    </h2>
-                    <p class="mb-1">
-                        Luxury Holiday Apartments • Algarve • Portugal
-                    </p>
-                </div>
-            </div>
-        </div>
 
         <div class="mb-4">
             <h3 class="titulo-principal mb-1">
@@ -95,8 +17,6 @@
 
         </div>
 
-
-
         <div class="card shadow-sm border-0">
             <div class="card-body p-4">
                 <form action="{{ route('vendas.store') }}" method="POST">
@@ -104,18 +24,17 @@
                     @csrf
 
                     <div class="mb-3">
-                        <label class="form-label">
+                        <label class="form-label" for="apartamento">
                             Apartamento
                         </label>
-
-                        <select name="apartamento"
+<select name="apartamento"
                             id="apartamento"
                             class="form-select">
 
                             @foreach($apartamentos as $apartamento)
 
                             <option value="{{ $apartamento->referencia }}"
-                                data-preco="{{ $apartamento->preco }}">
+                                data-preco="{{ $apartamento->preco }}" @selected(old('apartamento') == $apartamento->referencia)>
 
                                 {{ $apartamento->referencia }} -
                                 {{ $apartamento->tipologia }}
@@ -127,10 +46,10 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">
+                        <label class="form-label" for="cliente">
                             Cliente
                         </label>
-                        <select name="cliente" class="form-select" required>
+<select name="cliente" class="form-select" required id="cliente">
                             <option value="">
                                 Selecione um cliente
                             </option>
@@ -138,7 +57,7 @@
                             @foreach($clientes as $cliente)
 
                             <option value="{{ $cliente->nome }}"
-                                {{ isset($clienteSelecionado) && $clienteSelecionado == $cliente->nome ? 'selected' : '' }}>
+                                @selected(old('cliente', $clienteSelecionado) == $cliente->nome)>
                                 {{ $cliente->nome }}
                             </option>
 
@@ -153,37 +72,36 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">
+                        <label class="form-label" for="data_entrada">
                             Data de Entrada
                         </label>
-
-                        <input type="date"
+<input type="date"
                             id="data_entrada"
                             name="data_entrada"
                             class="form-control"
-                            required>
+                            required value="{{ old('data_entrada') }}">
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">
+                        <label class="form-label" for="data_saida">
                             Data de Saída
                         </label>
-                        <input type="date"
+<input type="date"
                             id="data_saida"
                             name="data_saida"
                             class="form-control"
-                            readonly>
+                            readonly value="{{ old('data_saida') }}">
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">
+                        <label class="form-label" for="valor_total">
                             Valor Total (€)
                         </label>
-                        <input type="number"
+<input type="number" step="0.01" min="0"
                             id="valor_total"
                             name="valor_total"
                             class="form-control"
-                            readonly>
+                            readonly value="{{ old('valor_total') }}">
                     </div>
 
                     <div class="d-flex gap-2 mt-4">
@@ -200,16 +118,24 @@
         </div>
     </div>
 
-    <script>
+</div>
+@endsection
+
+@push('scripts')
+<script>
         function atualizarPreco() {
             let apartamento = document.getElementById('apartamento');
 
-            let preco = apartamento.options[apartamento.selectedIndex].dataset.preco;
+            let preco = apartamento.selectedOptions[0]?.dataset.preco ?? '';
 
             document.getElementById('valor_total').value = preco;
         }
 
         document.getElementById('data_entrada').addEventListener('change', function() {
+            if (!this.value) {
+                document.getElementById('data_saida').value = '';
+                return;
+            }
             let entrada = new Date(this.value);
             entrada.setDate(entrada.getDate() + 7);
 
@@ -222,9 +148,4 @@
 
         atualizarPreco();
     </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
-
-</html>
+@endpush

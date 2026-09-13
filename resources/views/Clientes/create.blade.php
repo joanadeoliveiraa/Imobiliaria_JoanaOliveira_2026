@@ -1,119 +1,14 @@
-<!DOCTYPE html>
-<html lang="pt">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Olive Properties - Algarve</title>
-
-    <link rel="icon" type="image/png" href="{{ asset('images/logo_folhaVerde.png') }}">
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-        .titulo-principal {
-            color: #2F4F4F;
-            font-weight: bold;
-        }
-
-        .subtitulo {
-            color: #6C757D;
-        }
-
-        .card-topo {
-            border-left: 5px solid #2F4F4F;
-            padding-left: 15px;
-            margin-bottom: 20px;
-        }
-    </style>
-
-</head>
-
-<body>
-
-    <div class="container mt-4">
-
-        <div class="card-topo">
-            <h1 class="titulo-principal">
-                Olive Properties - Algarve
-            </h1>
-
-            <p class="subtitulo">
-                Gestão de apartamentos turísticos no Algarve
-            </p>
-        </div>
-
-        <div class="card">
-
-            <div class="card-header">
-                <h4>Novo Cliente</h4>
-            </div>
-
-            <div class="card-body">
-
-                <form action="{{ route('clientes.store') }}" method="POST">
-
-                    @csrf
-
-                    <input type="hidden"
-                        name="origem"
-                        value="{{ request('origem') }}">
-
-                    <div class="mb-3">
-                        <label class="form-label">Nome</label>
-                        <input type="text"
-                            name="nome"
-                            class="form-control"
-                            required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email"
-                            name="email"
-                            class="form-control"
-                            required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Telefone</label>
-                        <input type="text"
-                            name="telefone"
-                            class="form-control">
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Morada</label>
-                        <input type="text"
-                            name="morada"
-                            class="form-control">
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">NIF</label>
-                        <input type="text"
-                            name="nif"
-                            class="form-control">
-                    </div>
-
-                    <button type="submit"
-                        class="btn btn-dark">
-                        Gravar
-                    </button>
-
-                    <a href="{{ route('clientes.index') }}"
-                        class="btn btn-outline-secondary">
-                        Cancelar
-                    </a>
-
-                </form>
-
-            </div>
-
-        </div>
-
+@extends('layouts.admin')
+@section('title', 'Novo cliente — Olive Properties')
+@section('admin_content')
+<header class="admin-page-heading"><div><p class="eyebrow">Área reservada · Clientes</p><h1>Novo cliente</h1></div></header>
+@include('layouts.management-feedback')
+<form class="form-panel" method="POST" action="{{ route('clientes.store') }}">
+    <input type="hidden" name="origem" value="{{ old('origem', request('origem')) }}">
+    @include('Clientes._form')
+    <div class="form-actions">
+        <button type="submit" class="button button--primary">Gravar cliente</button>
+        <a href="{{ route('clientes.index') }}" class="button button--outline">Cancelar</a>
     </div>
-
-</body>
-
-</html>
+</form>
+@endsection

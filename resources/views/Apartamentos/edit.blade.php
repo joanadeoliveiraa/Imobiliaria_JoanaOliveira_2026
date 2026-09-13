@@ -2,7 +2,7 @@
 
 @section('title', 'Editar '.$apartamento->referencia)
 
-@section('content')
+@section('admin_content')
     <div class="admin-page-heading">
         <div><p class="eyebrow">Propriedades</p><h1>Editar {{ $apartamento->referencia }}</h1><p>Atualize os dados e a disponibilidade da propriedade.</p></div>
         <a href="{{ route('apartamentos.show', $apartamento) }}" class="button button--outline">Ver página pública</a>

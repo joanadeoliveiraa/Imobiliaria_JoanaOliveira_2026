@@ -2,7 +2,7 @@
 
 @section('title', 'Gestão de propriedades')
 
-@section('content')
+@section('admin_content')
     <div class="admin-page-heading">
         <div>
             <p class="eyebrow">Backoffice</p>
@@ -26,7 +26,7 @@
         </div>
         <div class="field">
             <label for="estado">Estado</label>
-            <select id="estado" name="estado">
+            <select id="estado" name="estado" onchange="this.form.requestSubmit()">
                 <option value="">Todos</option>
                 <option value="Disponivel" @selected(request('estado') === 'Disponivel')>Disponível</option>
                 <option value="Nao Disponivel" @selected(request('estado') === 'Nao Disponivel')>Indisponível</option>

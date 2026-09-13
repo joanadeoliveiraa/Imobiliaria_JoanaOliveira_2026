@@ -2,7 +2,7 @@
 
 @section('title', 'Adicionar propriedade')
 
-@section('content')
+@section('admin_content')
     <div class="admin-page-heading">
         <div><p class="eyebrow">Propriedades</p><h1>Adicionar propriedade</h1><p>Registe uma nova propriedade no portefólio.</p></div>
     </div>
