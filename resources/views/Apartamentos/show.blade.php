@@ -34,9 +34,6 @@
                 <div class="property-detail__actions">
                     <a href="{{ route('contactos', ['referencia' => $apartamento->referencia]) }}" class="button button--primary">Pedir informações</a>
                     <a href="{{ route('apartamentos.index') }}" class="button button--outline">Voltar ao catálogo</a>
-                    @auth
-                        @if(auth()->user()->tipo === 'administrador')<a href="{{ route('apartamentos.edit', $apartamento) }}" class="button button--ghost">Editar propriedade</a>@endif
-                    @endauth
                 </div>
             </div>
         </div>

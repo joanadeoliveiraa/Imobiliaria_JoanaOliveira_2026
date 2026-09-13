@@ -19,7 +19,6 @@
                 <p><a href="tel:+351289000000">+351 289 000 000</a></p>
                 <p><a href="mailto:info@oliveproperties.pt">info@oliveproperties.pt</a></p>
             </address>
-            <p>Olive Properties - Algarve<br>Luxury Holiday Apartments • Algarve • Portugal</p>
         </aside>
         <div class="contact-form">
             <h2>Envie-nos uma mensagem</h2>

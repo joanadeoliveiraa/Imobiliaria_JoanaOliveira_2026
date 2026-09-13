@@ -8,7 +8,7 @@
 @endphp
 <section id="como-reservar" class="section holiday-journey" aria-labelledby="holiday-title" x-data="{ current: 0 }">
     <div class="site-container">
-        <div class="holiday-journey__heading"><div><p class="eyebrow">A sua próxima estadia</p><h2 id="holiday-title" class="section-title">As suas férias, passo a passo.</h2></div><p>Casas de férias de luxo no Algarve.<br>Da escolha à chegada, com atenção a cada detalhe.</p></div>
+        <div class="holiday-journey__heading"><div><p class="eyebrow">A sua próxima estadia</p><h2 id="holiday-title" class="section-title">As suas férias, passo a passo.</h2></div></div>
         <div class="holiday-journey__card">
             <div class="holiday-journey__image"><img src="{{ asset('images/Alg011.png') }}" alt="Casa de férias com piscina e vista sobre o Algarve ao pôr do sol" loading="lazy" width="1476" height="841"><span>O Algarve, ao seu ritmo.</span></div>
             <div class="holiday-journey__body" role="region" aria-roledescription="carrossel" aria-label="Como reservar a sua estadia" @keydown.right.prevent="current = Math.min(3, current + 1)" @keydown.left.prevent="current = Math.max(0, current - 1)">
