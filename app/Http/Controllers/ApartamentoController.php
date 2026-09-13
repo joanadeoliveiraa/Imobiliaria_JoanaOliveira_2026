@@ -15,31 +15,6 @@ use Illuminate\Validation\ValidationException;
 
 class ApartamentoController extends Controller
 {
-    // public function index(Request $request)
-    // {
-
-    //     $pesquisa = $request->pesquisa;
-    //     $ordenar = $request->ordenar;
-
-    //     $apartamentos = Apartamento::query()
-
-    //         ->when($pesquisa, function ($query) use ($pesquisa) {
-
-    //             $query->where('referencia', 'like', "%{$pesquisa}%")
-    //                 ->orWhere('tipologia', 'like', "%{$pesquisa}%")
-    //                 ->orWhere('morada', 'like', "%{$pesquisa}%");
-    //         })
-
-    //         ->when($ordenar, function ($query) use ($ordenar) {
-
-    //             $query->orderBy($ordenar, 'asc');
-    //         })
-
-    //         ->paginate(10);
-
-    //     return view('apartamentos.index', compact('apartamentos'));
-    // }
-
     public function index(Request $request)
     {
         $pesquisa = $request->pesquisa;
@@ -73,7 +48,7 @@ class ApartamentoController extends Controller
             ->paginate(9)
             ->withQueryString();
 
-        return view('apartamentos.index', compact('apartamentos'));
+        return view('Apartamentos.index', compact('apartamentos'));
     }
 
     public function manage(Request $request)
@@ -96,17 +71,17 @@ class ApartamentoController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        return view('apartamentos.manage', compact('apartamentos'));
+        return view('Apartamentos.manage', compact('apartamentos'));
     }
 
-    public function create() // Mostrar o formulário de criação
+    public function create()
     {
-        return view('apartamentos.create'); // Abrir a página create
+        return view('Apartamentos.create');
     }
 
-    public function store(StoreApartamentoRequest $request) // Gravar apartamento
+    public function store(StoreApartamentoRequest $request)
     {
-        // Gerar referência automática ALG001, ALG002, ...
+
         DB::transaction(function () use ($request): void {
             $ultimoApartamento = Apartamento::query()->lockForUpdate()->latest('id')->first();
             $numero = $ultimoApartamento ? $ultimoApartamento->id + 1 : 1;
@@ -122,21 +97,21 @@ class ApartamentoController extends Controller
             ->with('success', 'Apartamento registado com sucesso.');
     }
 
-    public function show(int $id) // Mostrar os detalhes do apartamento
-    {
-        $apartamento = Apartamento::findOrFail($id); // Procurar apartamento pelo ID
-
-        return view('apartamentos.show', compact('apartamento')); // Abrir a página show
-    }
-
-    public function edit(int $id) // Mostrar formulário de edição
+    public function show(int $id)
     {
         $apartamento = Apartamento::findOrFail($id);
 
-        return view('apartamentos.edit', compact('apartamento'));
+        return view('Apartamentos.show', compact('apartamento'));
     }
 
-    public function update(UpdateApartamentoRequest $request, int $id) // Atualizar apartamento
+    public function edit(int $id)
+    {
+        $apartamento = Apartamento::findOrFail($id);
+
+        return view('Apartamentos.edit', compact('apartamento'));
+    }
+
+    public function update(UpdateApartamentoRequest $request, int $id)
     {
         $apartamento = Apartamento::findOrFail($id);
 
@@ -180,7 +155,6 @@ class ApartamentoController extends Controller
             ->with('success', 'Apartamento eliminado com sucesso.');
     }
 
-    // Dashboard
     public function dashboard()
     {
         $ultimoAcesso = now()->format('d/m/Y H:i');

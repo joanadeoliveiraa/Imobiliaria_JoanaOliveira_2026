@@ -88,6 +88,5 @@
         .management-page tr, .management-page .card { break-inside: avoid; }
         .management-page thead { display: table-header-group; }
         .management-page .chart-panel { display: none; }
-        .cabecalho-relatorio img { width: 4rem; filter: brightness(0); }
     }
 }

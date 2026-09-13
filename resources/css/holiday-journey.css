@@ -2,7 +2,6 @@
     .holiday-journey { background: #f3f5f1; }
     .holiday-journey__heading { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: 2.75rem; }
     .holiday-journey__heading .section-title { max-width: 38rem; }
-    .holiday-journey__heading > p { max-width: 24rem; color: var(--text-secondary); line-height: 1.8; }
     .holiday-journey__card { display: grid; grid-template-columns: 1fr 1fr; background: white; border: 1px solid var(--border); }
     .holiday-journey__image { position: relative; min-height: 35rem; overflow: hidden; }
     .holiday-journey__image img { width: 100%; height: 100%; position: absolute; object-fit: cover; }
@@ -25,6 +24,6 @@
     .holiday-journey__controls button { width: 44px; height: 44px; border: 1px solid var(--border); border-radius: 50%; color: var(--olive-900); }
     .holiday-journey button:disabled { opacity: .35; cursor: default; }
     .holiday-journey button:focus-visible, .holiday-journey a:focus-visible { outline: 2px solid var(--olive-700); outline-offset: 2px; }
-    @media (max-width: 800px) { .holiday-journey__heading { display: block; } .holiday-journey__heading > p { margin-top: 1rem; } .holiday-journey__card { grid-template-columns: 1fr; } .holiday-journey__image { min-height: 18rem; } }
+    @media (max-width: 800px) { .holiday-journey__heading { display: block; } .holiday-journey__card { grid-template-columns: 1fr; } .holiday-journey__image { min-height: 18rem; } }
     @media (prefers-reduced-motion: reduce) { .holiday-journey__track { transition: none; } }
 }

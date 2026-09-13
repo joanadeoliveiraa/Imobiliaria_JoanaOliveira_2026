@@ -34,9 +34,6 @@
             border-right: 0;
             border-bottom: 1px solid var(--border);
         }
-        .value-grid {
-            grid-template-columns: 1fr;
-        }
         .split-feature {
             grid-template-columns: 1fr;
         }
@@ -48,32 +45,6 @@
         }
         .property-detail__layout {
             grid-template-columns: 1fr;
-        }
-        .admin-shell {
-            display: block;
-        }
-        .admin-sidebar {
-            position: fixed;
-            z-index: 50;
-            width: 15.5rem;
-            transform: translateX(-105%);
-            transition: transform .2s;
-        }
-        .admin-sidebar.is-open {
-            transform: translateX(0);
-        }
-        .admin-topbar {
-            justify-content: space-between;
-        }
-        .admin-menu-toggle {
-            display: block;
-            padding: .45rem .7rem;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            background: white;
-        }
-        .admin-main {
-            width: min(100% - 2rem, 85rem);
         }
         .admin-filters {
             grid-template-columns: 1fr 1fr;

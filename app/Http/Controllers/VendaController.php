@@ -13,11 +13,11 @@ use Illuminate\Support\Facades\DB;
 
 class VendaController extends Controller
 {
-    public function index() // Mostrar a lista de vendas
+    public function index()
     {
         $vendas = Venda::latest('data_entrada')->paginate(15);
 
-        return view('vendas.index', compact('vendas')); // Abrir a página index e enviar os dados
+        return view('Vendas.index', compact('vendas'));
     }
 
     public function create(Request $request)
@@ -36,7 +36,7 @@ class VendaController extends Controller
         }
         $apartamentoSelecionado = $request->query('apartamento');
 
-        return view('vendas.create',
+        return view('Vendas.create',
             compact(
                 'apartamentos',
                 'clientes',
@@ -53,19 +53,19 @@ class VendaController extends Controller
         )->first();
 
         return view(
-            'vendas.show',
+            'Vendas.show',
             compact('venda', 'apartamento')
         );
     }
 
-    public function edit(int $id) // Mostrar formulário de edição
+    public function edit(int $id)
     {
         $venda = Venda::findOrFail($id);
 
-        return view('vendas.edit', compact('venda'));
+        return view('Vendas.edit', compact('venda'));
     }
 
-    public function update(UpdateVendaRequest $request, int $id) // Atualizar venda
+    public function update(UpdateVendaRequest $request, int $id)
     {
         $venda = Venda::findOrFail($id);
 
@@ -88,7 +88,7 @@ class VendaController extends Controller
             ->with('success', 'Reserva atualizada com sucesso.');
     }
 
-    public function destroy(int $id) // Apagar venda
+    public function destroy(int $id)
     {
         $venda = Venda::findOrFail($id);
 
@@ -108,7 +108,6 @@ class VendaController extends Controller
             ->with('success', 'Reserva cancelada com sucesso.');
     }
 
-    // Histórico Cliente
     public function historicoCliente(string $cliente)
     {
         $vendas = Venda::where('cliente', $cliente)->get();
@@ -117,7 +116,7 @@ class VendaController extends Controller
         $ultimaReserva = $vendas->max('data_entrada');
 
         return view(
-            'vendas.historico',
+            'Vendas.historico',
             compact(
                 'vendas',
                 'cliente',

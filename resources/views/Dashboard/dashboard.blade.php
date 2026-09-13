@@ -270,7 +270,6 @@
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-            // Gráfico de Receita
             const ctx = document.getElementById('graficoReceita');
 
             new Chart(ctx, {
@@ -292,7 +291,6 @@
                 }
             });
 
-            // Gráfico de Clientes
             const ctxClientes = document.getElementById('graficoClientes');
 
             new Chart(ctxClientes, {
@@ -318,7 +316,6 @@
                 }
             });
 
-            // Gráfico de Reservas por Apartamento
             const ctxApartamentos = document.getElementById('graficoApartamentos');
 
             new Chart(ctxApartamentos, {

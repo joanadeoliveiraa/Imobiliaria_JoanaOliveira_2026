@@ -57,12 +57,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
 Route::get('/apartamentos/{apartamento}', [ApartamentoController::class, 'show'])
     ->name('apartamentos.show');
 
-// Rota Sobre nós
 Route::get('/sobre', function () {
     return view('sobre');
 })->name('sobre');
 
-// ROTAS Contactos:
 Route::get('/contactos', function () {
     return view('Contactos.contactos');
 })->name('contactos');

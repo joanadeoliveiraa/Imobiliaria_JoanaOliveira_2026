@@ -13,7 +13,7 @@ use Illuminate\Validation\ValidationException;
 
 class ClienteController extends Controller
 {
-    public function index(Request $request) // Mostrar a lista de clientes
+    public function index(Request $request)
     {
         $pesquisa = $request->pesquisa;
         $ordenar = in_array($request->ordenar, ['nome', 'email', 'telefone', 'nif'], true)
@@ -37,14 +37,14 @@ class ClienteController extends Controller
             ->paginate(10);
 
         return view(
-            'clientes.index',
+            'Clientes.index',
             compact('clientes')
         );
     }
 
-    public function create() // Mostrar o formulário de criação
+    public function create()
     {
-        return view('clientes.create');
+        return view('Clientes.create');
     }
 
     public function store(StoreClienteRequest $request)
@@ -69,23 +69,23 @@ class ClienteController extends Controller
             ->with('success', 'Cliente registado com sucesso.');
     }
 
-    public function show(int $id) // Mostrar os detalhes de um cliente
+    public function show(int $id)
     {
-        $cliente = Cliente::findOrFail($id); // Procurar o cliente pelo ID
+        $cliente = Cliente::findOrFail($id);
 
-        return view('clientes.show', compact('cliente')); // Abrir a página show e enviar os dados
+        return view('Clientes.show', compact('cliente'));
     }
 
-    public function edit(int $id) // Mostrar o formulário de edição
+    public function edit(int $id)
     {
-        $cliente = Cliente::findOrFail($id); // Procurar cliente pelo ID
+        $cliente = Cliente::findOrFail($id);
 
-        return view('clientes.edit', compact('cliente')); // Abrir a página edit
+        return view('Clientes.edit', compact('cliente'));
     }
 
-    public function update(UpdateClienteRequest $request, int $id) // Atualizar cliente
+    public function update(UpdateClienteRequest $request, int $id)
     {
-        $cliente = Cliente::findOrFail($id); // Procurar cliente
+        $cliente = Cliente::findOrFail($id);
 
         DB::transaction(function () use ($cliente, $request): void {
             $nomeAnterior = $cliente->nome;
@@ -99,9 +99,9 @@ class ClienteController extends Controller
         return redirect()->route('clientes.index')->with('success', 'Cliente atualizado com sucesso.');
     }
 
-    public function destroy(int $id) // Apagar cliente
+    public function destroy(int $id)
     {
-        $cliente = Cliente::findOrFail($id); // Procurar cliente
+        $cliente = Cliente::findOrFail($id);
 
         if (Venda::where('cliente', $cliente->nome)->exists()) {
             throw ValidationException::withMessages([
@@ -109,8 +109,8 @@ class ClienteController extends Controller
             ]);
         }
 
-        $cliente->delete(); // Apagar cliente
+        $cliente->delete();
 
-        return redirect()->route('clientes.index'); // Voltar à listagem
+        return redirect()->route('clientes.index');
     }
 }

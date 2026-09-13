@@ -1,4 +1,3 @@
-import './bootstrap';
 import './management';
 import './reservation-form';
 import './documents';
