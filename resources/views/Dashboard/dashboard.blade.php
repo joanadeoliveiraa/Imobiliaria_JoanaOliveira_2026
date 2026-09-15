@@ -30,12 +30,14 @@
                 <a href="{{ route('clientes.index') }}"><span aria-hidden="true">↗</span> Ver clientes</a>
                 <a href="{{ route('admin.apartamentos.index') }}"><span aria-hidden="true">↗</span> Ver propriedades</a>
                 <a href="{{ route('dashboard.report', array_filter(['periodo' => $periodo, 'from' => $from, 'to' => $to])) }}"><span aria-hidden="true">▤</span> Relatórios</a>
+                <a href="{{ route('admin.contactos.index') }}"><span aria-hidden="true">✉</span> Pedidos de contacto</a>
             </nav>
         </section>
 
         <section class="dashboard-section" aria-labelledby="kpi-title">
             <div class="dashboard-section-heading"><h2 id="kpi-title">Indicadores principais</h2></div>
             <div class="dashboard-kpis">
+                <a class="dashboard-kpi dashboard-kpi-link" href="{{ route('admin.contactos.index') }}"><span>Pedidos de contacto</span><strong>{{ $novosContactos }} novos</strong><small>Ver pedidos recebidos ↗</small></a>
                 @foreach(['Propriedades' => $propriedades, 'Ocupadas hoje' => $ocupadas, 'Disponíveis hoje' => $disponiveis, 'Indisponíveis' => $indisponiveis, 'Reservas no período' => $reservas, 'Clientes registados' => $clientes, 'Taxa de ocupação hoje' => number_format($taxaOcupacao, 1, ',', '.').'%', 'Valor das reservas' => number_format($receita, 2, ',', '.').' €'] as $label => $value)
                     <div class="dashboard-kpi"><span>{{ $label }}</span><strong>{{ $value }}</strong>
                         @if($label === 'Reservas no período' && $comparacao['reservas'] > 0)<small>{{ number_format(($reservas - $comparacao['reservas']) / $comparacao['reservas'] * 100, 1, ',', '.') }}% vs. período anterior</small>@endif

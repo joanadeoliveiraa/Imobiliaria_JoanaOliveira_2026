@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\ApartamentoController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PedidoContactoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservaCheckoutController;
 use App\Http\Controllers\VendaController;
@@ -37,6 +39,12 @@ Route::get('/apartamentos', [ApartamentoController::class, 'index'])
     ->name('apartamentos.index');
 
 Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/backoffice/contactos', [PedidoContactoController::class, 'index'])->name('admin.contactos.index');
+    Route::get('/backoffice/contactos/{pedido}/responder', [PedidoContactoController::class, 'reply'])->name('admin.contactos.reply');
+    Route::post('/backoffice/contactos/{pedido}/responder', [PedidoContactoController::class, 'sendReply'])->name('admin.contactos.send');
+    Route::patch('/backoffice/contactos/{pedido}', [PedidoContactoController::class, 'update'])->name('admin.contactos.update');
+    Route::post('/backoffice/contactos/{pedido}/arquivar', [PedidoContactoController::class, 'archive'])->name('admin.contactos.archive');
+    Route::get('/backoffice/contactos/{pedido}', [PedidoContactoController::class, 'show'])->name('admin.contactos.show');
     Route::get('/backoffice/propriedades', [ApartamentoController::class, 'manage'])
         ->name('admin.apartamentos.index');
     Route::resource('clientes', ClienteController::class);
@@ -67,12 +75,7 @@ Route::get('/contactos', function () {
     return view('Contactos.contactos');
 })->name('contactos');
 
-Route::post('/contactos', function () {
-    return back()->with(
-        'success',
-        'A sua mensagem foi enviada com sucesso. Entraremos em contacto brevemente.'
-    );
-})->name('contactos.enviar');
+Route::post('/contactos', [ContactoController::class, 'store'])->middleware('throttle:5,10')->name('contactos.enviar');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

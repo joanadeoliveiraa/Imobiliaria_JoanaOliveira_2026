@@ -17,7 +17,7 @@ O projeto foi desenvolvido com foco numa experiência simples, elegante e consis
 - Filtro automático das propriedades disponíveis.
 - Página individual de cada propriedade com fotografia, localização, tipologia, área, disponibilidade e preço semanal.
 - Página institucional **Sobre**.
-- Página de **Contactos**.
+- Página de **Contactos** com formulário funcional e pedidos guardados na base de dados.
 - Página de **Política de Privacidade**.
 - Página de **Política de Cookies**.
 - Página de **Termos e Condições**.
@@ -30,6 +30,7 @@ O projeto foi desenvolvido com foco numa experiência simples, elegante e consis
 - Autenticação de utilizadores.
 - Acesso à área de gestão restrito ao perfil `administrador`.
 - Gestão de propriedades, clientes e reservas.
+- Gestão de pedidos de contacto, estados, notas internas, arquivo e respostas por email quando existe transporte real configurado.
 - Criação, consulta e edição de propriedades.
 - Controlo do estado de disponibilidade das propriedades.
 - Gestão dos dados dos clientes.
@@ -463,12 +464,11 @@ A versão atual encontra-se preparada para demonstração e utilização em ambi
 
 Antes de uma eventual publicação em produção, devem ser considerados os seguintes pontos:
 
-- O formulário de contacto encontra-se atualmente em modo demonstrativo e ainda não efetua o envio ou armazenamento de mensagens.
+- O formulário de contacto guarda pedidos na base de dados. O envio de respostas por email exige um transporte real configurado; o `MAIL_MAILER=log` local não envia mensagens. Consulte [Pedidos de contacto](docs/pedidos-contacto.md).
 - As páginas de **Política de Privacidade**, **Política de Cookies** e **Termos e Condições** devem ser revistas e preenchidas com os dados legais da entidade responsável antes da publicação.
 - O processo de pagamento é exclusivamente simulado.
 - Não existe integração com gateways de pagamento, entidades bancárias ou sistemas de cobrança real.
-- A disponibilidade das propriedades é atualmente controlada através de um estado global.
-- Uma evolução futura deverá implementar disponibilidade através de intervalos de datas e prevenção de sobreposição de reservas.
+- A disponibilidade administrativa usa um estado global; as reservas são verificadas por intervalos de datas para evitar sobreposição.
 - Os indicadores financeiros apresentados no dashboard têm como base os valores registados nas reservas e não representam conciliação ou confirmação bancária.
 - Os relatórios paginados não exportam automaticamente todos os registos existentes.
 - O texto de direitos existente no footer deve ser preservado.
@@ -491,7 +491,7 @@ Uma eventual publicação em produção deverá incluir, entre outros aspetos:
 - permissões adequadas de ficheiros e diretórios;
 - estratégia de cópias de segurança;
 - revisão das páginas legais;
-- configuração de email, caso o formulário de contacto venha a ser ativado;
+- configuração de um serviço de email real para responder aos pedidos de contacto;
 - revisão das configurações de cookies e analytics, caso sejam adicionados serviços adicionais.
 
 No ambiente de produção:
@@ -525,4 +525,4 @@ Os documentos de verificação registam diferentes fases do desenvolvimento e po
 
 **Olive Properties** foi desenvolvida como uma aplicação de gestão e apresentação de propriedades de luxo, reunindo numa única plataforma a experiência pública de consulta das propriedades e as principais operações internas de administração, clientes e reservas.
 
-A arquitetura permite a evolução futura do projeto, nomeadamente através da implementação de disponibilidade por calendário, pagamentos reais, comunicação através do formulário de contacto e funcionalidades adicionais de análise e gestão.
+A arquitetura permite evolução futura, como um calendário visual de disponibilidade, pagamentos reais, notificações de novos contactos e funcionalidades adicionais de análise e gestão.

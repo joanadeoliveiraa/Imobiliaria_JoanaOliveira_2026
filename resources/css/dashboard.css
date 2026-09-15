@@ -23,6 +23,8 @@
     .dashboard-kpi span { color: var(--text-secondary); font-size: .72rem; }
     .dashboard-kpi strong { margin-top: .3rem; color: var(--olive-900); font-family: var(--font-display); font-size: clamp(1.35rem, 2.3vw, 1.9rem); font-weight: 600; }
     .dashboard-kpi small { margin-top: auto; color: var(--text-secondary); font-size: .7rem; }
+    .dashboard-kpi-link { text-decoration: none; }
+    .dashboard-kpi-link:hover { border-color: var(--olive-500); background: var(--olive-100); }
     .dashboard-alert-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; }
     .dashboard-alert-list a { display: flex; align-items: center; gap: .6rem; padding: .75rem; color: var(--olive-900); background: var(--olive-100); border-left: 3px solid var(--olive-700); border-radius: var(--radius-sm); font-size: .78rem; text-decoration: none; }
     .dashboard-alert-list a strong { font-size: 1.05rem; }

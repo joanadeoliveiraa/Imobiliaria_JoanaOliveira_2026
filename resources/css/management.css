@@ -5,6 +5,7 @@
     .account-navigation nav a, .account-navigation button { display: inline-flex; min-height: 2.75rem; align-items: center; font-size: .82rem; font-weight: 600; }
     .account-navigation nav a { border-bottom: 2px solid transparent; color: var(--text-secondary); }
     .account-navigation nav a:hover, .account-navigation nav a.is-active { color: var(--olive-900); border-color: var(--olive-700); }
+    .account-navigation__count { display: inline-grid; min-width: 1.25rem; height: 1.25rem; padding-inline: .25rem; place-items: center; border-radius: 1rem; color: var(--olive-900); background: var(--olive-100); font-size: .7rem; }
     .account-navigation__user { font-size: .8rem; color: var(--text-secondary); }
     .account-navigation button { color: var(--olive-800); }
     .management-area { background: var(--ivory); }

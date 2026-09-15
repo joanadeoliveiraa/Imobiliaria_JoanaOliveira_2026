@@ -196,4 +196,4 @@ Não execute `migrate:fresh`, `db:wipe`, não substitua a base e não regenere a
 
 Este guia configura desenvolvimento local. A publicação exige alojamento com a raiz web em `public`, HTTPS, `APP_ENV=production`, `APP_DEBUG=false`, credenciais próprias, permissões adequadas e cópias de segurança. O `UserSeeder` local não cria contas em produção.
 
-Complete os campos pendentes das páginas legais. O formulário de contactos não tem envio de mensagens implementado e os pagamentos são apenas simulações. Consulte também o [README](README.md).
+Complete os campos pendentes das páginas legais. O formulário de contactos guarda pedidos; para responder por email, configure um serviço real conforme [Pedidos de contacto](docs/pedidos-contacto.md). Os pagamentos são apenas simulações. Consulte também o [README](README.md).

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Apartamento;
 use App\Models\Atividade;
 use App\Models\Cliente;
+use App\Models\PedidoContacto;
 use App\Models\Venda;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
@@ -51,6 +52,8 @@ class DashboardService
         $receita = (float) $base()->sum('valor_total');
         $reservas = $base()->count();
         $clientes = Cliente::count();
+        $novosContactos = PedidoContacto::where('estado', 'new')->count();
+        $contactosPendentes = PedidoContacto::whereIn('estado', ['new', 'in_progress'])->count();
         $taxaOcupacao = $propriedades ? round($ocupadas / $propriedades * 100, 1) : 0;
 
         // A série mostra até 12 meses e inclui contexto recente para períodos curtos.
@@ -128,11 +131,12 @@ class DashboardService
         $addAlert(Venda::deGestao()->where('data_entrada', $hoje)->count(), 'entrada(s) hoje', 'vendas.index');
         $addAlert(Venda::deGestao()->where('data_saida', $hoje)->count(), 'saída(s) hoje', 'vendas.index');
         $addAlert($indisponiveis, 'propriedade(s) indisponível(is)', 'admin.apartamentos.index');
+        $addAlert($contactosPendentes, 'pedido(s) de contacto aguardam análise', 'admin.contactos.index');
         $addAlert($totalVendas - $semDuplicados, 'reserva(s) duplicada(s) excluída(s) dos indicadores', 'vendas.index');
         $addAlert($semDuplicados - $validas, 'reserva(s) com dados inválidos ou referências em falta', 'vendas.index');
         $addAlert($ambiguous, 'nome(s) de cliente ambíguo(s)', 'clientes.index');
         $addAlert(Apartamento::whereHas('reservas', fn ($q) => $q->emCurso($hoje), '>', 1)->count(), 'propriedade(s) com estadias sobrepostas hoje', 'vendas.index');
 
-        return compact('agora', 'hoje', 'periodo', 'inicio', 'fim', 'from', 'to', 'propriedades', 'ocupadas', 'disponiveis', 'indisponiveis', 'receita', 'reservas', 'clientes', 'taxaOcupacao', 'comparacao', 'receitaMensal', 'ocupacaoMensal', 'topPropriedades', 'valorPropriedades', 'topClientes', 'chegadas', 'saidas', 'recentes', 'atividades', 'ocupacao', 'alertas') + ['periodos' => self::PERIODOS];
+        return compact('agora', 'hoje', 'periodo', 'inicio', 'fim', 'from', 'to', 'propriedades', 'ocupadas', 'disponiveis', 'indisponiveis', 'receita', 'reservas', 'clientes', 'novosContactos', 'taxaOcupacao', 'comparacao', 'receitaMensal', 'ocupacaoMensal', 'topPropriedades', 'valorPropriedades', 'topClientes', 'chegadas', 'saidas', 'recentes', 'atividades', 'ocupacao', 'alertas') + ['periodos' => self::PERIODOS];
     }
 }
