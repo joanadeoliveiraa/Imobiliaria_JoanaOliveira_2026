@@ -1,7 +1,7 @@
 @props(['title', 'reference' => null, 'scope' => null, 'printOnly' => true])
 <header @class(['document-header', 'apenas-impressao' => $printOnly])>
     <div class="document-header__top">
-        <div class="document-header__brand"><img src="{{ asset('images/logo_folhaVerde.png') }}" alt="" width="56" height="56"><span>OLIVE<small>PROPERTIES</small></span></div>
+        <a href="{{ route('home') }}" class="document-header__brand brand" aria-label="Olive Properties — início"><img src="{{ asset('images/logo_folhaVerde.png') }}" alt="" class="brand__mark"><span class="brand__wordmark"><strong>Olive</strong><small>Properties</small></span></a>
         <span class="document-header__label">{{ $reference ?? 'Relatório de gestão' }}</span>
     </div>
     <h2>{{ $title }}</h2>

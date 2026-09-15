@@ -17,7 +17,7 @@ use Illuminate\Validation\ValidationException;
 
 class ReservaCheckoutController extends Controller
 {
-    public const METHODS = ['cartao' => 'Cartão de demonstração', 'mbway' => 'MB WAY de demonstração', 'transferencia' => 'Transferência de demonstração'];
+    public const METHODS = ['cartao' => 'Cartão', 'mbway' => 'MB WAY', 'transferencia' => 'Transferência'];
 
     public function start(StoreVendaRequest $request)
     {
@@ -118,7 +118,7 @@ class ReservaCheckoutController extends Controller
             return redirect()->route('vendas.show', $venda);
         }
 
-        return view('Vendas.confirmacao', ['venda' => $venda, 'payment' => $payment, 'details' => $payment->detalhes, 'method' => self::METHODS[$payment->metodo]]);
+        return view('Vendas.confirmacao', ['venda' => $venda, 'payment' => $payment, 'details' => $payment->detalhes]);
     }
 
     private function completed(Request $request, string $token): ?PagamentoSimulado

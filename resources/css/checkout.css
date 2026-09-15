@@ -10,6 +10,13 @@
     .checkout-panel h2 { font-size: 1.65rem; margin-bottom: 1.25rem; }
     .booking-form { max-width: 54rem; }
     .booking-form select { max-width: 100%; }
+    .booking-client-label { margin: .6rem 0 .4rem; color: var(--olive-800); font-size: .8rem; font-weight: 600; }
+    .booking-client-label[hidden], .booking-client-list[hidden], .booking-client-selected[hidden], .booking-form select[hidden], .booking-form label[hidden] { display: none; }
+    .booking-client-list { max-height: 13rem; overflow-y: auto; margin: .4rem 0; padding: 0; list-style: none; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+    .booking-client-list li + li { border-top: 1px solid var(--border); }
+    .booking-client-list button { width: 100%; padding: .65rem .8rem; color: var(--text-primary); background: white; border: 0; text-align: left; font-size: .85rem; cursor: pointer; }
+    .booking-client-list button:hover, .booking-client-list button:focus-visible { background: var(--olive-100); outline: 2px solid var(--olive-700); outline-offset: -2px; }
+    .booking-client-selected { margin: .5rem 0; padding: .65rem .8rem; color: var(--olive-900); background: var(--olive-100); border-radius: var(--radius-sm); font-size: .85rem; }
     .booking-add-client { display: inline-flex; min-height: 2.75rem; align-items: center; color: var(--olive-800); font-size: .85rem; text-decoration: underline; }
     .booking-estimate, .booking-total { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem; padding-block: 1.25rem; margin-top: 1rem; border-top: 1px solid var(--border); color: var(--olive-900); }
     .booking-estimate strong, .booking-total strong { font-family: var(--font-display); font-size: 1.85rem; }
@@ -24,6 +31,9 @@
     .payment-methods label:has(input:checked) { border-color: var(--olive-700); background: var(--ivory); }
     .payment-methods input { color: var(--olive-800); }
     .payment-outcome { margin-top: 1.5rem; }
+    .payment-test-options { margin-top: 1rem; }
+    .payment-test-options summary { color: var(--olive-800); cursor: pointer; font-size: .85rem; }
+    .payment-test-options summary:focus-visible { outline: 2px solid var(--olive-700); outline-offset: 3px; }
     .checkout-panel .form-actions { flex-wrap: wrap; }
     .receipt-footnote { margin-top: .5rem; color: var(--text-secondary); font-size: .8rem; }
     .receipt-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem 3rem; }

@@ -57,8 +57,20 @@
     .dashboard-timeline-item { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: .7rem; padding: .6rem 0 .6rem 1rem; border-left: 2px solid var(--olive-200); border-bottom: 1px solid var(--border); }
     .dashboard-timeline-item time { color: var(--text-secondary); font-size: .75rem; }
     .dashboard-timeline-item p { margin: 0; font-size: .8rem; }
+    .dashboard-report { max-width: 72rem; margin-inline: auto; }
+    .dashboard-report__actions { display: flex; flex-wrap: wrap; gap: .65rem; margin: 0 0 1.5rem; }
+    .dashboard-report__intro { margin-bottom: 1.5rem; padding: 1rem 1.25rem; border-left: 3px solid var(--olive-700); background: var(--olive-100); }
+    .dashboard-report__intro p { margin: .25rem 0; font-size: .9rem; }
+    .dashboard-report__note { color: var(--text-secondary); }
+    .dashboard-report__section { margin: 0 0 1.5rem; break-inside: avoid; }
+    .dashboard-report__section h2 { margin: 0 0 .7rem; font-size: 1.3rem; }
+    .dashboard-report__section > p { margin: 0 0 .7rem; color: var(--text-secondary); font-size: .85rem; }
+    .dashboard-report .table { margin: 0; font-size: .9rem; line-height: 1.45; }
+    .dashboard-report .table th, .dashboard-report .table td { padding: .7rem .75rem; }
+    .dashboard-report .table td:last-child { min-width: 0; }
+    .dashboard-report__rankings { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
     @media (max-width: 950px) { .dashboard-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .dashboard-alert-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-    @media (max-width: 700px) { .dashboard-chart-grid, .dashboard-two-column, .dashboard-alert-list { grid-template-columns: minmax(0, 1fr); } .dashboard-filter { align-items: stretch; } .dashboard-filter .form-select { flex: 1; } .dashboard-chart { height: 12rem; } .dashboard-page .data-table-wrap { overflow-x: auto; } }
+    @media (max-width: 700px) { .dashboard-chart-grid, .dashboard-two-column, .dashboard-alert-list, .dashboard-report__rankings { grid-template-columns: minmax(0, 1fr); } .dashboard-filter { align-items: stretch; } .dashboard-filter .form-select { flex: 1; } .dashboard-chart { height: 12rem; } .dashboard-page .data-table-wrap { overflow-x: auto; } }
     @media (max-width: 430px) { .dashboard-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .dashboard-kpi { min-height: 5.5rem; padding: .7rem; } .dashboard-kpi strong { font-size: 1.25rem; } .dashboard-quick a { flex: 1 1 calc(50% - .5rem); } .dashboard-reservation { grid-template-columns: 5rem 1fr; } .dashboard-reservation span { grid-column: 2; } .dashboard-timeline-item { grid-template-columns: 1fr; gap: .2rem; } }
     @media print { .dashboard-page .dashboard-chart { display: none; } .dashboard-page details { display: block; } .dashboard-page details > * { display: block; } }
 }

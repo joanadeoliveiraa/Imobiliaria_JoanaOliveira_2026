@@ -33,7 +33,9 @@ it('separates current occupancy from administrative unavailability and excludes 
         ->assertViewHas('taxaOcupacao', 50.0)
         ->assertViewHas('ocupacaoMensal', function ($series) { expect($series->last()['total'])->toBe(6.7); return true; });
     expect($queries)->toBeLessThan(30);
-    $this->get(route('dashboard.report'))->assertOk()->assertSee('ALG002')->assertSee('Indisponível');
+    $this->get(route('dashboard.report'))->assertOk()->assertSee('ALG002')->assertSee('Indisponível')
+        ->assertSee('← Voltar atrás')->assertSee(route('dashboard', ['periodo' => 'mes']), false)
+        ->assertSee('brand__wordmark');
     CarbonImmutable::setTestNow();
 });
 

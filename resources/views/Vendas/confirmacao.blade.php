@@ -5,9 +5,9 @@
     <header class="admin-page-heading no-print"><div><p class="eyebrow">Pagamento simulado aprovado</p><h1>Reserva confirmada</h1><p>A reserva #{{ $venda->id }} foi registada. Pode imprimir os detalhes abaixo.</p></div></header>
     @include('Vendas._steps', ['step' => 3])
     <article class="booking-receipt">
-        <x-document-header :title="'Confirmação de reserva #'.$venda->id" :reference="sprintf('SIM-%06d', $payment->id)" :print-only="false" />
-        <p class="receipt-footnote">Reserva confirmada em {{ $payment->created_at->timezone('Europe/Lisbon')->format('d/m/Y H:i:s') }} (Lisboa) por {{ $details['criado_por'] ?? $payment->creator?->name ?? 'Autor não disponível no registo' }}.</p>
-        <p class="simulation-notice"><strong>PAGAMENTO SIMULADO — SEM COBRANÇA REAL.</strong> Documento de demonstração, sem valor fiscal. Os dados abaixo correspondem ao momento da confirmação.</p>
+        <x-document-header :title="'Confirmação de reserva #'.$venda->id" :reference="sprintf('RES-%06d', $venda->id)" :print-only="false" />
+        <p class="receipt-footnote">Registada em {{ $payment->created_at->timezone('Europe/Lisbon')->format('d/m/Y H:i') }} (Lisboa) por {{ $details['criado_por'] ?? $payment->creator?->name ?? 'Administrador não identificado' }}.</p>
+        <p class="simulation-notice"><strong>SEM COBRANÇA REAL.</strong> O pagamento foi simulado; este documento confirma apenas a reserva registada e não tem valor fiscal.</p>
         <div class="receipt-grid">
             <section><h3>Cliente</h3><dl class="booking-details">
                 <div><dt>Nome</dt><dd>{{ $details['cliente']['nome'] }}</dd></div>
@@ -24,14 +24,8 @@
                 <div><dt>Saída</dt><dd>{{ \Carbon\Carbon::parse($details['data_saida'])->format('d/m/Y') }}</dd></div>
                 <div><dt>Duração</dt><dd>{{ $details['quote']['noites'] }} noites</dd></div>
             </dl></section>
-            <section><h3>Simulação</h3><dl class="booking-details">
-                <div><dt>Estado</dt><dd>Aprovado — simulado</dd></div>
-                <div><dt>Método</dt><dd>{{ $method }}</dd></div>
-                <div><dt>Preço semanal</dt><dd>{{ number_format((float) $details['quote']['preco_semanal'], 2, ',', '.') }} €</dd></div>
-            </dl></section>
         </div>
-        <div class="booking-total"><span>Total simulado</span><strong>{{ number_format((float) $details['quote']['total'], 2, ',', '.') }} €</strong></div>
-        <p class="receipt-footnote">Preço semanal × {{ $details['quote']['noites'] }} noites ÷ 7. Nenhum pagamento real foi efetuado.</p>
+        <div class="booking-total"><span>Valor da reserva</span><strong>{{ number_format((float) $details['quote']['total'], 2, ',', '.') }} €</strong></div>
     </article>
     <div class="form-actions no-print">
         <button type="button" class="button button--primary" onclick="window.print()">Imprimir / Guardar PDF</button>

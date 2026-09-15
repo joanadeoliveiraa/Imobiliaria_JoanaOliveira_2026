@@ -21,13 +21,14 @@ function beginCheckout($test, array $overrides = []): string
 }
 
 it('only creates the booking after approved simulation and keeps a printable immutable receipt', function () {
+    $this->get(route('vendas.create'))->assertOk()->assertSee('cliente_lista')->assertSee('Cliente Teste');
     $url = beginCheckout($this, ['valor_total' => 1]);
     expect(Venda::count())->toBe(0)->and($this->property->fresh()->estado)->toBe('Disponivel');
-    $this->get($url)->assertOk()->assertSee('Pagamento simulado')->assertSee('1.000,00')->assertSee('Olhão Marina');
+    $this->get($url)->assertOk()->assertSee('Pagamento simulado')->assertSee('1.000,00')->assertSee('Olhão Marina')->assertDontSee('4242');
     $confirmation = $this->post($url, ['metodo' => 'mbway', 'resultado' => 'aprovado', 'valor_total' => 1])->assertRedirect()->headers->get('Location');
     expect(Venda::count())->toBe(1)->and(PagamentoSimulado::count())->toBe(1)
         ->and(Venda::first()->valor_total)->toBe('1000.00')->and($this->property->fresh()->estado)->toBe('Disponivel');
-    $this->get($confirmation)->assertOk()->assertSee('Reserva confirmada')->assertSee('SEM COBRANÇA REAL')->assertSee('Imprimir / Guardar PDF')->assertSee('cliente@example.test');
+    $this->get($confirmation)->assertOk()->assertSee('Reserva confirmada')->assertSee('SEM COBRANÇA REAL')->assertSee('Imprimir / Guardar PDF')->assertSee('cliente@example.test')->assertSee('brand__wordmark')->assertDontSee('Total simulado');
     $this->client->update(['nome' => 'Nome atualizado']);
     $this->property->update(['morada' => 'Localização atualizada']);
     $this->get($confirmation)->assertSee('Cliente Teste')->assertSee('Olhão Marina')->assertDontSee('Nome atualizado');

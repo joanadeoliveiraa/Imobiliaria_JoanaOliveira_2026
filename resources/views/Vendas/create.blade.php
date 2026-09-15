@@ -13,9 +13,12 @@
     <div class="form-grid">
         <div class="field form-grid__full">
             <label for="cliente_pesquisa">Pesquisar cliente</label>
-            <input id="cliente_pesquisa" type="search" placeholder="Nome, contacto ou NIF" autocomplete="off" aria-controls="cliente_id" aria-describedby="cliente_resultados">
+            <input id="cliente_pesquisa" type="search" placeholder="Nome, telefone ou NIF" autocomplete="off" aria-controls="cliente_lista" aria-describedby="cliente_resultados">
             <p id="cliente_resultados" class="field-help" role="status" aria-live="polite">Pesquise e selecione o cliente na lista abaixo.</p>
-            <label for="cliente_id">Reservar em nome de *</label>
+            <p class="booking-client-label" data-client-list-label hidden>Reservar em nome de *</p>
+            <ul id="cliente_lista" class="booking-client-list" aria-label="Clientes encontrados" hidden></ul>
+            <p id="cliente_escolhido" class="booking-client-selected" hidden></p>
+            <label for="cliente_id" data-client-select-label>Reservar em nome de *</label>
             <select id="cliente_id" name="cliente_id" required>
                 <option value="">Selecione um cliente</option>
                 @foreach($clientes as $cliente)

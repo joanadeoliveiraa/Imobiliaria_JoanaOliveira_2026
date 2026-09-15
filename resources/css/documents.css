@@ -1,10 +1,7 @@
 @layer components {
     .document-header { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--olive-800); color: var(--olive-900); }
     .document-header__top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
-    .document-header__brand { display: flex; align-items: center; gap: 1rem; }
-    .document-header__brand img { width: 3.5rem; height: 3.5rem; object-fit: contain; }
-    .document-header__brand span { font-family: var(--font-display); font-size: 1.5rem; letter-spacing: .2em; }
-    .document-header__brand small { display: block; margin-top: .2rem; font-size: .6rem; letter-spacing: .28em; }
+    .document-header__brand .brand__mark { width: 3.5rem; height: 3.5rem; }
     .document-header__label { font-size: .75rem; letter-spacing: .06em; }
     .document-header h2 { margin: 0 0 1.25rem; font-size: clamp(1.5rem, 4vw, 2rem); }
     .document-header__metadata { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 2rem; }
@@ -18,13 +15,22 @@
         .document-header { break-inside: avoid; }
         .document-header__metadata { grid-template-columns: 1fr 1fr; }
         .management-main { max-width: none; }
-        .management-page .table { width: 100%; table-layout: fixed; font-size: 8pt; }
-        .management-page .table th { background: #edf1ed !important; color: #182d23; font-size: 7pt; }
-        .management-page .table td, .management-page .table th { min-width: 0; overflow-wrap: anywhere; padding: 8pt 5pt; }
+        .management-page .table { width: 100%; table-layout: fixed; font-size: 9.5pt; line-height: 1.35; }
+        .management-page .table th { background: #edf1ed !important; color: #182d23; font-size: 8.5pt; }
+        .management-page .table td, .management-page .table th { min-width: 0; overflow-wrap: anywhere; padding: 6pt 5pt; }
         .management-page .table tbody tr:nth-child(even) { background: #f7f8f5; }
         .management-page .card { border-radius: 0; border-color: #cdd5cd; }
         .management-page .row > .col-md-3 { grid-column: span 3; }
         .management-page .row > .col-md-6 { grid-column: span 6; }
         .document-header, .management-page .table { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+        .dashboard-report { max-width: none; font-size: 10pt; line-height: 1.4; }
+        .dashboard-report__intro { margin: 0 0 10pt; padding: 0; border: 0; background: none; }
+        .dashboard-report__intro p { font-size: 9.5pt; }
+        .dashboard-report__section { margin-bottom: 12pt; }
+        .dashboard-report__section h2 { margin-bottom: 5pt; font-size: 13pt; }
+        .dashboard-report__section > p { font-size: 9pt; }
+        .dashboard-report__rankings { display: block; }
+        .dashboard-report .table { font-size: 9.5pt; }
+        .dashboard-report .table th, .dashboard-report .table td { padding: 5pt 4pt; }
     }
 }
