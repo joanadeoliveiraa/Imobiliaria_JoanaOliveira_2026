@@ -1,0 +1,17 @@
+@extends('layouts.admin')
+@section('title', 'Relatório de reservas — Olive Properties')
+@section('admin_content')
+<div class="management-page container py-4">
+    <x-document-header title="Relatório de reservas" scope="Indicadores e ocupação por datas." />
+    <h1>Relatório de reservas</h1>
+    <p>Período: {{ $periodos[$periodo] }} (desde {{ $inicio->format('d/m/Y') }} até {{ $fim->format('d/m/Y') }}). Gerado em {{ $agora->format('d/m/Y H:i') }}.</p>
+    <p>Os valores representam reservas com entrada no período e não comprovam recebimentos. Pagamentos efetuados na aplicação são simulados.</p>
+    <div class="no-print mb-3"><button type="button" class="btn btn-outline-secondary" onclick="window.print()">Imprimir / guardar PDF</button> <a href="{{ route('dashboard', array_filter(['periodo' => $periodo, 'from' => $from, 'to' => $to])) }}">Voltar ao dashboard</a></div>
+    <table class="table"><tbody><tr><th>Propriedades</th><td>{{ $propriedades }}</td><th>Ocupadas hoje</th><td>{{ $ocupadas }}</td></tr><tr><th>Disponíveis hoje</th><td>{{ $disponiveis }}</td><th>Indisponíveis</th><td>{{ $indisponiveis }}</td></tr><tr><th>Reservas no período</th><td>{{ $reservas }}</td><th>Valor das reservas</th><td>{{ number_format($receita, 2, ',', '.') }} €</td></tr></tbody></table>
+    <h2 class="h5">Ocupação das propriedades</h2><div class="data-table-wrap"><table class="table"><thead><tr><th>Referência</th><th>Estado hoje</th><th>Ocupada até</th><th>Próxima entrada</th></tr></thead><tbody>@forelse($ocupacao as $propriedade)<tr><td>{{ $propriedade->referencia }}</td><td>{{ $propriedade->estado_atual }}</td><td>{{ $propriedade->ocupado_ate ? date('d/m/Y', strtotime($propriedade->ocupado_ate)) : '—' }}</td><td>{{ $propriedade->proxima_entrada ? date('d/m/Y', strtotime($propriedade->proxima_entrada)) : '—' }}</td></tr>@empty<tr><td colspan="4">Sem propriedades.</td></tr>@endforelse</tbody></table></div>
+    <h2 class="h5">Evolução mensal das reservas</h2><p>A série inclui meses anteriores ao período selecionado quando este é curto, para permitir comparação visual.</p><table class="table"><thead><tr><th>Mês</th><th>Valor de reservas</th><th>Reservas com entrada</th><th>Reservas registadas</th><th>Taxa de ocupação</th></tr></thead><tbody>@foreach($receitaMensal as $index => $mes)<tr><td>{{ $mes['label'] }}</td><td>{{ number_format($mes['total'], 2, ',', '.') }} €</td><td>{{ $mes['reservas'] }}</td><td>{{ $mes['criadas'] }}</td><td>{{ number_format($ocupacaoMensal[$index]['total'], 1, ',', '.') }}%</td></tr>@endforeach</tbody></table>
+    <h2 class="h5">Propriedades mais reservadas</h2><table class="table"><thead><tr><th>Referência</th><th>Reservas</th><th>Valor</th></tr></thead><tbody>@forelse($topPropriedades as $item)<tr><td>{{ $item->apartamento }}</td><td>{{ $item->total }}</td><td>{{ number_format($item->valor, 2, ',', '.') }} €</td></tr>@empty<tr><td colspan="3">Sem reservas no período.</td></tr>@endforelse</tbody></table>
+    <h2 class="h5">Valor por propriedade</h2><table class="table"><thead><tr><th>Referência</th><th>Valor</th><th>Reservas</th></tr></thead><tbody>@forelse($valorPropriedades as $item)<tr><td>{{ $item->apartamento }}</td><td>{{ number_format($item->valor, 2, ',', '.') }} €</td><td>{{ $item->reservas }}</td></tr>@empty<tr><td colspan="3">Sem reservas no período.</td></tr>@endforelse</tbody></table>
+    @if($alertas)<h2 class="h5">Pontos a rever</h2><ul>@foreach($alertas as $alerta)<li>{{ $alerta['total'] }} {{ $alerta['texto'] }}</li>@endforeach</ul>@endif
+</div>
+@endsection

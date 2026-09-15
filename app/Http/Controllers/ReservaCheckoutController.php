@@ -23,7 +23,7 @@ class ReservaCheckoutController extends Controller
     {
         $data = $request->validated();
         $property = Apartamento::findOrFail($data['apartamento_id']);
-        $this->assertAvailable($property);
+        $this->assertAvailable($property, $data['data_entrada'], $data['data_saida']);
         $quote = ReservationPricing::quote($property->preco, $data['data_entrada'], $data['data_saida']);
         $token = (string) Str::uuid();
         $drafts = array_filter($request->session()->get('reservation_drafts', []), fn ($draft) => $draft['expires_at'] > now()->timestamp);
@@ -76,7 +76,7 @@ class ReservaCheckoutController extends Controller
             if (! $property) {
                 throw ValidationException::withMessages(['reserva' => 'A propriedade foi removida. Volte ao primeiro passo.']);
             }
-            $this->assertAvailable($property);
+            $this->assertAvailable($property, $draft['data_entrada'], $draft['data_saida']);
             $client = Cliente::whereKey($draft['cliente_id'])->lockForUpdate()->first();
             if (! $client) {
                 throw ValidationException::withMessages(['reserva' => 'O cliente foi removido. Volte ao primeiro passo.']);
@@ -102,7 +102,6 @@ class ReservaCheckoutController extends Controller
                     'data_entrada' => $draft['data_entrada'], 'data_saida' => $draft['data_saida'], 'quote' => $quote,
                 ],
             ]);
-            $property->update(['estado' => Apartamento::ESTADO_INDISPONIVEL]);
             Atividade::create(['descricao' => 'Reserva criada após pagamento simulado: '.$property->referencia]);
 
             return $payment;
@@ -139,9 +138,9 @@ class ReservaCheckoutController extends Controller
         return redirect()->route('vendas.create')->withErrors(['reserva' => 'Esta simulação expirou ou já não está disponível. Inicie uma nova reserva.']);
     }
 
-    private function assertAvailable(Apartamento $property): void
+    private function assertAvailable(Apartamento $property, string $arrival, string $departure): void
     {
-        if ($property->estado !== Apartamento::ESTADO_DISPONIVEL) {
+        if ($property->estado !== Apartamento::ESTADO_DISPONIVEL || $property->reservas()->sobrepostas($arrival, $departure)->exists()) {
             throw ValidationException::withMessages(['apartamento_id' => 'A propriedade selecionada já não está disponível. Volte ao primeiro passo e selecione outra.']);
         }
     }

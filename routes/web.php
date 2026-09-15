@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ApartamentoController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservaCheckoutController;
 use App\Http\Controllers\VendaController;
@@ -50,7 +51,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/clientes/{cliente}/reservas', [VendaController::class, 'historicoCliente'])
         ->name('clientes.reservas');
 
-    Route::get('/dashboard', [ApartamentoController::class, 'dashboard'])
+    Route::get('/dashboard/relatorio', [DashboardController::class, 'report'])->name('dashboard.report');
+    Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 });
 

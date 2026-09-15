@@ -26,7 +26,7 @@ it('only creates the booking after approved simulation and keeps a printable imm
     $this->get($url)->assertOk()->assertSee('Pagamento simulado')->assertSee('1.000,00')->assertSee('Olhão Marina');
     $confirmation = $this->post($url, ['metodo' => 'mbway', 'resultado' => 'aprovado', 'valor_total' => 1])->assertRedirect()->headers->get('Location');
     expect(Venda::count())->toBe(1)->and(PagamentoSimulado::count())->toBe(1)
-        ->and(Venda::first()->valor_total)->toBe('1000.00')->and($this->property->fresh()->estado)->toBe('Nao Disponivel');
+        ->and(Venda::first()->valor_total)->toBe('1000.00')->and($this->property->fresh()->estado)->toBe('Disponivel');
     $this->get($confirmation)->assertOk()->assertSee('Reserva confirmada')->assertSee('SEM COBRANÇA REAL')->assertSee('Imprimir / Guardar PDF')->assertSee('cliente@example.test');
     $this->client->update(['nome' => 'Nome atualizado']);
     $this->property->update(['morada' => 'Localização atualizada']);

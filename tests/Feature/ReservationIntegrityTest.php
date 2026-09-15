@@ -66,5 +66,5 @@ it('uses the property price instead of a manipulated submitted value', function 
     $this->post($response->headers->get('Location'), ['metodo' => 'cartao', 'resultado' => 'aprovado'])->assertRedirect();
 
     expect(Venda::first()->valor_total)->toBe('850.00')
-        ->and($apartamento->fresh()->estado)->toBe('Nao Disponivel');
+        ->and($apartamento->fresh()->estado)->toBe('Disponivel');
 });

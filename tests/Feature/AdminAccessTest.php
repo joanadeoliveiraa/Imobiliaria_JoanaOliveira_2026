@@ -9,6 +9,7 @@ it('redirects visitors away from administrative routes', function () {
     $this->get(route('clientes.index'))->assertRedirect(route('login'));
     $this->get(route('vendas.index'))->assertRedirect(route('login'));
     $this->get(route('dashboard'))->assertRedirect(route('login'));
+    $this->get(route('dashboard.report'))->assertRedirect(route('login'));
 });
 
 it('forbids authenticated clients from administrative routes', function () {
@@ -17,6 +18,7 @@ it('forbids authenticated clients from administrative routes', function () {
     $this->actingAs($user)->get(route('clientes.index'))->assertForbidden();
     $this->actingAs($user)->get(route('vendas.index'))->assertForbidden();
     $this->actingAs($user)->get(route('dashboard'))->assertForbidden();
+    $this->actingAs($user)->get(route('dashboard.report'))->assertForbidden();
 });
 
 it('allows administrators to access customer management', function () {

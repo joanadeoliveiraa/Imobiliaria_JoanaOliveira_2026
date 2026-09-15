@@ -10,6 +10,7 @@ use App\Models\Venda;
 use App\Support\ReservationPricing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class VendaController extends Controller
 {
@@ -74,6 +75,9 @@ class VendaController extends Controller
                 ->lockForUpdate()
                 ->firstOrFail();
             $dados = $request->validated();
+            if ($apartamento->reservas()->sobrepostas($dados['data_entrada'], $dados['data_saida'])->where('id', '!=', $venda->id)->exists()) {
+                throw ValidationException::withMessages(['data_entrada' => 'Já existe uma reserva para esta propriedade nas datas selecionadas.']);
+            }
             $dados['apartamento'] = $venda->apartamento;
             $dados['valor_total'] = $venda->pagamentoSimulado
                 ? ReservationPricing::quote($apartamento->preco, $dados['data_entrada'], $dados['data_saida'])['total']
@@ -94,13 +98,7 @@ class VendaController extends Controller
 
         DB::transaction(function () use ($venda): void {
             Atividade::create(['descricao' => 'Reserva cancelada: '.$venda->apartamento]);
-            $referencia = $venda->apartamento;
             $venda->delete();
-
-            if (! Venda::where('apartamento', $referencia)->exists()) {
-                Apartamento::where('referencia', $referencia)
-                    ->update(['estado' => 'Disponivel']);
-            }
         });
 
         return redirect()
@@ -111,8 +109,8 @@ class VendaController extends Controller
     public function historicoCliente(string $cliente)
     {
         $vendas = Venda::where('cliente', $cliente)->get();
-        $totalReservas = $vendas->count();
-        $totalGasto = $vendas->sum('valor_total');
+        $totalReservas = Venda::deGestao()->where('cliente', $cliente)->count();
+        $totalGasto = Venda::receitaEntre('0001-01-01', now('Europe/Lisbon')->toDateString())->where('cliente', $cliente)->sum('valor_total');
         $ultimaReserva = $vendas->max('data_entrada');
 
         return view(

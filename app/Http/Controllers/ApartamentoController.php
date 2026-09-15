@@ -59,6 +59,7 @@ class ApartamentoController extends Controller
             : null;
 
         $apartamentos = Apartamento::query()
+            ->comEstadoAtual(now('Europe/Lisbon')->toDateString())
             ->when($pesquisa, function ($query) use ($pesquisa) {
                 $query->where(function ($query) use ($pesquisa) {
                     $query->where('referencia', 'like', "%{$pesquisa}%")
@@ -155,94 +156,4 @@ class ApartamentoController extends Controller
             ->with('success', 'Apartamento eliminado com sucesso.');
     }
 
-    public function dashboard()
-    {
-        $ultimoAcesso = now()->format('d/m/Y H:i');
-
-        $disponiveis = Apartamento::where('estado', 'Disponivel')->count();
-
-        $naoDisponiveis = Apartamento::where('estado', 'Nao Disponivel')->count();
-
-        $clientes = Cliente::count();
-
-        $reservas = Venda::count();
-
-        $receitaTotal = Venda::sum('valor_total');
-
-        $clienteTop = Venda::select('cliente')
-            ->selectRaw('COUNT(*) as total')
-            ->groupBy('cliente')
-            ->orderByDesc('total')
-            ->first();
-
-        $apartamentoTop = Venda::select('apartamento')
-            ->selectRaw('COUNT(*) as total')
-            ->groupBy('apartamento')
-            ->orderByDesc('total')
-            ->first();
-
-        $proximaReserva = Venda::orderBy('data_entrada')
-            ->first();
-
-        $atividades = Atividade::latest()
-            ->take(10)
-            ->get();
-
-        $topClientes = Venda::select('cliente')
-            ->selectRaw('COUNT(*) as total')
-            ->groupBy('cliente')
-            ->orderByDesc('total')
-            ->take(5)
-            ->get();
-        $labelsClientes = $topClientes->pluck('cliente');
-        $dadosClientes = $topClientes->pluck('total');
-
-        $reservasPorApartamento = Venda::select('apartamento')
-            ->selectRaw('COUNT(*) as total')
-            ->groupBy('apartamento')
-            ->orderByDesc('total')
-            ->get();
-
-        $labelsApartamentos = $reservasPorApartamento->pluck('apartamento');
-        $dadosApartamentos = $reservasPorApartamento->pluck('total');
-
-        $receitaMensal = Venda::selectRaw('SUBSTR(data_entrada, 1, 7) as mes, SUM(valor_total) as total')
-            ->groupBy('mes')
-            ->orderBy('mes')
-            ->get();
-
-        $labelsReceita = $receitaMensal->pluck('mes');
-
-        $dadosReceita = $receitaMensal->pluck('total');
-
-        $ocupacao = Apartamento::leftJoin('vendas', 'apartamentos.referencia', '=', 'vendas.apartamento')->select('apartamentos.referencia', 'apartamentos.estado', 'vendas.data_saida')
-            ->orderBy('apartamentos.referencia')
-            ->get();
-
-        return view(
-            'Dashboard.dashboard',
-            compact(
-                'disponiveis',
-                'naoDisponiveis',
-                'clientes',
-                'reservas',
-                'clienteTop',
-                'apartamentoTop',
-                'proximaReserva',
-                'ultimoAcesso',
-                'receitaTotal',
-                'atividades',
-                'topClientes',
-                'reservasPorApartamento',
-                'receitaMensal',
-                'labelsReceita',
-                'dadosReceita',
-                'labelsClientes',
-                'dadosClientes',
-                'labelsApartamentos',
-                'dadosApartamentos',
-                'ocupacao'
-            )
-        );
-    }
 }
