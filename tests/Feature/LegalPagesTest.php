@@ -22,6 +22,13 @@ it('documents configured cookies and keeps incomplete legal details explicit', f
         ->assertSee('olive_test_session')->assertSee('37 minutos')
         ->assertSee('XSRF-TOKEN')->assertSee('180 dias')
         ->assertSee(auth()->guard('web')->getRecallerName());
-    $this->get(route('legal.privacy'))->assertSee('[A PREENCHER:');
+    $this->get(route('legal.privacy'))->assertOk()
+        ->assertDontSee('[A PREENCHER]')
+        ->assertDontSee('Informação em preparação')
+        ->assertSee('15 de setembro de 2026')
+        ->assertSee('href="'.route('legal.cookies').'"', false)
+        ->assertSee('href="https://www.cnpd.pt/"', false)
+        ->assertSee('href="mailto:info@oliveproperties.pt"', false)
+        ->assertSee('href="tel:+351289000000"', false);
     $this->get(route('legal.terms'))->assertSee('[A PREENCHER:');
 });

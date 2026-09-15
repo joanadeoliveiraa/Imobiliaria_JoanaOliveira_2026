@@ -32,6 +32,7 @@ class StorePedidoContactoRequest extends FormRequest
             'telefone' => ['nullable', 'string', 'min:7', 'max:30', 'regex:/^[+0-9() .-]+$/'],
             'assunto' => ['required', 'string', 'min:3', 'max:160'],
             'mensagem' => ['required', 'string', 'min:10', 'max:5000'],
+            'privacidade_lida' => ['accepted'],
         ];
     }
 
@@ -43,6 +44,7 @@ class StorePedidoContactoRequest extends FormRequest
             'telefone.min' => 'Indique um telefone válido ou deixe o campo vazio.', 'telefone.max' => 'O telefone é demasiado longo.', 'telefone.regex' => 'O telefone só pode conter números e os sinais habituais.',
             'assunto.required' => 'Indique o assunto.', 'assunto.min' => 'O assunto deve ter pelo menos 3 caracteres.', 'assunto.max' => 'O assunto é demasiado longo.',
             'mensagem.required' => 'Escreva a mensagem.', 'mensagem.min' => 'A mensagem deve ter pelo menos 10 caracteres.', 'mensagem.max' => 'A mensagem é demasiado longa.',
+            'privacidade_lida.accepted' => 'Confirme que leu e compreendeu a Política de Privacidade.',
         ];
     }
 }

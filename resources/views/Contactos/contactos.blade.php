@@ -36,7 +36,14 @@
                         <small id="message-help" class="field-help">Mínimo de 10 caracteres. * Campos obrigatórios.</small><span id="mensagem-error" class="field-error">@error('mensagem'){{ $message }}@enderror</span>
                     </div>
                 </div>
-                <p class="field-help">Os seus dados serão usados para tratar este pedido. Consulte a <a href="{{ route('legal.privacy') }}">Política de Privacidade</a>.</p>
+                <p class="field-help">Os seus dados serão usados para tratar este pedido.</p>
+                <div class="field form-grid__full">
+                    <div class="privacy-confirmation">
+                        <input id="privacidade_lida" type="checkbox" name="privacidade_lida" value="1" required aria-invalid="{{ $errors->has('privacidade_lida') ? 'true' : 'false' }}" aria-describedby="privacidade_lida-error">
+                        <label for="privacidade_lida">Li e compreendi a <a href="{{ route('legal.privacy') }}">Política de Privacidade</a>. *</label>
+                    </div>
+                    <span id="privacidade_lida-error" class="field-error">@error('privacidade_lida'){{ $message }}@enderror</span>
+                </div>
                 <div class="form-actions"><button type="submit" class="button button--primary">Enviar mensagem</button></div>
             </form>
         </div>

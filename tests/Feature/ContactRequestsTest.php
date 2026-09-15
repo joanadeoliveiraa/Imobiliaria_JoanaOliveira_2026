@@ -16,6 +16,7 @@ function contactData(array $changes = []): array
     return array_replace([
         'nome' => 'Joana Oliveira', 'email' => 'joana@example.test', 'telefone' => '912345678',
         'assunto' => 'Disponibilidade no Algarve', 'mensagem' => 'Gostaria de saber se existe disponibilidade para a próxima semana.',
+        'privacidade_lida' => '1',
     ], $changes);
 }
 
@@ -28,6 +29,18 @@ it('stores a valid public contact request and redirects to a clear, empty form',
         ->and(PedidoContacto::first()->eventos()->first()->descricao)->toBe('Pedido recebido');
     $this->get(route('contactos'))->assertOk()->assertSee('Pedido enviado com sucesso.')->assertDontSee('value="Joana Oliveira"', false);
     expect(PedidoContacto::count())->toBe(1);
+});
+
+it('requires an express privacy reading confirmation before accepting a contact request', function () {
+    $this->get(route('contactos'))->assertOk()
+        ->assertSee('name="privacidade_lida"', false)
+        ->assertSee('href="'.route('legal.privacy').'"', false)
+        ->assertDontSee('name="privacidade_lida" value="1" checked', false);
+    $data = contactData();
+    unset($data['privacidade_lida']);
+    $this->from(route('contactos'))->post(route('contactos.enviar'), $data)
+        ->assertRedirect(route('contactos'))->assertSessionHasErrors('privacidade_lida');
+    expect(PedidoContacto::count())->toBe(0);
 });
 
 it('validates untrusted public input and limits repeated submissions', function () {

@@ -54,6 +54,30 @@
         font-size: clamp(1.3rem, 3vw, 1.65rem);
         line-height: 1.35;
     }
+    .legal-copy h3 {
+        margin-top: 1.5rem;
+        font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+        line-height: 1.4;
+    }
+    .legal-copy address {
+        font-style: normal;
+        line-height: 1.8;
+    }
+    .privacy-confirmation {
+        display: flex;
+        align-items: flex-start;
+        gap: .75rem;
+    }
+    .privacy-confirmation input {
+        flex: 0 0 auto;
+        width: 1.125rem;
+        height: 1.125rem;
+        margin-top: .25rem;
+        accent-color: var(--olive-800);
+    }
+    .privacy-confirmation label {
+        margin: 0;
+    }
     .legal-copy p {
         margin-block: 1rem;
     }

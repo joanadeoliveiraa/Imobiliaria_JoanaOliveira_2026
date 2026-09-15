@@ -11,7 +11,7 @@ class ContactoController extends Controller
     public function store(StorePedidoContactoRequest $request)
     {
         DB::transaction(function () use ($request) {
-            $pedido = PedidoContacto::create($request->validated());
+            $pedido = PedidoContacto::create($request->safe()->except('privacidade_lida'));
             $pedido->eventos()->create(['tipo' => 'received', 'descricao' => 'Pedido recebido']);
         });
 
