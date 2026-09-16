@@ -18,7 +18,6 @@
         </nav>
         @if(auth()->user()->tipo === 'administrador')
         <div class="account-navigation__user">
-            <button type="button" class="theme-toggle" data-theme-toggle aria-label="Ativar modo escuro">☾</button>
                 @php($notifications = auth()->user()->notifications()->latest()->limit(8)->get())
                 <details class="admin-notifications">
                     <summary aria-label="Notificações administrativas">🔔 <span class="account-navigation__count">{{ auth()->user()->unreadNotifications()->count() }}</span></summary>

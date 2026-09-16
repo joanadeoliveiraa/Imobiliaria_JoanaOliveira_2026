@@ -7,9 +7,7 @@
     <meta name="description" content="@yield('meta_description', 'Olive Properties — propriedades selecionadas no Algarve.')">
     <title>@yield('title', 'Olive Properties')</title>
     <link rel="icon" type="image/png" href="{{ asset('images/logo_folhaVerde.png') }}">
-    @auth
     <script>try{if(localStorage.getItem('olive-theme-v1')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}</script>
-    @endauth
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="public-site">

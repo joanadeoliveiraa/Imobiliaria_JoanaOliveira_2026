@@ -3,7 +3,6 @@ const key = 'olive-theme-v1';
 function updateButtons() {
     const dark = document.documentElement.dataset.theme === 'dark';
     document.querySelectorAll('[data-theme-toggle]').forEach(button => {
-        button.textContent = dark ? '☀' : '☾';
         button.setAttribute('aria-label', dark ? 'Ativar modo claro' : 'Ativar modo escuro');
         button.setAttribute('aria-pressed', dark ? 'true' : 'false');
     });
