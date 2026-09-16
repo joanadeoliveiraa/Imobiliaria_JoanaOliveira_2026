@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\ApartamentoController;
+use App\Http\Controllers\AdminNotificationController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\ClientAreaController;
 use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PedidoContactoController;
@@ -39,6 +41,8 @@ Route::get('/apartamentos', [ApartamentoController::class, 'index'])
     ->name('apartamentos.index');
 
 Route::middleware(['auth', 'admin'])->group(function () {
+    Route::post('/backoffice/notificacoes/lidas', [AdminNotificationController::class, 'readAll'])->name('admin.notifications.read-all');
+    Route::post('/backoffice/notificacoes/{id}/abrir', [AdminNotificationController::class, 'open'])->name('admin.notifications.open');
     Route::get('/backoffice/contactos', [PedidoContactoController::class, 'index'])->name('admin.contactos.index');
     Route::get('/backoffice/contactos/{pedido}/responder', [PedidoContactoController::class, 'reply'])->name('admin.contactos.reply');
     Route::post('/backoffice/contactos/{pedido}/responder', [PedidoContactoController::class, 'sendReply'])->name('admin.contactos.send');
@@ -78,6 +82,21 @@ Route::get('/contactos', function () {
 Route::post('/contactos', [ContactoController::class, 'store'])->middleware('throttle:5,10')->name('contactos.enviar');
 
 Route::middleware('auth')->group(function () {
+    Route::middleware('client')->prefix('minha-area')->name('client.')->group(function () {
+        Route::get('/', [ClientAreaController::class, 'home'])->name('home');
+        Route::get('/reservas', [ClientAreaController::class, 'reservations'])->name('reservations.index');
+        Route::get('/nova-reserva', [ClientAreaController::class, 'newReservation'])->name('reservations.create');
+        Route::post('/nova-reserva', [ReservaCheckoutController::class, 'start'])->name('reservations.start');
+        Route::get('/resumo/{token}', [ReservaCheckoutController::class, 'summary'])->whereUuid('token')->name('reservations.summary');
+        Route::post('/resumo/{token}', [ReservaCheckoutController::class, 'continue'])->whereUuid('token')->name('reservations.continue');
+        Route::get('/pagamento/{token}', [ReservaCheckoutController::class, 'show'])->whereUuid('token')->name('reservations.payment');
+        Route::post('/pagamento/{token}', [ReservaCheckoutController::class, 'pay'])->whereUuid('token')->name('reservations.pay');
+        Route::get('/reservas/{venda}/confirmacao', [ReservaCheckoutController::class, 'confirmation'])->name('reservations.confirmation');
+        Route::get('/reservas/{venda}/comprovativo', [ClientAreaController::class, 'receipt'])->name('reservations.receipt');
+        Route::get('/reservas/{venda}', [ClientAreaController::class, 'reservation'])->name('reservations.show');
+        Route::get('/mensagens', [ClientAreaController::class, 'messages'])->name('messages.index');
+        Route::get('/mensagens/{pedido}', [ClientAreaController::class, 'message'])->name('messages.show');
+    });
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

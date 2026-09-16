@@ -90,6 +90,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const state = [{{ $ocupadas }}, {{ $disponiveis }}, {{ $indisponiveis }}];
     const labels = monthly.map(item => item.label);
     const green = '#30493b', sage = '#718a72', light = '#cfd9cc';
+    const charts = [];
+    const isDark = () => document.documentElement.dataset.theme === 'dark';
+    const chartText = () => isDark() ? '#edf2e9' : '#30493b';
+    const chartGrid = () => isDark() ? 'rgba(237,242,233,.18)' : 'rgba(48,73,59,.14)';
     if (typeof Chart === 'undefined') {
         document.querySelectorAll('.dashboard-chart').forEach(panel => panel.hidden = true);
         document.querySelectorAll('.dashboard-panel details').forEach(table => table.open = true);
@@ -104,19 +108,19 @@ document.addEventListener('DOMContentLoaded', () => {
             if (opts.money) return new Intl.NumberFormat('pt-PT', {style: 'currency', currency: 'EUR'}).format(ctx.raw);
             return `${ctx.dataset.label}: ${ctx.raw}${opts.percent ? '%' : ''}`;
         };
-        new Chart(element, {
+        charts.push(new Chart(element, {
             type,
             data: {labels: chartLabels, datasets: [{label: opts.label || '', data: values, borderColor: green, backgroundColor: opts.colors || sage, borderWidth: 2, tension: .28, fill: false}]},
             options: {
                 responsive: true, maintainAspectRatio: false, animation: false,
                 indexAxis: opts.horizontal ? 'y' : 'x',
-                plugins: {legend: {display: type === 'doughnut'}, tooltip: {callbacks: {label: tooltipLabel, afterLabel: ctx => opts.extra?.[ctx.dataIndex] || ''}}},
+                plugins: {legend: {display: type === 'doughnut', labels: {color: chartText()}}, tooltip: {callbacks: {label: tooltipLabel, afterLabel: ctx => opts.extra?.[ctx.dataIndex] || ''}}},
                 scales: type === 'doughnut' ? {} : {
-                    y: {beginAtZero: true, ticks: {callback: value => opts.money ? `${value} €` : opts.percent ? `${value}%` : value}},
-                    x: {ticks: {maxRotation: 0, autoSkip: true}}
+                    y: {beginAtZero: true, grid: {color: chartGrid()}, ticks: {color: chartText(), callback: value => opts.money ? `${value} €` : opts.percent ? `${value}%` : value}},
+                    x: {grid: {color: chartGrid()}, ticks: {color: chartText(), maxRotation: 0, autoSkip: true}}
                 }
             }
-        });
+        }));
     }
     draw('chart-value', 'line', labels, monthly.map(item => item.total), {label: 'Valor de reservas', money: true, extra: monthly.map(item => `${item.reservas} reserva(s) com entrada no mês`)});
     draw('chart-created', 'bar', labels, monthly.map(item => item.criadas), {label: 'Reservas registadas'});
@@ -124,6 +128,14 @@ document.addEventListener('DOMContentLoaded', () => {
     draw('chart-properties', 'bar', top.map(item => item.apartamento), top.map(item => item.total), {label: 'Reservas', horizontal: true, extra: top.map(item => `${new Intl.NumberFormat('pt-PT', {style: 'currency', currency: 'EUR'}).format(item.valor)} em reservas`)});
     draw('chart-property-value', 'bar', valueTop.map(item => item.apartamento), valueTop.map(item => Number(item.valor)), {label: 'Valor de reservas', money: true, extra: valueTop.map(item => `${item.reservas} reserva(s)`)});
     draw('chart-state', 'doughnut', ['Ocupadas', 'Disponíveis', 'Indisponíveis'], state, {colors: [green, sage, light]});
+    document.addEventListener('olive-theme-changed', () => charts.forEach(chart => {
+        chart.options.plugins.legend.labels.color = chartText();
+        for (const axis of Object.values(chart.options.scales)) {
+            axis.ticks.color = chartText();
+            axis.grid.color = chartGrid();
+        }
+        chart.update();
+    }));
 });
 </script>
 @endpush

@@ -1,0 +1,49 @@
+@layer components {
+    .client-area { padding-block: clamp(2rem, 5vw, 4rem); max-width: 70rem; }
+    .client-nav { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+    .client-nav a { min-height: 2.75rem; display: inline-flex; align-items: center; text-decoration: none; font-weight: 600; color: var(--olive-800); }
+    .client-nav a:hover { text-decoration: underline; }
+    .client-tools { display: flex; justify-content: flex-end; align-items: center; gap: 1rem; }
+    .client-tools form button { border: 0; background: none; color: var(--olive-800); cursor: pointer; }
+    .client-heading { margin-bottom: 2rem; }
+    .client-heading h1 { font-size: clamp(2rem, 5vw, 3.3rem); }
+    .client-heading p:last-child { color: var(--text-secondary); }
+    .client-cards, .client-checkout { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+    .client-card, .client-panel { display: block; margin-block: 1.25rem; padding: clamp(1.25rem, 3vw, 2rem); border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); box-shadow: var(--shadow-sm); }
+    .client-card { text-decoration: none; }
+    .client-card span, .client-card small { display: block; }
+    .client-card strong { display: block; font-size: 2rem; color: var(--olive-800); }
+    .client-panel h2 { font-size: clamp(1.3rem, 3vw, 1.8rem); }
+    .client-reservation { display: flex; gap: 1.5rem; align-items: center; }
+    .client-reservation img { width: 10rem; height: 8rem; object-fit: cover; border-radius: var(--radius-sm); }
+    .client-property-image { max-height: 20rem; width: 100%; object-fit: cover; border-radius: var(--radius-sm); }
+    .client-booking-form { display: grid; gap: 1rem; max-width: 42rem; }
+    .client-panel form .button { margin: .5rem .5rem .5rem 0; }
+    .client-message-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+    .client-receipt { max-width: 48rem; margin: 1rem auto; padding: 2rem; border: 1px solid var(--border); background: #fff; color: #202622; }
+    .client-receipt h1, .client-receipt h2 { color: #22352c; }
+    .client-receipt section { border-top: 1px solid #dddcd5; margin-top: 1.5rem; padding-top: 1rem; }
+    .client-receipt footer { border-top: 1px solid #dddcd5; padding-top: 1rem; margin-top: 2rem; font-size: .85rem; }
+    .receipt-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+    .admin-notifications { position: relative; }
+    .admin-notifications summary { list-style: none; cursor: pointer; min-width: 2.75rem; }
+    .admin-notifications__panel { position: absolute; z-index: 30; right: 0; top: 100%; width: min(22rem, calc(100vw - 2rem)); max-height: 24rem; overflow: auto; padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); box-shadow: var(--shadow-sm); color: var(--text-primary); }
+    .admin-notifications__panel button { display: block; width: 100%; text-align: left; border: 0; border-bottom: 1px solid var(--border); padding: .75rem; background: transparent; color: inherit; cursor: pointer; }
+    .admin-notifications__panel button span, .admin-notifications__panel button small { display: block; }
+    .admin-notifications__panel .is-unread { background: var(--olive-100); }
+    .theme-toggle { min-width: 2.75rem; min-height: 2.75rem; border: 1px solid var(--border); border-radius: 50%; background: var(--surface); color: var(--olive-800); cursor: pointer; font-size: 1.25rem; }
+    @media (max-width: 640px) {
+        .client-cards, .client-checkout { grid-template-columns: 1fr; }
+        .client-reservation { align-items: flex-start; flex-direction: column; }
+        .client-reservation img { width: 100%; height: 12rem; }
+        .client-receipt { padding: 1.25rem; }
+    }
+    @media print {
+        @page { size: A4; margin: 16mm; }
+        body:has(.client-receipt) .public-header, body:has(.client-receipt) .site-footer,
+        body:has(.client-receipt) .client-nav, body:has(.client-receipt) .client-tools,
+        body:has(.client-receipt) .cookie-notice, .receipt-actions { display: none !important; }
+        .client-receipt { border: 0; box-shadow: none; max-width: none; padding: 0; margin: 0; }
+        .client-area { padding: 0; max-width: none; }
+    }
+}

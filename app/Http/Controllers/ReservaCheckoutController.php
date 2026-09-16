@@ -8,9 +8,15 @@ use App\Models\Atividade;
 use App\Models\Cliente;
 use App\Models\PagamentoSimulado;
 use App\Models\Venda;
+use App\Models\User;
+use App\Mail\ReservaConfirmada;
+use App\Notifications\AdministrativeEvent;
+use App\Support\ClientAccount;
 use App\Support\ReservationPricing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -22,6 +28,9 @@ class ReservaCheckoutController extends Controller
     public function start(StoreVendaRequest $request)
     {
         $data = $request->validated();
+        if ($request->user()->tipo === 'cliente') {
+            $data['cliente_id'] = ClientAccount::for($request->user())->id;
+        }
         $property = Apartamento::findOrFail($data['apartamento_id']);
         $this->assertAvailable($property, $data['data_entrada'], $data['data_saida']);
         $quote = ReservationPricing::quote($property->preco, $data['data_entrada'], $data['data_saida']);
@@ -30,13 +39,37 @@ class ReservaCheckoutController extends Controller
         $drafts[$token] = $data + ['user_id' => $request->user()->id, 'expires_at' => now()->addMinutes(30)->timestamp, 'quote' => $quote];
         $request->session()->put('reservation_drafts', $drafts);
 
-        return redirect()->route('vendas.pagamento', $token);
+        return redirect()->route($request->user()->tipo === 'cliente' ? 'client.reservations.summary' : 'vendas.pagamento', $token);
+    }
+
+    public function summary(Request $request, string $token)
+    {
+        if (! $draft = $this->draft($request, $token)) {
+            return $this->expired();
+        }
+        $property = Apartamento::findOrFail($draft['apartamento_id']);
+        $this->assertAvailable($property, $draft['data_entrada'], $draft['data_saida']);
+        $cliente = Cliente::findOrFail($draft['cliente_id']);
+
+        return view('client.summary', compact('draft', 'token', 'property', 'cliente'));
+    }
+
+    public function continue(Request $request, string $token)
+    {
+        if (! $draft = $this->draft($request, $token)) {
+            return $this->expired();
+        }
+        $property = Apartamento::findOrFail($draft['apartamento_id']);
+        $this->assertAvailable($property, $draft['data_entrada'], $draft['data_saida']);
+        abort_unless(ReservationPricing::quote($property->preco, $draft['data_entrada'], $draft['data_saida']) === $draft['quote'], 409);
+
+        return redirect()->route('client.reservations.payment', $token);
     }
 
     public function show(Request $request, string $token)
     {
         if ($payment = $this->completed($request, $token)) {
-            return redirect()->route('vendas.confirmacao', $payment->venda_id);
+            return redirect()->route($request->user()->tipo === 'cliente' ? 'client.reservations.confirmation' : 'vendas.confirmacao', $payment->venda_id);
         }
         if (! $draft = $this->draft($request, $token)) {
             return $this->expired();
@@ -44,16 +77,17 @@ class ReservaCheckoutController extends Controller
         $cliente = Cliente::find($draft['cliente_id']);
         $apartamento = Apartamento::find($draft['apartamento_id']);
         if (! $cliente || ! $apartamento) {
-            return redirect()->route('vendas.create')->withErrors(['reserva' => 'O cliente ou a propriedade já não estão disponíveis. Reveja a reserva.']);
+            return redirect()->route($request->user()->tipo === 'cliente' ? 'client.reservations.create' : 'vendas.create')->withErrors(['reserva' => 'O cliente ou a propriedade já não estão disponíveis. Reveja a reserva.']);
         }
 
-        return view('Vendas.pagamento', ['draft' => $draft, 'token' => $token, 'cliente' => $cliente, 'apartamento' => $apartamento, 'methods' => self::METHODS]);
+        return view($request->user()->tipo === 'cliente' ? 'client.payment' : 'Vendas.pagamento',
+            ['draft' => $draft, 'token' => $token, 'cliente' => $cliente, 'apartamento' => $apartamento, 'methods' => self::METHODS]);
     }
 
     public function pay(Request $request, string $token)
     {
         if ($payment = $this->completed($request, $token)) {
-            return redirect()->route('vendas.confirmacao', $payment->venda_id);
+            return redirect()->route($request->user()->tipo === 'cliente' ? 'client.reservations.confirmation' : 'vendas.confirmacao', $payment->venda_id);
         }
         if (! $draft = $this->draft($request, $token)) {
             return $this->expired();
@@ -90,7 +124,7 @@ class ReservaCheckoutController extends Controller
             }
 
             $venda = Venda::create([
-                'cliente' => $client->nome, 'apartamento' => $property->referencia,
+                'cliente_id' => $client->id, 'cliente' => $client->nome, 'apartamento' => $property->referencia,
                 'data_entrada' => $draft['data_entrada'], 'data_saida' => $draft['data_saida'], 'valor_total' => $quote['total'],
             ]);
             $payment = PagamentoSimulado::create([
@@ -107,18 +141,37 @@ class ReservaCheckoutController extends Controller
             return $payment;
         });
         $request->session()->forget('reservation_drafts.'.$token);
-
-        return redirect()->route('vendas.confirmacao', $payment->venda_id);
-    }
-
-    public function confirmation(Venda $venda)
-    {
-        $payment = $venda->pagamentoSimulado;
-        if (! $payment) {
-            return redirect()->route('vendas.show', $venda);
+        $reserva = $payment->venda()->with('clienteRegistado')->first();
+        if ($request->user()->tipo === 'cliente') {
+            $notification = new AdministrativeEvent('reservation', 'Nova reserva confirmada',
+                $reserva->apartamento.' — '.$reserva->cliente, route('vendas.show', $reserva));
+            User::where('tipo', 'administrador')->get()->each(fn ($admin) => $admin->notify($notification));
+        }
+        if ($reserva->clienteRegistado?->email && ! in_array(config('mail.default'), ['log', 'array'], true)) {
+            try {
+                Mail::to($reserva->clienteRegistado->email)->send(new ReservaConfirmada($reserva));
+                $payment->update(['email_estado' => 'sent', 'email_enviado_em' => now()]);
+            } catch (\Throwable $exception) {
+                Log::error('Falha ao enviar confirmação de reserva', ['reserva_id' => $reserva->id, 'erro' => $exception->getMessage()]);
+                $payment->update(['email_estado' => 'failed']);
+            }
         }
 
-        return view('Vendas.confirmacao', ['venda' => $venda, 'payment' => $payment, 'details' => $payment->detalhes]);
+        return redirect()->route($request->user()->tipo === 'cliente' ? 'client.reservations.confirmation' : 'vendas.confirmacao', $payment->venda_id);
+    }
+
+    public function confirmation(Request $request, Venda $venda)
+    {
+        if ($request->user()->tipo === 'cliente') {
+            abort_unless($venda->cliente_id === ClientAccount::for($request->user())->id, 403);
+        }
+        $payment = $venda->pagamentoSimulado;
+        if (! $payment) {
+            return redirect()->route($request->user()->tipo === 'cliente' ? 'client.reservations.show' : 'vendas.show', $venda);
+        }
+
+        return view($request->user()->tipo === 'cliente' ? 'client.confirmation' : 'Vendas.confirmacao',
+            ['venda' => $venda->load(['propriedade', 'clienteRegistado']), 'payment' => $payment, 'details' => $payment->detalhes]);
     }
 
     private function completed(Request $request, string $token): ?PagamentoSimulado
@@ -135,7 +188,8 @@ class ReservaCheckoutController extends Controller
 
     private function expired()
     {
-        return redirect()->route('vendas.create')->withErrors(['reserva' => 'Esta simulação expirou ou já não está disponível. Inicie uma nova reserva.']);
+        return redirect()->route(request()->user()?->tipo === 'cliente' ? 'client.reservations.create' : 'vendas.create')
+            ->withErrors(['reserva' => 'Esta simulação expirou ou já não está disponível. Inicie uma nova reserva.']);
     }
 
     private function assertAvailable(Apartamento $property, string $arrival, string $departure): void

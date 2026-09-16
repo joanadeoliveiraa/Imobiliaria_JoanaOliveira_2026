@@ -23,6 +23,19 @@
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
+        @if($user->tipo === 'cliente')
+            <div>
+                <x-input-label for="telefone" :value="__('Telefone')" />
+                <x-text-input id="telefone" name="telefone" type="tel" class="mt-1 block w-full" :value="old('telefone', $user->cliente?->telefone)" autocomplete="tel" />
+                <x-input-error class="mt-2" :messages="$errors->get('telefone')" />
+            </div>
+            <div>
+                <x-input-label for="morada" :value="__('Morada')" />
+                <x-text-input id="morada" name="morada" type="text" class="mt-1 block w-full" :value="old('morada', $user->cliente?->morada)" />
+                <x-input-error class="mt-2" :messages="$errors->get('morada')" />
+            </div>
+        @endif
+
         <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />

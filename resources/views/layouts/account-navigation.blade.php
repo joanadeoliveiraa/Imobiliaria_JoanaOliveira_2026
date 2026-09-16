@@ -8,16 +8,41 @@
                 <a href="{{ route('clientes.index') }}" @class(['is-active' => request()->routeIs('clientes.*')])>Clientes</a>
                 <a href="{{ route('vendas.index') }}" @class(['is-active' => request()->routeIs('vendas.*')])>Reservas</a>
                 <a href="{{ route('admin.contactos.index') }}" @class(['is-active' => request()->routeIs('admin.contactos.*')])>Pedidos de contacto @if($novosContactosMenu = \App\Models\PedidoContacto::whereNull('lido_em')->count())<span class="account-navigation__count">{{ $novosContactosMenu }}</span>@endif</a>
+            @else
+                <a href="{{ route('client.home') }}">Minha área</a>
+                <a href="{{ route('client.reservations.index') }}">Minhas reservas</a>
+                <a href="{{ route('client.reservations.create') }}">Nova reserva</a>
+                <a href="{{ route('client.messages.index') }}">Mensagens</a>
             @endif
             <a href="{{ route('profile.edit') }}" @class(['is-active' => request()->routeIs('profile.*')])>O meu perfil</a>
         </nav>
+        @if(auth()->user()->tipo === 'administrador')
         <div class="account-navigation__user">
+            <button type="button" class="theme-toggle" data-theme-toggle aria-label="Ativar modo escuro">☾</button>
+                @php($notifications = auth()->user()->notifications()->latest()->limit(8)->get())
+                <details class="admin-notifications">
+                    <summary aria-label="Notificações administrativas">🔔 <span class="account-navigation__count">{{ auth()->user()->unreadNotifications()->count() }}</span></summary>
+                    <div class="admin-notifications__panel">
+                        <strong>Notificações</strong>
+                        @forelse($notifications as $notification)
+                            <form method="POST" action="{{ route('admin.notifications.open', $notification->id) }}">@csrf
+                                <button type="submit" @class(['is-unread' => is_null($notification->read_at)])>
+                                    <strong>{{ $notification->data['title'] ?? 'Notificação' }}</strong>
+                                    <span>{{ $notification->data['description'] ?? '' }}</span>
+                                    <small>{{ $notification->created_at->diffForHumans() }}</small>
+                                </button>
+                            </form>
+                        @empty<p>Sem notificações recentes.</p>@endforelse
+                        <form method="POST" action="{{ route('admin.notifications.read-all') }}">@csrf<button type="submit">Marcar todas como lidas</button></form>
+                    </div>
+                </details>
             <span>{{ auth()->user()->name }}</span>
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit">Terminar sessão</button>
             </form>
         </div>
+        @endif
     </div>
 </div>
 @endauth

@@ -1,6 +1,7 @@
 import './management';
 import './reservation-form';
 import './documents';
+import './theme';
 
 import Alpine from 'alpinejs';
 import cookieNotice from './cookie-notice';

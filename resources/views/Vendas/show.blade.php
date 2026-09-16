@@ -58,6 +58,18 @@
 
             <hr>
 
+            @if($venda->pagamentoSimulado)
+                <h2>Pagamento simulado</h2>
+                <p><strong>Estado:</strong> Aprovado (simulação)</p>
+                <p><strong>Método:</strong> {{ \App\Http\Controllers\ReservaCheckoutController::METHODS[$venda->pagamentoSimulado->metodo] ?? $venda->pagamentoSimulado->metodo }}</p>
+                <p><strong>Valor:</strong> {{ number_format((float) $venda->valor_total, 2, ',', '.') }} €</p>
+                <p><strong>Data:</strong> {{ $venda->pagamentoSimulado->created_at->timezone('Europe/Lisbon')->format('d/m/Y H:i') }}</p>
+                <p><strong>Referência interna:</strong> {{ $venda->pagamentoSimulado->token }}</p>
+                <p><strong>Confirmação por email:</strong> {{ match($venda->pagamentoSimulado->email_estado) { 'sent' => 'Enviada', 'failed' => 'Falhou', default => 'Não enviada' } }}</p>
+                <p class="simulation-notice">Este pagamento é exclusivamente demonstrativo e não corresponde a cobrança real.</p>
+                <a class="button button--outline" href="{{ route('vendas.confirmacao', $venda) }}">Ver / imprimir comprovativo</a>
+                <hr>
+            @endif
             <div class="d-flex gap-2">
                 @if($venda->pagamentoSimulado)
                     <a class="btn btn-outline-dark" href="{{ route('vendas.confirmacao', $venda) }}">Confirmação / Imprimir</a>

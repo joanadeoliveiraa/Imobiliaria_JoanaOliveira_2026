@@ -22,7 +22,9 @@
                     @if(auth()->user()->tipo === 'administrador')
                         <a href="{{ route('dashboard') }}" class="button button--small button--outline">Backoffice</a>
                     @else
-                        <a href="{{ route('profile.edit') }}" class="button button--small button--outline">Perfil</a>
+                        <a href="{{ route('client.home') }}" class="button button--small button--outline">Minha área</a>
+                        <button type="button" class="theme-toggle" data-theme-toggle aria-label="Ativar modo escuro">☾</button>
+                        <form method="POST" action="{{ route('logout') }}">@csrf<button type="submit" class="button button--small button--outline">Terminar sessão</button></form>
                     @endif
                 @else
                     <a href="{{ route('login') }}" class="button button--small button--outline">Área reservada</a>

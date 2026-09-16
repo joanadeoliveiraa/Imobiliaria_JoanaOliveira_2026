@@ -12,6 +12,8 @@
 @import './checkout.css';
 @import './documents.css';
 @import './holiday-journey.css';
+@import './client-area.css';
+@import './theme.css';
 
 @tailwind base;
 @tailwind components;

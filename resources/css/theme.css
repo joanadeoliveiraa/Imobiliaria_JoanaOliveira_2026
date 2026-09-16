@@ -1,0 +1,33 @@
+@layer base {
+    html[data-theme="dark"] {
+        --olive-950: #eff4e9;
+        --olive-900: #e0eadb;
+        --olive-800: #c2d7bb;
+        --olive-700: #a4c19b;
+        --olive-500: #8dab84;
+        --olive-200: #425746;
+        --olive-100: #304436;
+        --ivory: #19251e;
+        --surface: #26362b;
+        --border: #49604e;
+        --text-primary: #edf2e9;
+        --text-secondary: #b8c9b7;
+        color-scheme: dark;
+    }
+    html[data-theme="dark"] body { background: #19251e; color: var(--text-primary); }
+}
+@layer components {
+    html[data-theme="dark"] .management-area, html[data-theme="dark"] .account-navigation,
+    html[data-theme="dark"] .card, html[data-theme="dark"] .dashboard-panel,
+    html[data-theme="dark"] .checkout-panel, html[data-theme="dark"] .client-panel,
+    html[data-theme="dark"] .client-card, html[data-theme="dark"] .cookie-notice,
+    html[data-theme="dark"] .account-page .bg-white { background: var(--surface); color: var(--text-primary); border-color: var(--border); }
+    html[data-theme="dark"] input, html[data-theme="dark"] textarea,
+    html[data-theme="dark"] select, html[data-theme="dark"] table,
+    html[data-theme="dark"] .admin-notifications__panel { background: #213127; color: var(--text-primary); border-color: var(--border); }
+    html[data-theme="dark"] .simulation-notice { background: #354d39; color: #f0f3e9; }
+    html[data-theme="dark"] .button--primary { background: #73966e; color: #142219; }
+    html[data-theme="dark"] .button--outline { border-color: var(--olive-800); color: var(--olive-800); }
+    html[data-theme="dark"] .client-receipt { background: #fff; color: #202622; }
+    html[data-theme="dark"] .client-receipt h1, html[data-theme="dark"] .client-receipt h2 { color: #22352c; }
+}

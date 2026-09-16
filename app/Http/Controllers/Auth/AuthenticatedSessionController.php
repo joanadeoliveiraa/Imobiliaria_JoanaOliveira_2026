@@ -22,7 +22,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        $destination = $request->user()->tipo === 'administrador' ? 'dashboard' : 'profile.edit';
+        $destination = $request->user()->tipo === 'administrador' ? 'dashboard' : 'client.home';
 
         return redirect()->intended(route($destination, absolute: false));
     }

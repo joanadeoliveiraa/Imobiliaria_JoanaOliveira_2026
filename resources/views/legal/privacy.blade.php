@@ -21,13 +21,14 @@
     <h3>Reservas</h3>
     <p>Identificação do cliente, propriedade associada, datas de entrada e saída, estado e valor da reserva.</p>
     <h3>Pagamentos simulados</h3>
-    <p>No contexto demonstrativo da plataforma poderão ser registados o método de pagamento simulado, data, administrador responsável e dados associados à reserva.</p>
+    <p>No contexto demonstrativo da plataforma poderão ser registados o método de pagamento simulado, data, utilizador que concluiu a operação, estado de envio do email de confirmação e dados associados à reserva.</p>
     <p>A plataforma não recolhe números reais de cartões de pagamento, códigos de segurança, credenciais bancárias ou outros dados financeiros destinados ao processamento de pagamentos reais.</p>
     <h3>Pedidos de contacto</h3>
     <p>Quando é utilizado o formulário de contacto poderão ser tratados o nome, endereço de email, telefone, quando facultado, assunto, conteúdo da mensagem e data de envio.</p>
-    <p>Na área administrativa poderão ainda ser registados o estado do pedido, notas internas relacionadas com o seu acompanhamento e o histórico de respostas enviadas.</p>
+    <p>Na área administrativa poderão ainda ser registados o estado do pedido, notas internas relacionadas com o seu acompanhamento e o histórico de respostas enviadas. Os pedidos enviados por clientes autenticados ficam associados à respetiva conta para consulta das próprias comunicações.</p>
     <h3>Dados técnicos</h3>
     <p>Poderão ser tratados dados técnicos necessários ao funcionamento e segurança da aplicação, incluindo identificadores de sessão e, dependendo da configuração técnica utilizada, endereço IP e informações relativas ao navegador ou dispositivo.</p>
+    <p>A preferência de aparência selecionada pelo utilizador é guardada localmente no navegador, conforme descrito na <a href="{{ route('legal.cookies') }}">Política de Cookies</a>.</p>
 </section>
 <section>
     <h2>3. Finalidades do tratamento</h2>
@@ -37,7 +38,7 @@
         <li>responder a pedidos de contacto e pedidos de informação;</li>
         <li>gerir clientes;</li>
         <li>gerir propriedades e reservas;</li>
-        <li>acompanhar a execução e o estado das reservas;</li>
+        <li>acompanhar a execução e o estado das reservas e enviar a confirmação por email quando possível;</li>
         <li>gerir contas e acessos à área reservada;</li>
         <li>manter o histórico administrativo necessário ao funcionamento da plataforma;</li>
         <li>garantir a segurança, autenticação e correto funcionamento da aplicação;</li>

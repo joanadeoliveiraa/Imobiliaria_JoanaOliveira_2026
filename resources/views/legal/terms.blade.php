@@ -28,8 +28,8 @@
 </section>
 <section>
     <h2>4. Área reservada do cliente</h2>
-    <p>Na versão atual, um utilizador autenticado com perfil de cliente pode consultar e atualizar o seu perfil de utilizador. Ainda não existe uma Área de Cliente com consulta das próprias reservas, histórico de estadias, criação ou cancelamento de reservas, consulta de pedidos de contacto ou respostas da equipa.</p>
-    <p>Essas operações de reserva e acompanhamento de comunicações são efetuadas através da área administrativa, por utilizadores autorizados. Informação administrativa interna e dados de outros clientes não são disponibilizados às contas de cliente.</p>
+    <p>O cliente autenticado pode consultar e atualizar o seu perfil, consultar as próprias reservas e o histórico de estadias, iniciar uma nova reserva, consultar os seus pedidos de contacto e as respostas enviadas pela equipa.</p>
+    <p>O cancelamento e a alteração de reservas continuam reservados à área administrativa. Informação administrativa interna, dados de outros clientes e notas internas dos pedidos não são disponibilizados às contas de cliente.</p>
 </section>
 <section>
     <h2>5. Informação sobre propriedades</h2>
@@ -39,9 +39,9 @@
 </section>
 <section>
     <h2>6. Reservas</h2>
-    <p>As reservas são criadas e geridas por administradores autorizados, na área de gestão. A versão atual não permite a um cliente iniciar ou confirmar uma reserva através da sua conta.</p>
+    <p>Os administradores podem criar e gerir reservas na área de gestão. O cliente autenticado também pode iniciar e confirmar uma reserva na sua própria área, associada automaticamente à sua conta.</p>
     <p>Para criar a reserva são utilizados a identificação do cliente registado, a propriedade selecionada, as datas de entrada e saída, o número de noites e o valor da estadia. Antes da confirmação, a aplicação verifica o estado da propriedade e a sobreposição de datas com outras reservas.</p>
-    <p>O estado apresentado é derivado das datas da reserva: confirmada, em curso ou concluída, conforme o período da estadia. O histórico de reservas por cliente está disponível apenas na área de administração.</p>
+    <p>O estado apresentado é derivado das datas da reserva: confirmada, em curso ou concluída, conforme o período da estadia. O cliente pode consultar o histórico das suas próprias reservas na sua área.</p>
 </section>
 <section>
     <h2>7. Preços</h2>
@@ -52,6 +52,7 @@
     <h2>8. Pagamentos simulados</h2>
     <p>A versão atual da Olive Properties utiliza um processo de pagamento exclusivamente simulado para fins de demonstração das funcionalidades da aplicação. Não são processados pagamentos bancários reais nem recolhidos números reais de cartões de pagamento, códigos CVV/CVC, credenciais bancárias ou dados destinados à execução de uma transação financeira real.</p>
     <p>O administrador pode selecionar um método demonstrativo e simular a aprovação ou recusa da operação. Uma recusa não cria a reserva. Qualquer confirmação ou documento gerado tem natureza exclusivamente demonstrativa: não constitui fatura, recibo fiscal, comprovativo bancário ou prova da realização de um pagamento real. Nenhum valor monetário real é transferido através desta funcionalidade.</p>
+    <p>Após uma simulação aprovada, a reserva fica disponível na área do cliente e pode ser emitido um comprovativo para impressão. A plataforma tenta enviar a confirmação para o email do cliente quando o serviço de email está configurado. Uma falha nesse envio não anula a reserva.</p>
 </section>
 <section>
     <h2>9. Cancelamentos e alterações</h2>
@@ -61,7 +62,7 @@
 <section>
     <h2>10. Pedidos de contacto e comunicações</h2>
     <p>O utilizador pode contactar a Olive Properties através dos meios disponibilizados no website. O formulário público envia um pedido que é guardado na plataforma para acompanhamento e resposta.</p>
-    <p>Os administradores podem consultar o pedido, registar estado e notas internas, e responder por email quando o serviço de envio estiver configurado. Na versão atual, o utilizador não pode consultar os seus pedidos, as respostas ou as notas administrativas através da sua conta.</p>
+    <p>Os administradores podem consultar o pedido, registar estado e notas internas, e responder por email quando o serviço de envio estiver configurado. Um pedido enviado por um cliente autenticado fica associado à sua conta, permitindo-lhe consultar a mensagem e as respostas enviadas. O cliente não pode consultar notas administrativas ou pedidos de outras pessoas.</p>
     <p>Os dados pessoais associados às comunicações são tratados nos termos da <a href="{{ route('legal.privacy') }}">Política de Privacidade</a>.</p>
 </section>
 <section>

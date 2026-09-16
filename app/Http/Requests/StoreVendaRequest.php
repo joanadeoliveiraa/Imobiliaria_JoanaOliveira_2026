@@ -14,7 +14,8 @@ class StoreVendaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cliente_id' => ['required', 'integer', 'exists:clientes,id'],
+            'cliente_id' => $this->user()?->tipo === 'administrador'
+                ? ['required', 'integer', 'exists:clientes,id'] : ['nullable'],
             'apartamento_id' => ['required', 'integer', 'exists:apartamentos,id'],
             'data_entrada' => ['required', 'date_format:Y-m-d', 'after_or_equal:today'],
             'data_saida' => ['required', 'date_format:Y-m-d', 'after:data_entrada'],

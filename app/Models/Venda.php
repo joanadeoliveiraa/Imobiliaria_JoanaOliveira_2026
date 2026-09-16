@@ -14,6 +14,11 @@ class Venda extends Model
         return $this->belongsTo(Apartamento::class, 'apartamento', 'referencia');
     }
 
+    public function clienteRegistado(): BelongsTo
+    {
+        return $this->belongsTo(Cliente::class, 'cliente_id');
+    }
+
     // Cancelamentos são eliminados; rascunhos de pagamento não entram nesta tabela.
     public function scopeValidas(Builder $query): Builder
     {
@@ -76,6 +81,7 @@ class Venda extends Model
     }
 
     protected $fillable = [
+        'cliente_id',
         'cliente',
         'apartamento',
         'data_entrada',

@@ -40,7 +40,9 @@
     <h3>Preferência relativa ao aviso de cookies</h3>
     <p>A chave <code>olive-cookie-choice-v1</code> é utilizada para recordar a escolha efetuada relativamente ao aviso de cookies. A preferência é mantida durante 180 dias. Depois desse período, o aviso poderá voltar a ser apresentado.</p>
     <p>Caso o utilizador elimine os dados do website através das definições do navegador, esta preferência também será removida. Esta informação é armazenada localmente no dispositivo e não é utilizada para publicidade ou análise de comportamento.</p>
-    <p>Esta é a única chave de armazenamento local identificada no código atual. Não foi identificada uma preferência de modo claro/escuro nem utilização de sessionStorage.</p>
+    <h3>Preferência de aparência</h3>
+    <p>A chave <code>olive-theme-v1</code> guarda localmente a escolha entre modo claro e modo escuro. Esta preferência permanece no dispositivo até ser alterada ou até o utilizador eliminar os dados do website no navegador. Não é utilizada para publicidade ou análise de comportamento.</p>
+    <p>Não foi identificada utilização de sessionStorage na aplicação.</p>
 </section>
 <section>
     <h2>4. Cookies estritamente necessários</h2>
