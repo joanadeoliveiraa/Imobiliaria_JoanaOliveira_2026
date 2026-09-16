@@ -12,8 +12,11 @@ test('new users can register', function () {
         'email' => 'test@example.com',
         'password' => 'password',
         'password_confirmation' => 'password',
+        'tipo' => 'administrador',
     ]);
 
     $this->assertAuthenticated();
+    expect(auth()->user()->tipo)->toBe('cliente');
+    expect(auth()->user()->cliente)->not->toBeNull();
     $response->assertRedirect(route('client.home', absolute: false));
 });

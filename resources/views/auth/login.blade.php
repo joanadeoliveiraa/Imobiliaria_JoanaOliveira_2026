@@ -1,5 +1,6 @@
 <x-guest-layout>
     <x-auth-session-status class="mb-4" :status="session('status')" />
+    @include('auth.google-button')
     <form method="POST" action="{{ route('login') }}">
         @csrf
         <div class="field">
@@ -20,4 +21,5 @@
         </div>
         <button class="button button--primary auth-submit" type="submit">Entrar</button>
     </form>
+    <p class="auth-switch">Ainda não tem conta? <a href="{{ route('register') }}">Criar conta de cliente</a></p>
 </x-guest-layout>

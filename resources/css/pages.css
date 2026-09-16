@@ -110,10 +110,13 @@
     .auth-submit {
         width: 100%;
     }
+    .auth-social__note, .auth-social__divider, .auth-switch { margin-top: 1rem; text-align: center; font-size: .875rem; color: var(--text-secondary); }
+    .auth-social__divider { margin-bottom: 1rem; }
+    .auth-switch a, .auth-social__note a { text-decoration: underline; text-underline-offset: .2em; }
+    .auth-social button:disabled { opacity: .55; cursor: not-allowed; }
     @media (max-width: 800px) {
         .contact-layout {
             grid-template-columns: 1fr;
         }
     }
 }
-

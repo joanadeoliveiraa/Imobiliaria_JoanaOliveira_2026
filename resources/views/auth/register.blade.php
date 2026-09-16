@@ -1,9 +1,10 @@
 <x-guest-layout>
+    @include('auth.google-button')
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
         <div>
-            <x-input-label for="name" :value="__('Name')" />
+            <x-input-label for="name" value="Nome" />
             <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
@@ -15,7 +16,7 @@
         </div>
 
         <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+            <x-input-label for="password" value="Palavra-passe" />
 
             <x-text-input id="password" class="block mt-1 w-full"
                             type="password"
@@ -26,7 +27,7 @@
         </div>
 
         <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+            <x-input-label for="password_confirmation" value="Confirmar palavra-passe" />
 
             <x-text-input id="password_confirmation" class="block mt-1 w-full"
                             type="password"
@@ -35,14 +36,8 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 " href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
+        <p class="auth-social__note">Saiba como tratamos os seus dados na <a href="{{ route('legal.privacy') }}">Política de Privacidade</a>.</p>
+        <button class="button button--primary auth-submit mt-4" type="submit">Criar conta de cliente</button>
     </form>
+    <p class="auth-switch">Já tem conta? <a href="{{ route('login') }}">Iniciar sessão</a></p>
 </x-guest-layout>
