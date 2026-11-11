@@ -75,9 +75,7 @@ Route::get('/sobre', function () {
     return view('sobre');
 })->name('sobre');
 
-Route::get('/contactos', function () {
-    return view('Contactos.contactos');
-})->name('contactos');
+Route::get('/contactos', [ContactoController::class, 'create'])->name('contactos');
 
 Route::post('/contactos', [ContactoController::class, 'store'])->middleware('throttle:5,10')->name('contactos.enviar');
 

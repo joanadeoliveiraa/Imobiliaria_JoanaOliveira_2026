@@ -15,7 +15,7 @@ function contactData(array $changes = []): array
 {
     return array_replace([
         'nome' => 'Joana Oliveira', 'email' => 'joana@example.test', 'telefone' => '912345678',
-        'assunto' => 'Disponibilidade no Algarve', 'mensagem' => 'Gostaria de saber se existe disponibilidade para a próxima semana.',
+        'assunto' => 'Disponibilidade e preços', 'mensagem' => 'Gostaria de saber se existe disponibilidade para a próxima semana.',
         'privacidade_lida' => '1',
     ], $changes);
 }

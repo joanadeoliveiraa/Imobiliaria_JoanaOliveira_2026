@@ -87,7 +87,7 @@ it('shows only own contact requests and sent replies without internal notes', fu
     $this->get(route('client.messages.show', $own))->assertOk()->assertSee('Temos disponibilidade.')->assertDontSee('Nota confidencial');
     $this->get(route('client.messages.show', $other))->assertForbidden();
     $this->post(route('contactos.enviar'), ['nome' => 'Pessoa falsa', 'email' => 'falsa@example.test',
-        'assunto' => 'Novo contacto', 'mensagem' => 'Precisava de uma informação.', 'privacidade_lida' => '1'])->assertRedirect();
+        'assunto' => 'Disponibilidade e preços', 'mensagem' => 'Precisava de uma informação.', 'privacidade_lida' => '1'])->assertRedirect();
     expect(PedidoContacto::latest('id')->first()->user_id)->toBe($this->user->id)
         ->and(PedidoContacto::latest('id')->first()->email)->toBe('joana@example.test');
 });
@@ -108,7 +108,7 @@ it('rejects unavailable dates and prevents a client from changing roles through 
 
 it('marks administrative event notifications read and keeps their destination internal', function () {
     $this->actingAs($this->user)->post(route('contactos.enviar'), [
-        'nome' => 'Joana Oliveira', 'email' => 'joana@example.test', 'assunto' => 'Pedido',
+        'nome' => 'Joana Oliveira', 'email' => 'joana@example.test', 'assunto' => 'Disponibilidade e preços',
         'mensagem' => 'Gostaria de saber mais informações.', 'privacidade_lida' => '1',
     ])->assertRedirect();
     $notification = $this->admin->notifications()->first();

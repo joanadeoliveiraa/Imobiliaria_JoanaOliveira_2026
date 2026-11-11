@@ -14,7 +14,7 @@ class PedidoContacto extends Model
         'completed' => 'Concluído', 'archived' => 'Arquivado',
     ];
 
-    protected $fillable = ['user_id', 'nome', 'email', 'telefone', 'assunto', 'mensagem', 'estado', 'notas_internas', 'lido_em', 'respondido_em'];
+    protected $fillable = ['venda_id', 'user_id', 'nome', 'email', 'telefone', 'assunto', 'mensagem', 'estado', 'notas_internas', 'lido_em', 'respondido_em'];
 
     protected function casts(): array
     {

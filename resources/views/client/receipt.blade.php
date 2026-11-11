@@ -7,7 +7,7 @@
     <section><h2>Cliente</h2><p>{{ $venda->clienteRegistado?->nome ?? $venda->cliente }}<br>{{ $venda->clienteRegistado?->email }}@if($venda->clienteRegistado?->telefone)<br>{{ $venda->clienteRegistado->telefone }}@endif</p></section>
     <section><h2>Propriedade</h2><p>{{ $venda->propriedade?->tipologia ?? $venda->apartamento }} · {{ $venda->apartamento }}<br>{{ $venda->propriedade?->morada }}</p></section>
     <section><h2>Estadia</h2><p>Check-in: {{ $venda->data_entrada->format('d/m/Y') }}<br>Check-out: {{ $venda->data_saida->format('d/m/Y') }}<br>{{ $venda->data_entrada->diffInDays($venda->data_saida) }} noites · {{ $venda->estadoNaData(today()->toDateString()) }}</p></section>
-    <section><h2>Resumo</h2><p>Valor total: {{ number_format((float) $venda->valor_total, 2, ',', '.') }} €<br>Método de pagamento simulado: {{ \App\Http\Controllers\ReservaCheckoutController::METHODS[$venda->pagamentoSimulado->metodo] ?? $venda->pagamentoSimulado->metodo }}</p></section>
-    <footer><p>Documento gerado pela plataforma Olive Properties.</p><p>Pagamento simulado para fins demonstrativos. Este documento não constitui fatura, recibo fiscal ou comprovativo de uma transação bancária real.</p><p>Olive Properties · Rua das Oliveiras, 25 · 8200-000 Albufeira · Portugal<br>+351 289 000 000 · info@oliveproperties.pt</p></footer>
+    <section><h2>Resumo</h2><p>Valor total: {{ number_format((float) $venda->valor_total, 2, ',', '.') }} €<br>Método de pagamento: {{ \App\Http\Controllers\ReservaCheckoutController::METHODS[$venda->pagamentoSimulado->metodo] ?? $venda->pagamentoSimulado->metodo }}</p></section>
+    <footer><p>Documento gerado pela plataforma Olive Properties.</p><p>Este documento não constitui fatura ou recibo fiscal.</p><p>Olive Properties · Rua das Oliveiras, 25 · 8200-000 Albufeira · Portugal<br>+351 289 000 000 · info@oliveproperties.pt</p></footer>
 </article>
 @endsection

@@ -24,4 +24,5 @@
         </form></aside>
     </div>
 </div>
+@if($pedido->venda_id)<p>Reserva associada: RES-{{ str_pad($pedido->venda_id, 6, '0', STR_PAD_LEFT) }}</p>@endif
 @endsection

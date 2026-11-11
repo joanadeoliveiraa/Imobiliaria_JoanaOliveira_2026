@@ -5,4 +5,5 @@
 <article class="client-panel"><h2>A sua mensagem</h2><p class="client-message-text">{{ $pedido->mensagem }}</p></article>
 @foreach($pedido->respostas as $resposta)<article class="client-panel"><h2>Resposta da Olive Properties</h2><p>{{ $resposta->enviado_em->format('d/m/Y H:i') }}</p><p class="client-message-text">{{ $resposta->mensagem }}</p></article>@endforeach
 <a class="button button--outline" href="{{ route('client.messages.index') }}">Voltar às mensagens</a>
+@if($pedido->venda_id)<p>Reserva associada: RES-{{ str_pad($pedido->venda_id, 6, '0', STR_PAD_LEFT) }}</p>@endif
 @endsection

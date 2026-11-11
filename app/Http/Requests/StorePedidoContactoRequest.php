@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Support\ContactSubjects;
+use Illuminate\Validation\Rule;
 
 class StorePedidoContactoRequest extends FormRequest
 {
@@ -20,6 +22,7 @@ class StorePedidoContactoRequest extends FormRequest
             'email' => $trimmed('email'),
             'telefone' => $phone === '' ? null : $phone,
             'assunto' => $trimmed('assunto'),
+            'outro_assunto' => $trimmed('outro_assunto'),
             'mensagem' => $trimmed('mensagem'),
         ]);
     }
@@ -30,7 +33,10 @@ class StorePedidoContactoRequest extends FormRequest
             'nome' => ['required', 'string', 'min:2', 'max:120'],
             'email' => ['required', 'email:rfc', 'max:255'],
             'telefone' => ['nullable', 'string', 'min:7', 'max:30', 'regex:/^[+0-9() .-]+$/'],
-            'assunto' => ['required', 'string', 'min:3', 'max:160'],
+            'assunto' => ['required', 'string', Rule::in(ContactSubjects::OPTIONS)],
+            'outro_assunto' => ['exclude_unless:assunto,'.ContactSubjects::OTHER, 'required', 'string', 'min:3', 'max:120'],
+            'venda_id' => ['nullable', 'integer', Rule::exists('vendas', 'id')->where(fn ($query) =>
+                $query->whereIn('cliente_id', \App\Models\Cliente::select('id')->where('user_id', $this->user()?->id ?? 0)))],
             'mensagem' => ['required', 'string', 'min:10', 'max:5000'],
             'privacidade_lida' => ['accepted'],
         ];
@@ -39,6 +45,11 @@ class StorePedidoContactoRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'assunto.in' => 'Selecione um dos assuntos disponíveis.',
+            'outro_assunto.required' => 'Especifique o assunto.',
+            'outro_assunto.min' => 'Escreva pelo menos 3 caracteres.',
+            'outro_assunto.max' => 'O assunto adicional não pode exceder 120 caracteres.',
+            'venda_id.exists' => 'Não pode associar esta reserva ao pedido.',
             'nome.required' => 'Indique o seu nome.', 'nome.min' => 'O nome deve ter pelo menos 2 caracteres.', 'nome.max' => 'O nome é demasiado longo.',
             'email.required' => 'Indique o seu email.', 'email.email' => 'Indique um email válido.', 'email.max' => 'O email é demasiado longo.',
             'telefone.min' => 'Indique um telefone válido ou deixe o campo vazio.', 'telefone.max' => 'O telefone é demasiado longo.', 'telefone.regex' => 'O telefone só pode conter números e os sinais habituais.',
