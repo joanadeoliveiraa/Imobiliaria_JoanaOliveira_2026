@@ -34,7 +34,7 @@ class GoogleAuthController extends Controller
         }
 
         try {
-            // Socialite validates the one-time OAuth state stored in this session.
+            // O Socialite valida o estado OAuth de utilização única guardado na sessão.
             $google = Socialite::driver('google')->user();
         } catch (\Exception) {
             return $this->failure('Não foi possível confirmar o login com Google. Tente novamente.');
@@ -53,7 +53,7 @@ class GoogleAuthController extends Controller
                     throw ValidationException::withMessages(['google' => 'As contas administrativas devem entrar com email e palavra-passe.']);
                 }
                 if (! $user) {
-                    // Never link an existing account solely by a matching email.
+                    // A coincidência de email não autoriza a associação a uma conta existente.
                     if (User::where('email', $email)->exists()) {
                         throw ValidationException::withMessages(['google' => 'Já existe uma conta com este email. Entre com a sua palavra-passe ou utilize a recuperação de palavra-passe.']);
                     }

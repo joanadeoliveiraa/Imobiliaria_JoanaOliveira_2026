@@ -15,7 +15,7 @@ class ClientAccount
         return DB::transaction(function () use ($user) {
             $cliente = $user->cliente()->first();
             if (! $cliente) {
-                // An existing record is never claimed by email alone: ownership must be explicit.
+                // A associação exige um vínculo explícito; o email não comprova a titularidade.
                 $cliente = Cliente::create([
                     'user_id' => $user->id, 'nome' => $user->name, 'email' => $user->email,
                 ]);

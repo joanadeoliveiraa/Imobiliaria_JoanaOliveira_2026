@@ -17,7 +17,7 @@ class PasswordResetLinkController extends Controller
     }
 
     /**
-     * Handle an incoming password reset link request.
+     * Processa o pedido de recuperação de palavra-passe.
      *
      * @throws ValidationException
      */

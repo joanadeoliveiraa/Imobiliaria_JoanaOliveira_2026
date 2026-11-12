@@ -103,7 +103,8 @@ class PedidoContactoController extends Controller
         try {
             Mail::to($pedido->email)->send(new RespostaPedidoContacto($pedido, $data['assunto'], $data['mensagem']));
         } catch (Throwable $error) {
-            Log::error('Falha ao enviar resposta de pedido de contacto', ['pedido_id' => $pedido->id, 'error' => $error]);
+            Log::error('Falha ao enviar resposta de pedido de contacto', ['pedido_id' => $pedido->id, 'error_type' => $error::class]);
+
             return back()->withInput()->withErrors(['email' => 'Não foi possível enviar a resposta. Verifique a configuração de email e tente novamente.']);
         }
 

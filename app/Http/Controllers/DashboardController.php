@@ -6,18 +6,21 @@ use App\Services\DashboardService;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class DashboardController extends Controller
 {
     public function index(Request $request, DashboardService $dashboard)
     {
         $filter = $this->filter($request);
+
         return view('Dashboard.dashboard', $dashboard->dados(...[$filter['periodo'], false, $filter['from'] ?? null, $filter['to'] ?? null]));
     }
 
     public function report(Request $request, DashboardService $dashboard)
     {
         $filter = $this->filter($request);
+
         return view('Dashboard.report', $dashboard->dados(...[$filter['periodo'], true, $filter['from'] ?? null, $filter['to'] ?? null]));
     }
 
@@ -30,8 +33,9 @@ class DashboardController extends Controller
         ]);
         $data['periodo'] ??= 'mes';
         if ($data['periodo'] === 'personalizado' && CarbonImmutable::parse($data['from'])->diffInDays(CarbonImmutable::parse($data['to'])) > 365) {
-            throw \Illuminate\Validation\ValidationException::withMessages(['from' => 'Escolha um período até 12 meses.']);
+            throw ValidationException::withMessages(['from' => 'Escolha um período até 12 meses.']);
         }
+
         return $data;
     }
 }

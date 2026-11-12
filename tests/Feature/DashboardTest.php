@@ -22,7 +22,9 @@ it('separates current occupancy from administrative unavailability and excludes 
     Venda::create($reservation);
 
     $queries = 0;
-    DB::listen(function () use (&$queries) { $queries++; });
+    DB::listen(function () use (&$queries) {
+        $queries++;
+    });
     $this->actingAs($admin)->get(route('dashboard'))
         ->assertOk()->assertSee('Ocupadas hoje')->assertSee('Indisponíveis')
         ->assertSee('chart-value')->assertSee('chart-state')->assertSee('chart-occupancy')
@@ -31,7 +33,11 @@ it('separates current occupancy from administrative unavailability and excludes 
         ->assertViewHas('ocupadas', 1)->assertViewHas('indisponiveis', 1)
         ->assertViewHas('reservas', 1)->assertViewHas('receita', 100.0)
         ->assertViewHas('taxaOcupacao', 50.0)
-        ->assertViewHas('ocupacaoMensal', function ($series) { expect($series->last()['total'])->toBe(6.7); return true; });
+        ->assertViewHas('ocupacaoMensal', function ($series) {
+            expect($series->last()['total'])->toBe(6.7);
+
+            return true;
+        });
     // The shared menu also fetches recent notifications and their unread count.
     expect($queries)->toBeLessThan(32);
     $this->get(route('dashboard.report'))->assertOk()->assertSee('ALG002')->assertSee('Indisponível')

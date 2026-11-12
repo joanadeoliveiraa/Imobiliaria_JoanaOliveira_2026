@@ -68,6 +68,7 @@
     <p>O dashboard administrativo utiliza a biblioteca Chart.js para apresentação de gráficos. Na configuração atual, esta biblioteca é carregada através da infraestrutura jsDelivr.</p>
     <p>O carregamento de um recurso externo poderá implicar a transmissão ao respetivo servidor de dados técnicos necessários à comunicação, como o endereço IP e informações técnicas associadas ao pedido.</p>
     <p>A utilização deste recurso não significa, por si só, que sejam utilizados cookies de publicidade ou analytics pela Olive Properties. Caso futuramente sejam adicionados novos serviços externos com utilização de cookies ou outras tecnologias de acompanhamento, deverá ser avaliada a necessidade de atualizar esta política e o respetivo mecanismo de consentimento antes da sua ativação.</p>
+    <p>A opção “Adicionar ao Google Calendar” é uma ligação externa acionada pelo utilizador. O Google poderá utilizar cookies ou outros mecanismos de acordo com as respetivas políticas; nenhum recurso do Google Calendar é carregado automaticamente nesta página.</p>
 </section>
 <section>
     <h2>8. Proteção de dados pessoais</h2>

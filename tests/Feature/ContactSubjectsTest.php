@@ -1,5 +1,6 @@
 <?php
 
+use App\Mail\RespostaPedidoContacto;
 use App\Models\PedidoContacto;
 use App\Models\User;
 use App\Models\Venda;
@@ -48,7 +49,7 @@ it('prefills account details and associates only reservations belonging to that 
 
 it('includes the selected subject and reservation reference in the existing reply email', function () {
     $pedido = new PedidoContacto($this->data + ['venda_id' => 42]);
-    $mail = new \App\Mail\RespostaPedidoContacto($pedido, 'Resposta ao pedido', 'Vamos ajudar.');
+    $mail = new RespostaPedidoContacto($pedido, 'Resposta ao pedido', 'Vamos ajudar.');
     $mail->assertSeeInHtml(ContactSubjects::OPTIONS[0]);
     $mail->assertSeeInHtml('RES-000042');
 });

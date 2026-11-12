@@ -101,6 +101,7 @@ class DashboardService
             }
             $occupied = array_sum(array_map('count', $occupiedDays));
             $days = $start->diffInDays($end->startOfDay()) + 1;
+
             return ['label' => $month['label'], 'total' => $propriedades && $days ? round($occupied / ($propriedades * $days) * 100, 1) : 0];
         });
 

@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreApartamentoRequest;
 use App\Http\Requests\UpdateApartamentoRequest;
 use App\Models\Apartamento;
-use App\Models\Atividade;
-use App\Models\Cliente;
 use App\Models\Venda;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -155,5 +153,4 @@ class ApartamentoController extends Controller
             ->route('admin.apartamentos.index')
             ->with('success', 'Apartamento eliminado com sucesso.');
     }
-
 }

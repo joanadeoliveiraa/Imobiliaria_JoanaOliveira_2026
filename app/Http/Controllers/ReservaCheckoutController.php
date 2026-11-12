@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreVendaRequest;
+use App\Mail\ReservaConfirmada;
 use App\Models\Apartamento;
 use App\Models\Atividade;
 use App\Models\Cliente;
 use App\Models\PagamentoSimulado;
-use App\Models\Venda;
 use App\Models\User;
-use App\Mail\ReservaConfirmada;
+use App\Models\Venda;
 use App\Notifications\AdministrativeEvent;
 use App\Support\ClientAccount;
 use App\Support\ReservationPricing;
@@ -103,7 +103,7 @@ class ReservaCheckoutController extends Controller
 
         $payment = DB::transaction(function () use ($request, $draft, $token, $data) {
             $property = Apartamento::whereKey($draft['apartamento_id'])->lockForUpdate()->first();
-            // The property lock serializes retries and competing checkouts for this property.
+            // O bloqueio impede confirmações concorrentes para a mesma propriedade.
             if ($existing = $this->completed($request, $token)) {
                 return $existing;
             }
@@ -152,7 +152,7 @@ class ReservaCheckoutController extends Controller
                 Mail::to($reserva->clienteRegistado->email)->send(new ReservaConfirmada($reserva));
                 $payment->update(['email_estado' => 'sent', 'email_enviado_em' => now()]);
             } catch (\Throwable $exception) {
-                Log::error('Falha ao enviar confirmação de reserva', ['reserva_id' => $reserva->id, 'erro' => $exception->getMessage()]);
+                Log::error('Falha ao enviar confirmação de reserva', ['reserva_id' => $reserva->id, 'error_type' => $exception::class]);
                 $payment->update(['email_estado' => 'failed']);
             }
         }

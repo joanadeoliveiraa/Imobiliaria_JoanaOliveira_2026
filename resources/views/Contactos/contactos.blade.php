@@ -22,6 +22,11 @@
             </address>
         </aside>
         <div class="contact-form">
+            <section class="help-card" aria-labelledby="contact-faq-title">
+                <h2 id="contact-faq-title">Já consultou as nossas perguntas frequentes?</h2>
+                <p>Encontre respostas rápidas às dúvidas mais comuns sobre reservas, pagamentos, check-in e estadias.</p>
+                <a class="button button--outline" href="{{ route('faqs') }}">Consultar FAQs</a>
+            </section>
             <h2>Envie-nos uma mensagem</h2>
             <form action="{{ route('contactos.enviar') }}" method="POST">
                 @csrf
@@ -34,7 +39,7 @@
                     <div class="field"><label for="nome">Nome *</label><input id="nome" name="nome" value="{{ old('nome', auth()->user()?->cliente?->nome ?? auth()->user()?->name) }}" autocomplete="name" @readonly(auth()->user()?->tipo === 'cliente') maxlength="120" aria-invalid="{{ $errors->has('nome') ? 'true' : 'false' }}" aria-describedby="nome-error" required><span id="nome-error" class="field-error">@error('nome'){{ $message }}@enderror</span></div>
                     <div class="field"><label for="contact-email">Email *</label><input id="contact-email" type="email" name="email" value="{{ old('email', auth()->user()?->cliente?->email ?? auth()->user()?->email) }}" autocomplete="email" @readonly(auth()->user()?->tipo === 'cliente') maxlength="255" aria-invalid="{{ $errors->has('email') ? 'true' : 'false' }}" aria-describedby="email-error" required><span id="email-error" class="field-error">@error('email'){{ $message }}@enderror</span></div>
                     <div class="field"><label for="telefone">Telefone</label><input id="telefone" type="tel" name="telefone" value="{{ old('telefone') }}" autocomplete="tel" maxlength="30" aria-invalid="{{ $errors->has('telefone') ? 'true' : 'false' }}" aria-describedby="telefone-error"><span id="telefone-error" class="field-error">@error('telefone'){{ $message }}@enderror</span></div>
-                    <x-contact-subject :default="$reserva ? \App\Support\ContactSubjects::RESERVATION : ''" />
+                    <x-contact-subject :default="$reserva ? \App\Support\ContactSubjects::RESERVATION : $assunto" />
                     <div class="field form-grid__full">
                         <label for="mensagem">Mensagem *</label>
                         <textarea id="mensagem" name="mensagem" rows="5" minlength="10" maxlength="5000" aria-invalid="{{ $errors->has('mensagem') ? 'true' : 'false' }}" aria-describedby="message-help mensagem-error" placeholder="Descreva a sua questão…" required>{{ old('mensagem') }}</textarea>

@@ -90,6 +90,7 @@
     <h2>8. Recursos externos</h2>
     <p>A plataforma poderá recorrer a recursos técnicos externos necessários à apresentação ou funcionamento de determinadas funcionalidades.</p>
     <p>O dashboard administrativo utiliza a biblioteca Chart.js, carregada através da infraestrutura jsDelivr.</p>
+    <p>Nas reservas futuras confirmadas, o cliente pode optar por abrir o Google Calendar com os dados da estadia já preenchidos. A plataforma não cria o evento automaticamente nem obtém acesso ao calendário do utilizador. Ao seguir essa ligação externa, as datas, a identificação e localização da propriedade e a referência da reserva são enviadas ao Google para preparar o evento.</p>
     <p>O carregamento de recursos externos pode implicar a transmissão de dados técnicos necessários à comunicação entre o navegador do utilizador e o respetivo servidor, como o endereço IP e informações técnicas associadas ao pedido.</p>
     <p>Sempre que possível, a utilização de serviços externos deverá limitar-se ao estritamente necessário para o funcionamento da plataforma.</p>
 </section>

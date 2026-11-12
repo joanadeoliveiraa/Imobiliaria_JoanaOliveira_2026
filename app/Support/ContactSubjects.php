@@ -5,7 +5,9 @@ namespace App\Support;
 class ContactSubjects
 {
     public const OTHER = 'Outros assuntos';
+
     public const RESERVATION = 'Alteração ou cancelamento de reserva';
+
     public const OPTIONS = [
         'Informações sobre um imóvel',
         'Disponibilidade e preços',

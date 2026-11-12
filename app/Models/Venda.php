@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -72,6 +72,7 @@ class Venda extends Model
         if ($this->data_entrada->toDateString() > $day) {
             return 'Confirmada';
         }
+
         return $this->data_saida->toDateString() > $day ? 'Em curso' : 'Concluída';
     }
 

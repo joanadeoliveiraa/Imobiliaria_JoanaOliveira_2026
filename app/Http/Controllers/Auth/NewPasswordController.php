@@ -22,7 +22,7 @@ class NewPasswordController extends Controller
     }
 
     /**
-     * Handle an incoming new password request.
+     * Processa a definição de uma nova palavra-passe.
      *
      * @throws ValidationException
      */

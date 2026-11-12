@@ -2,13 +2,16 @@
 
 use App\Mail\ReservaConfirmada;
 use App\Models\Apartamento;
-use App\Models\Cliente;
 use App\Models\PagamentoSimulado;
 use App\Models\PedidoContacto;
 use App\Models\User;
 use App\Models\Venda;
+use App\Notifications\AdministrativeEvent;
 use App\Support\ClientAccount;
+use App\Support\ReservationCalendar;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 beforeEach(function () {
     $this->admin = User::factory()->create(['tipo' => 'administrador']);
@@ -61,14 +64,45 @@ it('uses the authenticated client and server price through summary, simulated ch
     $this->post($payment, ['metodo' => 'cartao', 'resultado' => 'aprovado'])->assertRedirect($confirmed);
     expect(Venda::count())->toBe(1)->and($this->admin->notifications()->count())->toBe(1);
     $this->get($confirmed)->assertOk()->assertSee('A confirmação foi enviada');
-    $this->get(route('client.reservations.show', $reserva))->assertOk()->assertSee('ALG777');
+    $this->get($confirmed)->assertSee('Adicionar ao Google Calendar');
+    $this->get(route('client.reservations.show', $reserva))->assertOk()->assertSee('ALG777')->assertSee('Adicionar ao Google Calendar');
     $this->get(route('client.reservations.receipt', $reserva))->assertOk()->assertSee('Comprovativo de reserva')->assertSee('não constitui fatura');
     $this->actingAs($this->other)->get(route('client.reservations.receipt', $reserva))->assertForbidden();
+});
+
+it('builds a private-data-safe Google Calendar event from the owned confirmed reservation', function () {
+    $reserva = Venda::create([
+        'cliente_id' => $this->cliente->id, 'cliente' => $this->cliente->nome,
+        'apartamento' => $this->property->referencia,
+        'data_entrada' => '2027-06-10', 'data_saida' => '2027-06-17', 'valor_total' => 700,
+    ]);
+    PagamentoSimulado::create([
+        'venda_id' => $reserva->id, 'user_id' => $this->user->id,
+        'token' => (string) Str::uuid(), 'metodo' => 'cartao', 'detalhes' => [],
+    ]);
+
+    parse_str(parse_url(ReservationCalendar::googleUrl($reserva), PHP_URL_QUERY), $event);
+
+    expect($event['action'])->toBe('TEMPLATE')
+        ->and($event['text'])->toBe('Estadia — Olive Properties | T2')
+        ->and($event['dates'])->toBe('20270610/20270617')
+        ->and($event['location'])->toBe('Albufeira')
+        ->and($event['details'])->toContain('RES-'.str_pad($reserva->id, 6, '0', STR_PAD_LEFT))
+        ->and($event['details'])->toContain('Duração: 7 noites')
+        ->and($event['details'])->toContain(route('client.reservations.show', $reserva))
+        ->and($event['details'])->not->toContain('joana@example.test')
+        ->and($event['details'])->not->toContain('700');
+
+    $this->actingAs($this->other)->get(route('client.reservations.show', $reserva))->assertForbidden();
 });
 
 it('keeps a confirmed reservation if the confirmation email fails', function () {
     config()->set('mail.default', 'smtp');
     Mail::shouldReceive('to')->once()->andThrow(new RuntimeException('SMTP indisponível'));
+    Log::shouldReceive('error')->once()->with(
+        'Falha ao enviar confirmação de reserva',
+        Mockery::on(fn ($context) => array_keys($context) === ['reserva_id', 'error_type'] && $context['error_type'] === RuntimeException::class),
+    );
     $this->actingAs($this->user);
     $summary = $this->post(route('client.reservations.start'), $this->dates)->headers->get('Location');
     $payment = $this->post(route('client.reservations.continue', basename($summary)))->headers->get('Location');
@@ -119,7 +153,7 @@ it('marks administrative event notifications read and keeps their destination in
 });
 
 it('rejects notification links that only share the application URL prefix', function () {
-    $this->admin->notify(new \App\Notifications\AdministrativeEvent(
+    $this->admin->notify(new AdministrativeEvent(
         'contact', 'Pedido', 'Teste', url('/').'.example.test/phishing'
     ));
     $notification = $this->admin->notifications()->first();

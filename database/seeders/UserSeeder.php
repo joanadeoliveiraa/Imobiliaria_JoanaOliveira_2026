@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
             throw new RuntimeException('Configure SEED_ADMIN_EMAIL e SEED_ADMIN_PASSWORD (mínimo 12 caracteres) no .env.');
         }
 
-        // Never reset credentials or promote an existing account when rerunning seeds.
+        // Repetir o seeder não altera credenciais nem promove contas existentes.
         $user = User::firstOrCreate(['email' => $admin['email']], [
             'name' => $admin['name'],
             'password' => Hash::make($admin['password']),

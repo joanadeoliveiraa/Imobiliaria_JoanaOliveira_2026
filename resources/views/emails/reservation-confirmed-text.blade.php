@@ -14,6 +14,9 @@ Esta operação utiliza o sistema demonstrativo da plataforma e não corresponde
 @if($reserva->clienteRegistado?->user_id)
 Consultar reserva: {{ route('client.reservations.show', $reserva) }}
 @endif
+@if(\App\Support\ReservationCalendar::isAvailable($reserva))
+Adicionar ao Google Calendar: {{ \App\Support\ReservationCalendar::googleUrl($reserva) }}
+@endif
 Olive Properties
 Rua das Oliveiras, 25
 8200-000 Albufeira

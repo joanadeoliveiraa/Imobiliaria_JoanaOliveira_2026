@@ -1,9 +1,12 @@
 <?php
 
+use App\Models\Apartamento;
 use App\Models\Cliente;
 use App\Models\User;
+use App\Models\Venda;
 use Database\Seeders\ClientDemoSeeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 beforeEach(function () {
     config(['seeding.client_password' => 'Demo-test-password!2026']);
@@ -26,10 +29,10 @@ it('creates the demo client and permits login and client pages only', function (
 });
 
 it('allows the seeded client to reserve and consult payment history and receipts', function () {
-    \Illuminate\Support\Facades\Mail::fake();
+    Mail::fake();
     $this->seed(ClientDemoSeeder::class);
     $user = User::where('email', 'joana@oliveproperties.test')->sole();
-    $property = \App\Models\Apartamento::create(['referencia' => 'DEMO001', 'tipologia' => 'T2',
+    $property = Apartamento::create(['referencia' => 'DEMO001', 'tipologia' => 'T2',
         'morada' => 'Faro', 'area' => 70, 'preco' => 700, 'estado' => 'Disponivel']);
     $this->actingAs($user);
     $summary = $this->post(route('client.reservations.start'), [
@@ -41,7 +44,7 @@ it('allows the seeded client to reserve and consult payment history and receipts
     $this->get($payment)->assertOk();
     $confirmation = $this->post($payment, ['metodo' => 'cartao', 'resultado' => 'aprovado'])
         ->assertRedirect()->headers->get('Location');
-    $reservation = \App\Models\Venda::sole();
+    $reservation = Venda::sole();
     expect($reservation->cliente_id)->toBe($user->cliente->id)
         ->and($reservation->pagamentoSimulado)->not->toBeNull();
     $this->get($confirmation)->assertOk();

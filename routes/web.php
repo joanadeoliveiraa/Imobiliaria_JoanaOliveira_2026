@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\ApartamentoController;
 use App\Http\Controllers\AdminNotificationController;
-use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\ApartamentoController;
 use App\Http\Controllers\ClientAreaController;
+use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PedidoContactoController;
@@ -76,6 +76,7 @@ Route::get('/sobre', function () {
 })->name('sobre');
 
 Route::get('/contactos', [ContactoController::class, 'create'])->name('contactos');
+Route::view('/faqs', 'faqs')->name('faqs');
 
 Route::post('/contactos', [ContactoController::class, 'store'])->middleware('throttle:5,10')->name('contactos.enviar');
 

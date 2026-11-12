@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Apartamento extends Model
@@ -28,6 +28,7 @@ class Apartamento extends Model
         if ($this->estado !== self::ESTADO_DISPONIVEL) {
             return 'Indisponível';
         }
+
         return $this->proxima_entrada ? 'Próxima entrada' : 'Disponível';
     }
 

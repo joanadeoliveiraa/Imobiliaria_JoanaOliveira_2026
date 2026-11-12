@@ -4,12 +4,17 @@ use App\Mail\RespostaPedidoContacto;
 use App\Models\PedidoContacto;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 uses(RefreshDatabase::class);
 
-beforeEach(function () { $this->originalMailer = config('mail.default'); });
-afterEach(function () { config()->set('mail.default', $this->originalMailer); });
+beforeEach(function () {
+    $this->originalMailer = config('mail.default');
+});
+afterEach(function () {
+    config()->set('mail.default', $this->originalMailer);
+});
 
 function contactData(array $changes = []): array
 {
@@ -102,6 +107,10 @@ it('never records a reply when email is not configured or its transport fails', 
     $this->patch(route('admin.contactos.update', $pedido), ['estado' => 'replied'])->assertSessionHasErrors('estado');
     config()->set('mail.default', 'smtp');
     Mail::shouldReceive('to')->once()->andThrow(new RuntimeException('Falha SMTP'));
+    Log::shouldReceive('error')->once()->with(
+        'Falha ao enviar resposta de pedido de contacto',
+        ['pedido_id' => $pedido->id, 'error_type' => RuntimeException::class],
+    );
     $this->from(route('admin.contactos.reply', $pedido))->post(route('admin.contactos.send', $pedido), ['assunto' => 'Re: Disponibilidade', 'mensagem' => 'Obrigado pelo contacto. Vamos confirmar as datas.'])
         ->assertSessionHasErrors('email');
     expect($pedido->respostas()->count())->toBe(0)->and($pedido->fresh()->respondido_em)->toBeNull();

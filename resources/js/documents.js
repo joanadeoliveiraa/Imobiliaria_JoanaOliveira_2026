@@ -1,4 +1,4 @@
-// Refresh the emission time even when printing a tab opened earlier.
+// Atualiza a data de emissão ao imprimir uma página aberta anteriormente.
 window.addEventListener('beforeprint', () => {
     const issuedAt = new Date();
     const formatted = new Intl.DateTimeFormat('pt-PT', {

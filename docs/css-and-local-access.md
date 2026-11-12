@@ -16,7 +16,7 @@
 
 O header está em `resources/views/layouts/header.blade.php` e o footer em `resources/views/layouts/footer.blade.php`. A frase de direitos original foi preservada literalmente. As páginas públicas, autenticação, perfil, propriedades, clientes, reservas e dashboard partilham o layout público. Os estilos inline das páginas de gestão foram substituídos pelo CSS comum; as tabelas, indicadores e gráficos existentes foram mantidos.
 
-O formulário de contactos mantém o destino existente; o envio de mensagens ainda não está implementado, conforme indicado na página.
+O formulário de contactos valida e guarda os pedidos na base de dados. As respostas por email exigem um transporte real configurado.
 
 ## Administrador de demonstração
 

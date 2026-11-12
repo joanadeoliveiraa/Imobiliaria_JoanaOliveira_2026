@@ -53,6 +53,7 @@
     <p>A versão atual da Olive Properties utiliza um processo de pagamento exclusivamente simulado para fins de demonstração das funcionalidades da aplicação. Não são processados pagamentos bancários reais nem recolhidos números reais de cartões de pagamento, códigos CVV/CVC, credenciais bancárias ou dados destinados à execução de uma transação financeira real.</p>
     <p>O administrador pode selecionar um método demonstrativo e simular a aprovação ou recusa da operação. Uma recusa não cria a reserva. Qualquer confirmação ou documento gerado tem natureza exclusivamente demonstrativa: não constitui fatura, recibo fiscal, comprovativo bancário ou prova da realização de um pagamento real. Nenhum valor monetário real é transferido através desta funcionalidade.</p>
     <p>Após uma simulação aprovada, a reserva fica disponível na área do cliente e pode ser emitido um comprovativo para impressão. A plataforma tenta enviar a confirmação para o email do cliente quando o serviço de email está configurado. Uma falha nesse envio não anula a reserva.</p>
+    <p>Para reservas futuras confirmadas, o cliente pode abrir um evento pré-preenchido no Google Calendar. O evento só é guardado se o utilizador o confirmar no serviço externo; a Olive Properties não acede à conta ou ao calendário do utilizador.</p>
 </section>
 <section>
     <h2>9. Cancelamentos e alterações</h2>

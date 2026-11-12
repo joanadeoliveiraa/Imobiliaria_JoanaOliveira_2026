@@ -16,6 +16,7 @@
                 <a href="{{ route('apartamentos.index') }}">Propriedades</a>
                 <a href="{{ route('sobre') }}">Sobre nós</a>
                 <a href="{{ route('contactos') }}">Contactos</a>
+                <a href="{{ route('faqs') }}">Perguntas Frequentes</a>
             </nav>
         </div>
         <div class="public-footer__column public-footer__legal">

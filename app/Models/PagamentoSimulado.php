@@ -11,6 +11,7 @@ class PagamentoSimulado extends Model
     {
         return $this->belongsTo(Venda::class, 'venda_id');
     }
+
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');

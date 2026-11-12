@@ -18,7 +18,7 @@ class LoginRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Regras de validação do pedido.
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
@@ -31,7 +31,7 @@ class LoginRequest extends FormRequest
     }
 
     /**
-     * Attempt to authenticate the request's credentials.
+     * Valida as credenciais de autenticação.
      *
      * @throws ValidationException
      */
@@ -51,7 +51,7 @@ class LoginRequest extends FormRequest
     }
 
     /**
-     * Ensure the login request is not rate limited.
+     * Verifica o limite de tentativas de autenticação.
      *
      * @throws ValidationException
      */

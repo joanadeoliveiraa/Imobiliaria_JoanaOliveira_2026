@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Cliente;
 use App\Support\ContactSubjects;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class StorePedidoContactoRequest extends FormRequest
@@ -35,8 +36,7 @@ class StorePedidoContactoRequest extends FormRequest
             'telefone' => ['nullable', 'string', 'min:7', 'max:30', 'regex:/^[+0-9() .-]+$/'],
             'assunto' => ['required', 'string', Rule::in(ContactSubjects::OPTIONS)],
             'outro_assunto' => ['exclude_unless:assunto,'.ContactSubjects::OTHER, 'required', 'string', 'min:3', 'max:120'],
-            'venda_id' => ['nullable', 'integer', Rule::exists('vendas', 'id')->where(fn ($query) =>
-                $query->whereIn('cliente_id', \App\Models\Cliente::select('id')->where('user_id', $this->user()?->id ?? 0)))],
+            'venda_id' => ['nullable', 'integer', Rule::exists('vendas', 'id')->where(fn ($query) => $query->whereIn('cliente_id', Cliente::select('id')->where('user_id', $this->user()?->id ?? 0)))],
             'mensagem' => ['required', 'string', 'min:10', 'max:5000'],
             'privacidade_lida' => ['accepted'],
         ];
