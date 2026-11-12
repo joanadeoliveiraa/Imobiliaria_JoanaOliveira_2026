@@ -14,7 +14,7 @@
             </dl><h3>Mensagem</h3><div class="contact-message">{{ $pedido->mensagem }}</div></section>
             <section class="contact-admin-panel"><h2>Histórico</h2>
                 @foreach($pedido->eventos as $evento)<div class="contact-timeline"><time datetime="{{ $evento->created_at->toIso8601String() }}">{{ $evento->created_at->timezone('Europe/Lisbon')->format('d/m/Y H:i') }}</time><span>{{ $evento->descricao }}</span></div>@endforeach
-                @foreach($pedido->respostas as $resposta)<div class="contact-reply-history"><h3>Resposta enviada · {{ $resposta->enviado_em->timezone('Europe/Lisbon')->format('d/m/Y H:i') }}</h3><p><strong>Assunto:</strong> {{ $resposta->assunto }}</p><div class="contact-message">{{ $resposta->mensagem }}</div></div>@endforeach
+                @foreach($pedido->respostas as $resposta)<div class="contact-reply-history"><h3>{{ $resposta->simulado ? 'Email simulado' : 'Resposta enviada' }} · {{ $resposta->enviado_em->timezone('Europe/Lisbon')->format('d/m/Y H:i') }}</h3>@if($resposta->simulado)<p class="field-help"><strong>Apenas para fins de teste.</strong> Este email não foi entregue ao destinatário.</p>@endif<p><strong>Assunto:</strong> {{ $resposta->assunto }}</p><div class="contact-message">{{ $resposta->mensagem }}</div></div>@endforeach
             </section>
         </div>
         <aside class="contact-admin-panel"><h2>Tratamento do pedido</h2><form method="post" action="{{ route('admin.contactos.update', $pedido) }}">@csrf @method('PATCH')

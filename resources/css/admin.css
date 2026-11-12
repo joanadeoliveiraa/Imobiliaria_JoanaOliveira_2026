@@ -30,6 +30,11 @@
         border-color: #e2bcbc;
         background: #faeded;
     }
+    .alert--info {
+        color: #27465a;
+        border-color: #b9d2df;
+        background: #edf6fa;
+    }
     .admin-filters {
         display: grid;
         grid-template-columns: minmax(15rem, 1fr) 13rem auto auto;

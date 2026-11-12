@@ -4,9 +4,9 @@ O formulário público em `/contactos` guarda pedidos em `pedidos_contacto`. A a
 
 Para atualizar uma instalação existente, execute `php artisan migrate`. O formulário usa CSRF, validação do Laravel, limites de caracteres e um limite de cinco submissões por dez minutos por endereço IP. Após gravação, redireciona para a página de contactos, evitando repetição pelo refresh. As mensagens e notas são apresentadas como texto escapado.
 
-## Email real
+## Email simulado e real
 
-O `.env` local usa `MAIL_MAILER=log`. Esse transporte escreve mensagens no log e **não envia email**. Nesta configuração, o backoffice bloqueia a resposta e não altera o estado para `Respondido`.
+O `.env` local usa `MAIL_MAILER=log`. Nesse modo, o backoffice permite responder e guarda a resposta como **email simulado**, atualizando o pedido para `Respondido`. A interface identifica claramente que se trata de um teste e que a mensagem não foi entregue ao destinatário.
 
 Configure um serviço de envio real no `.env`, por exemplo SMTP:
 
@@ -20,6 +20,6 @@ MAIL_FROM_ADDRESS=remetente-verificado@dominio.pt
 MAIL_FROM_NAME="Olive Properties"
 ```
 
-Use os valores do provedor, um endereço remetente verificado e `php artisan config:clear` após alterar a configuração. O sistema envia de forma síncrona e só guarda a resposta e marca o pedido como `Respondido` após o transporte aceitar o email. Se o envio falhar, conserva o estado e apresenta um erro. `log`, `array` e transportes com fallback para `log` não são tratados como envios reais. Uma aceitação pelo servidor de email não garante entrega na caixa de entrada; confirme entregabilidade no provedor.
+Use os valores do provedor, um endereço remetente verificado e `php artisan config:clear` após alterar a configuração. O sistema envia de forma síncrona e só guarda uma resposta real após o transporte aceitar o email. Se o envio real falhar, conserva o estado e apresenta um erro. Os transportes `log` e `array` são sempre marcados como simulação. Uma aceitação pelo servidor de email não garante entrega na caixa de entrada; confirme a entregabilidade no provedor.
 
-No ambiente atual não há SMTP configurado, pelo que não foi feito um envio externo real. Os testes usam `Mail::fake()` para validar a mensagem e simulam falha de transporte para verificar que o histórico não regista um envio inexistente.
+No ambiente atual não há SMTP configurado, pelo que não é feito um envio externo real. Os testes validam o registo do email simulado e simulam também uma falha de transporte real para confirmar que o histórico não regista um envio inexistente.

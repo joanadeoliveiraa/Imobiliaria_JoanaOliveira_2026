@@ -114,7 +114,7 @@ Nunca use migrate:fresh ou db:wipe numa instalação com dados a conservar. O .e
 
 ## Email
 
-Por defeito, MAIL_MAILER=log não entrega mensagens. Para enviar recuperações de palavra-passe, respostas a contactos e confirmações de reserva, configure um transporte real no .env. Uma falha no envio da confirmação não elimina a reserva.
+Por defeito, MAIL_MAILER=log não entrega mensagens. No backoffice, as respostas a contactos ficam disponíveis como emails simulados, claramente identificados como teste e registados no histórico do pedido. Para entrega real, recuperação de palavra-passe e confirmações externas, configure um transporte real no .env. Uma falha no envio real não cria um histórico de entrega inexistente.
 
 ## Entrada com Google
 

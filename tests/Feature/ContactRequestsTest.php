@@ -97,14 +97,29 @@ it('escapes visitor and reply text so no submitted HTML executes in the backoffi
         ->assertOk()->assertDontSee('<script>alert("x")</script>', false)->assertSee('&lt;script&gt;', false);
 });
 
-it('never records a reply when email is not configured or its transport fails', function () {
+it('records a clearly identified simulated email with the local test transport', function () {
     $pedido = PedidoContacto::create(contactData());
     $this->actingAs(User::factory()->create(['tipo' => 'administrador']));
     config()->set('mail.default', 'log');
-    $this->from(route('admin.contactos.reply', $pedido))->post(route('admin.contactos.send', $pedido), ['assunto' => 'Re: Disponibilidade', 'mensagem' => 'Obrigado pelo contacto. Vamos confirmar as datas.'])
-        ->assertSessionHasErrors('email');
-    expect($pedido->respostas()->count())->toBe(0)->and($pedido->fresh()->estado)->toBe('new');
-    $this->patch(route('admin.contactos.update', $pedido), ['estado' => 'replied'])->assertSessionHasErrors('estado');
+    Mail::fake();
+    $this->get(route('admin.contactos.reply', $pedido))->assertOk()
+        ->assertSee('Modo de teste')->assertSee('Enviar email de teste');
+    $data = ['assunto' => 'Re: Disponibilidade', 'mensagem' => 'Obrigado pelo contacto. Vamos confirmar as datas.'];
+    $this->post(route('admin.contactos.send', $pedido), $data)
+        ->assertRedirect(route('admin.contactos.show', $pedido))
+        ->assertSessionHas('success', "Pedido #{$pedido->id} — email enviado. Simulação para fins de teste; não foi entregue ao destinatário.");
+    Mail::assertSent(RespostaPedidoContacto::class, fn ($mail) => $mail->hasTo('joana@example.test'));
+    expect($pedido->respostas()->count())->toBe(1)
+        ->and($pedido->respostas()->first()->simulado)->toBeTrue()
+        ->and($pedido->fresh()->estado)->toBe('replied')
+        ->and($pedido->eventos()->latest('id')->first()->descricao)->toBe('Email simulado enviado para fins de teste');
+    $this->get(route('admin.contactos.show', $pedido))
+        ->assertSee('Email simulado')->assertSee('Apenas para fins de teste.');
+});
+
+it('does not record a reply when a real email transport fails', function () {
+    $pedido = PedidoContacto::create(contactData());
+    $this->actingAs(User::factory()->create(['tipo' => 'administrador']));
     config()->set('mail.default', 'smtp');
     Mail::shouldReceive('to')->once()->andThrow(new RuntimeException('Falha SMTP'));
     Log::shouldReceive('error')->once()->with(
@@ -125,7 +140,8 @@ it('sends through the configured mailer, records the answer and permits completi
     $this->post(route('admin.contactos.send', $pedido), $data)->assertRedirect(route('admin.contactos.show', $pedido))->assertSessionHas('success');
     Mail::assertSent(RespostaPedidoContacto::class, fn ($mail) => $mail->hasTo('joana@example.test') && $mail->assunto === $data['assunto']);
     expect($pedido->fresh()->estado)->toBe('replied')->and($pedido->fresh()->respondido_em)->not->toBeNull()
-        ->and($pedido->respostas()->count())->toBe(1)->and($pedido->respostas()->first()->mensagem)->toBe($data['mensagem']);
+        ->and($pedido->respostas()->count())->toBe(1)->and($pedido->respostas()->first()->mensagem)->toBe($data['mensagem'])
+        ->and($pedido->respostas()->first()->simulado)->toBeFalse();
     $this->get(route('admin.contactos.show', $pedido))->assertSee('Resposta enviada por email')->assertSee($data['mensagem']);
     $this->patch(route('admin.contactos.update', $pedido), ['estado' => 'completed'])->assertRedirect();
     expect($pedido->fresh()->estado)->toBe('completed')->and($pedido->respostas()->count())->toBe(1);

@@ -9,11 +9,11 @@ class RespostaContacto extends Model
 {
     protected $table = 'respostas_contacto';
 
-    protected $fillable = ['pedido_contacto_id', 'user_id', 'assunto', 'mensagem', 'enviado_em'];
+    protected $fillable = ['pedido_contacto_id', 'user_id', 'assunto', 'mensagem', 'simulado', 'enviado_em'];
 
     protected function casts(): array
     {
-        return ['enviado_em' => 'datetime'];
+        return ['simulado' => 'boolean', 'enviado_em' => 'datetime'];
     }
 
     public function administrador(): BelongsTo

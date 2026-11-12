@@ -97,8 +97,9 @@ class PedidoContactoController extends Controller
             'mensagem' => ['required', 'string', 'min:10', 'max:10000'],
         ]);
         $mailer = config('mail.default');
-        if (! in_array($mailer, ['smtp', 'sendmail', 'mailgun', 'ses', 'postmark', 'resend'], true)) {
-            return back()->withInput()->withErrors(['email' => 'O envio real de email não está configurado. Configure MAIL_MAILER e as credenciais do serviço de email antes de responder.']);
+        $simulated = in_array($mailer, ['log', 'array'], true);
+        if (! $simulated && ! in_array($mailer, ['smtp', 'sendmail', 'mailgun', 'ses', 'postmark', 'resend'], true)) {
+            return back()->withInput()->withErrors(['email' => 'O transporte de email configurado não é suportado por este fluxo.']);
         }
         try {
             Mail::to($pedido->email)->send(new RespostaPedidoContacto($pedido, $data['assunto'], $data['mensagem']));
@@ -108,13 +109,22 @@ class PedidoContactoController extends Controller
             return back()->withInput()->withErrors(['email' => 'Não foi possível enviar a resposta. Verifique a configuração de email e tente novamente.']);
         }
 
-        DB::transaction(function () use ($pedido, $data, $request) {
+        DB::transaction(function () use ($pedido, $data, $request, $simulated) {
             $sentAt = now();
-            $pedido->respostas()->create(['user_id' => $request->user()->id, 'assunto' => $data['assunto'], 'mensagem' => $data['mensagem'], 'enviado_em' => $sentAt]);
+            $pedido->respostas()->create(['user_id' => $request->user()->id, 'assunto' => $data['assunto'], 'mensagem' => $data['mensagem'], 'simulado' => $simulated, 'enviado_em' => $sentAt]);
             $pedido->update(['estado' => 'replied', 'respondido_em' => $sentAt]);
-            $pedido->eventos()->create(['tipo' => 'reply', 'descricao' => 'Resposta enviada por email', 'user_id' => $request->user()->id]);
+            $pedido->eventos()->create([
+                'tipo' => 'reply',
+                'descricao' => $simulated ? 'Email simulado enviado para fins de teste' : 'Resposta enviada por email',
+                'user_id' => $request->user()->id,
+            ]);
         });
 
-        return redirect()->route('admin.contactos.show', $pedido)->with('success', 'Resposta enviada e registada.');
+        $message = "Pedido #{$pedido->id} — email enviado.";
+        if ($simulated) {
+            $message .= ' Simulação para fins de teste; não foi entregue ao destinatário.';
+        }
+
+        return redirect()->route('admin.contactos.show', $pedido)->with('success', $message);
     }
 }
