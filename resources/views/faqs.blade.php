@@ -34,6 +34,5 @@
         <p>Não encontrou a resposta que procurava? A nossa equipa está disponível para ajudar.</p>
         <a class="button button--primary" href="{{ route('contactos') }}">Entre em contacto</a>
     </section>
-    <p class="faq-demo-note">As políticas, horários, valores e condições apresentados são fictícios e destinam-se exclusivamente à demonstração académica da plataforma Olive Properties – Algarve.</p>
 </div></section>
 @endsection
